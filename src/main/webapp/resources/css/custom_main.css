@@ -1,0 +1,178 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+html,body{
+	height:100%;
+}
+.container-fluid{
+	min-height: 90%;
+}
+
+.container-main{
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+}
+@media (max-width: 768px) {
+  .container-main {
+    width: 95%;
+  }
+}
+body{
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 19px;
+}
+.main-logo{
+	width:47px;
+	height:47px;
+	margin: -13px;
+}
+.bg-image-main{
+	background-image:url("https://img.uefa.com/imgml/uefacom/rebrands/ucl-bg-header.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	position: fixed;
+	left:0px;
+	top:0px;
+	z-index: -1;
+	width:100%;
+	height:100%;
+	
+}
+.bg-none{
+	background-color:transparent !important;
+}
+.text-white{
+	color:white;
+}
+.text-gray{
+	color:gray;
+}
+.bg-blue-opacity{
+	background-color: rgba(0,0,75,0.7);
+}
+.border-none{
+	border: 0px;
+}
+.bg-footer{
+	background-image:url("https://img.uefa.com/imgml/uefacom/ucl/2018/footer.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	width:100%;
+	min-height:10%;
+	z-index: -1;
+}
+.vertical-center{
+	margin-top:10%;
+}
+.tab-space-1{
+	display:inline-block;
+	margin-left:4rem;
+}
+.tab-space-4{
+	display:inline-block;
+	margin-left:16rem;
+}
+.enter-row-1{
+	display:block;
+	margin-bottom:1rem;
+}
+.enter-row-4{
+	display:block;
+	margin-bottom:4rem;
+}
+
+
+.badge-owner, .badge-planned{
+	background-color: green;
+	color: white;
+}
+.badge-notification{
+	background-color: green;
+	color: white;
+	width: 3px;
+	height:14px;
+	margin-top: 2px;
+}
+.badge-user{
+	background-color: gray;
+	color: white;
+}
+.badge-manager{
+	background-color: yellow;
+	color: blue;
+}
+.badge-unplanned{
+	background-color: red;
+	color: white;
+}
+
+
+.badge-win, .badge-allowed{
+	background-color: green;
+	color: white;
+}
+.badge-draw, .badge-completed{
+	background-color: gray;
+	color: white;
+}
+.badge-lose .badge-notallowed{
+	background-color: red;
+	color: white;
+}
+.badge-unrecorded, .badge-manager{
+	background-color: yellow;
+	color: blue;
+}
+.divider{
+	border-color: rgba(128, 128, 128, .7);
+	width:80%;
+}
+
+.profile{
+	width:100%;
+	height:100%;
+}
+.profile img{
+	width:80%;
+	height:80%;
+}
+.top{
+	position:fixed;
+	right:5%;
+	bottom:5%;
+	z-index: 999;
+	opacity: 0.7;
+}
+.top:hover {
+	opacity: 1;
+}
+.table-hover > tbody > tr:hover {
+  background-color: rgba(0, 0, 204,.7) !important;
+}
+.short-view{
+	position:fixed;
+	right:5%;
+	top:30%;
+	z-index: -1;
+	opacity: .7;
+}
+.dp-none{
+	display:none;
+}
+.match-comment{
+	width:70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.match-comment div{
+	white-space: normal;
+	}
+.large-font{
+	font-size:2.5em;
+}
+.tactics-board{
+	width:100%;
+	height:100%;
+}
