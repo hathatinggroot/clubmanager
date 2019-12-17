@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지 사항</title>
+<title>라이브 보드</title>
 
 <!-- INCLUDE head.jsp -->
 <%@ include file="/WEB-INF/views/includes/head.jsp"%>
@@ -21,67 +21,79 @@
 		<%@ include file="/WEB-INF/views/includes/nav_top.jsp"%>
 		<!-- Container Main start-->
 		<div class="container-main">
-			<!-- Announcement List start-->
+
+			<!--  All Live Board List start-->
 			<div class="row">
 				<div class="text-center text-white text-nowrap">
 					<h1>
-						<dfn>공지 사항</dfn>
+						<dfn>라이브 보드</dfn>
 					</h1>
 				</div>
-
-				<!-- Announcement list Table start -->
+				<!-- All Live Board Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12">
-					<!-- Search condition start -->
-					<div class="col-sm-12 col-md-12 enter-row-1">
-						<form class="form-inline pull-right">
-							<div class="form-group text-white">
-								<label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox1" value="#" name="condition"> 자유게시판
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox2" value="#" name="condition"> 투표
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox3" value="#" name="condition"> 전술
-								</label>
-							</div>
-							<div class="form-group">
-								<input type="text" class="form-control" id="keyword"
-									placeholder="검색어를 입력하세요">
-							</div>
-						</form>
-					</div>
-					<!-- Search condition end -->
 					<div class="table-responsive container-fluid">
 						<table
 							class="table table-condensed table-hover text-center text-white">
 							<tr>
 								<td>No</td>
-								<td>카테고리</td>
-								<td>글제목</td>
-								<td>수정일</td>
+								<td>상대팀</td>
+								<td>경기 날짜</td>
+								<td>구장</td>
+								<td>진행 상태</td>
 							</tr>
 							<tr>
 								<td>1</td>
-								<td>전체</td>
-								<td>서비스 점검 안내</td>
-								<td>17:46</td>
+								<td>123FC</td>
+								<td>2019-12-16 18:00</td>
+								<td>대화구장</td>
+								<td><button type="button" class="btn btn-primary">기록하기</button></td>
 							</tr>
 							<tr>
 								<td>2</td>
-								<td>자유게시판</td>
-								<td>게시판 에티켓 준수 강조</td>
-								<td>2019-12-11</td>
+								<td>456FC</td>
+								<td>2019-12-12 17:00</td>
+								<td>백석구장</td>
+								<td><button type="button" class="btn btn-warning">기록중</button></td>
 							</tr>
 							<tr>
 								<td>3</td>
-								<td>투표</td>
-								<td>투표 방법</td>
-								<td>2019-12-01</td>
+								<td>789FC</td>
+								<td>2019-12-08 17:00</td>
+								<td>백석구장</td>
+								<td><span class="badge badge-recorded">기록 완료</span></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>789FC</td>
+								<td>2019-12-08 17:00</td>
+								<td>백석구장</td>
+								<td><span class="badge badge-recorded">기록 완료</span></td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>789FC</td>
+								<td>2019-12-08 17:00</td>
+								<td>백석구장</td>
+								<td><span class="badge badge-recorded">기록 완료</span></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>789FC</td>
+								<td>2019-12-08 17:00</td>
+								<td>백석구장</td>
+								<td><span class="badge badge-recorded">기록 완료</span></td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>789FC</td>
+								<td>2019-12-08 17:00</td>
+								<td>백석구장</td>
+								<td><span class="badge badge-recorded">기록 완료</span></td>
 							</tr>
 						</table>
 					</div>
 				</div>
-				<!-- Announcement list Table end -->
-
+				<!-- All Live Board Table end -->
 				<!-- Pagination start -->
 				<div class="text-center">
 					<nav>
@@ -99,17 +111,24 @@
 					</nav>
 				</div>
 				<!-- Pagination end -->
-
 			</div>
-			<!-- Announcement List end-->
+			<!--   All Live Board List List end-->
 		</div>
 		<!-- Container Main end-->
 	</div>
 	<!-- container-fluid end -->
 
+
+
+
 	<!-- INCLUDE footer.jsp -->
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 
 
+<script>
+	$("button").on("click",function(e){
+		location.href="/tactics/liveboard_write"
+	})
+</script>
 </body>
 </html>

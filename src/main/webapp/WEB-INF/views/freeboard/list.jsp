@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지 사항</title>
+<title>자유게시판</title>
 
 <!-- INCLUDE head.jsp -->
 <%@ include file="/WEB-INF/views/includes/head.jsp"%>
@@ -14,33 +14,30 @@
 	<div class="bg-image-main"></div>
 
 	<!-- container-fluid start -->
-	<!-- 	<div class="container-fluid bg-image-main"> -->
 	<div class="container-fluid">
 
 		<!-- INCLUDE nav_top.jsp -->
 		<%@ include file="/WEB-INF/views/includes/nav_top.jsp"%>
 		<!-- Container Main start-->
 		<div class="container-main">
-			<!-- Announcement List start-->
+			<!-- Free Board List start-->
 			<div class="row">
 				<div class="text-center text-white text-nowrap">
 					<h1>
-						<dfn>공지 사항</dfn>
+						<dfn>자유게시판</dfn>
 					</h1>
 				</div>
 
-				<!-- Announcement list Table start -->
+				<!-- Free Board List Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<!-- Search condition start -->
 					<div class="col-sm-12 col-md-12 enter-row-1">
 						<form class="form-inline pull-right">
 							<div class="form-group text-white">
 								<label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox1" value="#" name="condition"> 자유게시판
+									id="inlineCheckbox1" value="#" name="condition"> 작성자
 								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox2" value="#" name="condition"> 투표
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox3" value="#" name="condition"> 전술
+									id="inlineCheckbox2" value="#" name="condition"> 제목
 								</label>
 							</div>
 							<div class="form-group">
@@ -49,38 +46,65 @@
 							</div>
 						</form>
 					</div>
-					<!-- Search condition end -->
+					<!-- Search condition start -->
 					<div class="table-responsive container-fluid">
 						<table
 							class="table table-condensed table-hover text-center text-white">
 							<tr>
 								<td>No</td>
-								<td>카테고리</td>
-								<td>글제목</td>
-								<td>수정일</td>
+								<td>제목</td>
+								<td>작성자</td>
+								<td>작성일</td>
+								<td>댓글</td>
+								<td>좋아요</td>
+								<td>조회수</td>
+								<td>첨부</td>
+							</tr>
+							<tr class="announcement">
+								<td>공지사항</td>
+								<td>공지사항입니다</td>
+								<td><span class="badge badge-admin">운영자</span></td>
+								<td>17:06</td>
+								<td>3</td>
+								<td>45</td>
+								<td>75</td>
+								<td><span class="glyphicon glyphicon-folder-open"></span></td>
 							</tr>
 							<tr>
 								<td>1</td>
-								<td>전체</td>
-								<td>서비스 점검 안내</td>
-								<td>17:46</td>
+								<td>활동사진이에요</td>
+								<td>홍길동&nbsp;<span class="badge badge-owner">관리자</span></td>
+								<td>17:06</td>
+								<td>3</td>
+								<td>45</td>
+								<td>75</td>
+								<td><span class="glyphicon glyphicon-folder-open"></span></td>
 							</tr>
 							<tr>
 								<td>2</td>
-								<td>자유게시판</td>
-								<td>게시판 에티켓 준수 강조</td>
-								<td>2019-12-11</td>
+								<td>활동사진이에요</td>
+								<td>홍길동&nbsp;<span class="badge badge-manager">매니저</span></td>
+								<td>17:06</td>
+								<td>3</td>
+								<td>45</td>
+								<td>75</td>
+								<td><span class="glyphicon glyphicon-folder-open"></span></td>
 							</tr>
 							<tr>
 								<td>3</td>
-								<td>투표</td>
-								<td>투표 방법</td>
-								<td>2019-12-01</td>
+								<td>배고파요</td>
+								<td>홍길동&nbsp;<span class="badge badge-user">일반</span></td>
+								<td>2019-12-11</td>
+								<td>3</td>
+								<td>45</td>
+								<td>75</td>
+								<td></td>
 							</tr>
 						</table>
+						<button type="button" class="btn btn-default pull-right">글쓰기</button>
 					</div>
 				</div>
-				<!-- Announcement list Table end -->
+				<!-- Free Board List Table end -->
 
 				<!-- Pagination start -->
 				<div class="text-center">
@@ -99,13 +123,15 @@
 					</nav>
 				</div>
 				<!-- Pagination end -->
-
 			</div>
-			<!-- Announcement List end-->
+			<!-- Free Board List end-->
 		</div>
 		<!-- Container Main end-->
 	</div>
 	<!-- container-fluid end -->
+
+
+
 
 	<!-- INCLUDE footer.jsp -->
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>

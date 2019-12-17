@@ -84,7 +84,7 @@ body{
 }
 
 
-.badge-owner, .badge-planned{
+.badge-owner, .badge-planned, .badge-win, .badge-join{
 	background-color: green;
 	color: white;
 }
@@ -95,36 +95,34 @@ body{
 	height:14px;
 	margin-top: 2px;
 }
-.badge-user{
+.badge-user, .badge-draw, .badge-recorded{
 	background-color: gray;
 	color: white;
 }
-.badge-manager{
+.badge-manager, .badge-unrecorded, .badge-novote{
 	background-color: yellow;
 	color: blue;
 }
-.badge-unplanned{
+.badge-unplanned, .badge-lose, .badge-nojoin, .badge-admin{
 	background-color: red;
 	color: white;
 }
 
 
-.badge-win, .badge-allowed{
+.badge-allowed{
 	background-color: green;
 	color: white;
 }
-.badge-draw, .badge-completed{
+.badge-completed{
 	background-color: gray;
 	color: white;
 }
-.badge-lose .badge-notallowed{
+ .badge-notallowed{
 	background-color: red;
 	color: white;
 }
-.badge-unrecorded, .badge-manager{
-	background-color: yellow;
-	color: blue;
-}
+
+
 .divider{
 	border-color: rgba(128, 128, 128, .7);
 	width:80%;
@@ -175,4 +173,51 @@ body{
 .tactics-board{
 	width:100%;
 	height:100%;
+}
+
+.scroll-box-1 {
+	height:230px;
+	overflow:scroll;
+	overflow-y:scroll;
+}
+
+.scroll-box-personal-record {
+	height:470px;
+	overflow-y:auto;
+}
+.scroll-box-tactics-lineup{
+	height:800px;
+	overflow-y:auto;
+}
+.scroll-box-attach{
+	overflow-x:auto;
+}
+.scroll-reply{
+	height:300px;
+	overflow-y:auto;
+}
+@media (max-width: 768px) {
+  .scroll-box-personal-record, .scroll-box-tactics-lineup, .scroll-reply  {
+    height:230px;
+  }
+}
+
+.comment-text{
+	width:90%;
+	border-radius: 20px 20px;
+}
+.width-20{
+	width:50px;
+	display:inline-block;
+}
+.player{
+	width:20px;
+	height:20px;
+	background-color:yellow;
+	border-radius: 100%;
+}
+.announcement td{
+	color:rgb(255,51,51);
+	font-weight: bold;
+	font-size: larger;
 }
