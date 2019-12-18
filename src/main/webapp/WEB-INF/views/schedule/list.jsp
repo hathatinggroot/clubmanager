@@ -251,9 +251,10 @@
 									placeholder="미정">
 							</div>
 							<div class="form-group">
-								<label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox1" value="#" name="autoPollRegister" checked> 자동 투표 등록
-								</label>
+								<label for="pollTime">참석 여부 투표 마감 시간</label> 
+								<div>경기 시간으로부터 <input type="number"
+									class="form-control width-20" id="pollTimeBeforeMatch" name="pollTimeBeforeMatch" placeholder="7">
+								일 전</div>
 							</div>
 						</form>
 					</div>

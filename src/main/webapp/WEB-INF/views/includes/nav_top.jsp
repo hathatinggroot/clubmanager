@@ -52,7 +52,7 @@
 				</a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="/poll/participate_list">참석 여부</a></li>
-						<li><a href="/tactics/mom_view">MoM</a></li>
+						<li><a href="/poll/mom">MoM</a></li>
 					</ul></li>
 				<li><a href="/club_members">선수단</a></li>	
 				<li class="dropdown"><a href="#" class="dropdown-toggle"

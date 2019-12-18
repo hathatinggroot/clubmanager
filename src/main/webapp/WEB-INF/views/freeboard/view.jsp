@@ -74,8 +74,8 @@
 									<li>첨부파일1.txt</li>
 								</ul>
 							</div>
-							
-							
+
+
 							<div>
 								<button type="button" class="btn btn-default pull-left">목록</button>
 								<span class="pull-right">
@@ -83,17 +83,36 @@
 									<button type="button" class="btn btn-default">삭제</button>
 								</span>
 							</div>
+							<hr>
+							<div class="comment-box ">
+								<textarea class="col-xs-12 col-sm-11 col-md-11"
+									placeholder="댓글을 남겨주세요"></textarea>
+								<button type="button"
+									class="btn btn-default input-lg col-xs-12 col-sm-1 col-md-1">등록</button>
+							</div>
 						</div>
+
 
 						<!-- Table -->
 						<div class="table-responsive container-fluid scroll-reply">
 							<table class="table table-condensed text-center">
+								<colgroup>
+									<col width=10% />
+									<col width=70% />
+									<col width=10% />
+									<col width=10% />
+								</colgroup>
 								<tr>
 									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
+									<td><p>좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
+										감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은
+										자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
+										감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은
+										자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
+										감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다</p></td>
 									<td>2019-12-15 17:45</td>
 									<td><button type="button" class="btn btn-default">수정</button>
-									<button type="button" class="btn btn-default">삭제</button></td>
+										<button type="button" class="btn btn-default">삭제</button></td>
 								</tr>
 								<tr>
 									<td>홍길동</td>
