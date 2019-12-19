@@ -37,8 +37,8 @@
 						</div>
 						<div class="form-group text-white">
 							<label class="checkbox-inline"> <input type="checkbox"
-								id="inlineCheckbox1" value="#" name="isAnnouncement">
-								공지로 등록
+								id="inlineCheckbox1" value="1" name="boardTop" disabled>
+								상단 고정
 							</label>
 						</div>
 						<div class="form-group">

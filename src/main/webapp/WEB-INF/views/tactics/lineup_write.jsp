@@ -199,51 +199,6 @@
 				</div>
 				<!-- Tactics Short View  end -->
 
-				<!-- Participate Members Table Start -->
-				<div class="col-xs-12 col-sm-12 col-md-12 ">
-					<div class="text-center text-white text-nowrap">
-						<h1>
-							<dfn>참석 명단</dfn>
-						</h1>
-					</div>
-					<div class="table-responsive container-fluid">
-						<table
-							class="table table-condensed table-hover text-center text-white">
-							<tr>
-								<td>No</td>
-								<td>이름</td>
-								<td>No</td>
-								<td>이름</td>
-								<td>No</td>
-								<td>이름</td>
-								<td>No</td>
-								<td>이름</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td>2</td>
-								<td>홍길동</td>
-								<td>3</td>
-								<td>홍길동</td>
-								<td>4</td>
-								<td>홍길동</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>홍길동</td>
-								<td>6</td>
-								<td>홍길동</td>
-								<td>7</td>
-								<td>홍길동</td>
-								<td>8</td>
-								<td>홍길동</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<!-- Participate Members Table end -->
-
 				<button type="button" class="btn btn-default pull-left"
 					onclick="location.href='/tactics/lineup_list'">목록</button>
 				<span class="pull-right">

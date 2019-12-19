@@ -60,10 +60,10 @@
 								<td>조회수</td>
 								<td>첨부</td>
 							</tr>
-							<tr class="announcement">
+							<tr class="board-top">
+								<td>123</td>
 								<td>공지사항</td>
-								<td>공지사항입니다</td>
-								<td><span class="badge badge-admin">운영자</span></td>
+								<td><span class="badge badge-owner">구단주</span></td>
 								<td>17:06</td>
 								<td>3</td>
 								<td>45</td>
@@ -73,7 +73,7 @@
 							<tr>
 								<td>1</td>
 								<td>활동사진이에요</td>
-								<td>홍길동&nbsp;<span class="badge badge-owner">관리자</span></td>
+								<td>홍길동&nbsp;<span class="badge badge-owner">구단주</span></td>
 								<td>17:06</td>
 								<td>3</td>
 								<td>45</td>

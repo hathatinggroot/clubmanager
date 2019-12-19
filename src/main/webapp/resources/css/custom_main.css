@@ -84,7 +84,7 @@ body{
 }
 
 
-.badge-owner, .badge-planned, .badge-win, .badge-join, .badge-vote-over-80{
+.badge-owner, .badge-planned, .badge-win, .badge-join, .badge-vote-over-80, .badge-pop-on{
 	background-color: green;
 	color: white;
 }
@@ -95,7 +95,7 @@ body{
 	height:14px;
 	margin-top: 2px;
 }
-.badge-user, .badge-draw, .badge-recorded, .badge-vote-end{
+.badge-user, .badge-draw, .badge-recorded, .badge-vote-end, .badge-pop-off{
 	background-color: gray;
 	color: white;
 }
@@ -186,8 +186,67 @@ body{
 	background-color:yellow;
 	border-radius: 100%;
 }
-.announcement td{
-	color:rgb(255,51,51);
+.board-top td{
+/* 	color:rgb(255,51,51); */
 	font-weight: bold;
 	font-size: larger;
 }
+
+
+
+.on-off-ckbox {
+	position: absolute;
+	visibility: hidden;
+}
+
+.on-off-label {
+	display: block;
+	position: absolute;
+	width: 60px;
+	height: 34px;
+	border-radius: 17px;
+	background-color: #ddd;
+	transition-duration: 0.2s;
+}
+
+.on-off-label span {
+	position: absolute;
+	left: 3px;
+	top: 3px;
+	z-index: 1;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background-color: #fff;
+	transition-duration: 0.2s;
+}
+
+.on-off-label:before, .on-off-label:after {
+	position: absolute;
+	top: 0;
+	width: 34px;
+	font-size: 11px;
+	line-height: 34px;
+	color: #fff;
+	text-align: center;
+}
+
+.on-off-label:before {
+	left: 0;
+	content: 'ON';
+}
+
+.on-off-label:after {
+	right: 0;
+	content: 'OFF';
+}
+
+.on-off-ckbox:checked+.on-off-label {
+	background-color: #00c73c;
+}
+
+.on-off-ckbox:checked+.on-off-label span {
+	transform: translateX(26px);
+}
+
+
