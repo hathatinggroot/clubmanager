@@ -97,10 +97,11 @@ create table tbl_freeBoard(
     boardDate date default sysdate,
     boardLike number default 0,
     boardHit number default 0,
+    boardTop number default 0, -- 0:상단 미고정, 1:상단 고정
     clubCode varchar2(20));    
 alter table tbl_freeBoard add constraint pk_freeboard primary key(boardNo);
 alter table tbl_freeBoard add constraint fk_freeboard_clubCode_cascade foreign key(clubCode) references tbl_clubs(clubCode) on delete cascade;
-
+alter table tbl_freeBoard add constraint ck_freeboard_boardTop check (boardTop in (0,1));
 
 create table tbl_reply(
     replyWriter varchar2(20),

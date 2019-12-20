@@ -16,20 +16,26 @@
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
-					<form>
+					<form method="post" action="/loginpro">
+						<!-- /login ->Spring Security -->
 						<div class="form-group">
 							<label for="userId">아이디</label> <input type="text"
-								class="form-control" id="userId" name="userId">
+								class="form-control" id="userId" name="username">
+							<!-- 								class="form-control" id="userId" name="userId"> -->
 						</div>
 						<div class="form-group">
 							<label for="userPw">패스워드</label> <input type="password"
-								class="form-control" id="userPw" name="userPw">
+								class="form-control" id="userPw" name="password">
+							<!-- 								class="form-control" id="userPw" name="userPw"> -->
 						</div>
 						<div class="checkbox">
 							<label> <input type="checkbox" name="remember-me">
 								로그인 유지
 							</label>
 						</div>
+						<!-- CSRF 공격 방지 -->
+						<input type="hidden" name="${_csrf.parameterName }"
+							value="${_csrf.token }">
 					</form>
 
 					<!-- social login start -->
@@ -125,8 +131,8 @@
 					<div class="col-xs-12 col-sm-12 col-md-12">
 						<form>
 							<div class="checkbox">
-								<label> <input type="checkbox"  id="isOwner" name="auth" value="true">
-									구단주로 가입하기
+								<label> <input type="checkbox" id="isOwner" name="auth"
+									value="true"> 구단주로 가입하기
 								</label>
 							</div>
 							<div class="form-group">
@@ -178,6 +184,12 @@
 				<div class="container-fluid text-center">
 					<h2>정말 로그아웃하시겠습니까?</h2>
 				</div>
+
+				<form method="post" action="/customLogout"><!-- /login ->Spring Security -->
+					<!-- CSRF 공격 방지 -->
+					<input type="hidden" name="${_csrf.parameterName }"
+						value="${_csrf.token }">
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -234,30 +246,40 @@
 <!-- /.modal -->
 <!-- Personal Info Modify Modal end -->
 
-
 <script>
 	$("#doLogin").on("click", function(e) {
-		alert("doLogin clicked");
+		// 		alert("doLogin clicked");
+		$("form[action='/loginpro']").submit();
 	})
 	$("#doJoin").on("click", function(e) {
 		alert("doJoin clicked");
 	})
 	$("#doLogout").on("click", function(e) {
-		alert("doLogout clicked");
+// 		alert("doLogout clicked");
+		$("form[action='/customLogout']").submit();
 	})
 	$("#doPInfoMod").on("click", function(e) {
 		alert("doPInfoMod clicked");
 	})
-	
+
 	var isOwner = document.getElementById("isOwner");
 	var asOwner = document.getElementById("asOwner");
-	
-	var ownerCheck = function(){
-		if(isOwner.checked){
-			asOwner.style.display="block";
-		}else{
-			asOwner.style.display="none";
+
+	var ownerCheck = function() {
+		if (isOwner.checked) {
+			asOwner.style.display = "block";
+		} else {
+			asOwner.style.display = "none";
 		}
 	}
-	isOwner.addEventListener("click",ownerCheck);
+	isOwner.addEventListener("click", ownerCheck);
+
+	//로그인 필요시 로그인 모달 팝업
+	var loginModal = "${loginModal}";
+	window.onload = function() {
+		if (loginModal == "true") {
+			$("#login").modal();
+			loginModal = "";
+		}
+	}
 </script>

@@ -15,19 +15,21 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @ComponentScan(basePackages = {"com.clubmanager.service"})
-@EnableAspectJAutoProxy
+//@EnableAspectJAutoProxy
 
-@EnableTransactionManagement
+//@EnableTransactionManagement
 
 @MapperScan(basePackages = {"com.clubmanager.mapper"})
 public class RootConfig {
+	
+	//DBCP 생성 - HikariCP를 이용하여 DataSource 인터페이스를 통해 CP 사용 
 	@Bean
 	public HikariConfig hikariConfig() {
 		HikariConfig hikariConfig = new HikariConfig();
 		hikariConfig.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
 		hikariConfig.setJdbcUrl("jdbc:log4jdbc:oracle:thin:@localhost:1521:XE");
-		hikariConfig.setUsername("book_ex");
-		hikariConfig.setPassword("book_ex");
+		hikariConfig.setUsername("clubmanager");
+		hikariConfig.setPassword("clubmanager");
 		
 		return hikariConfig;
 	}
@@ -36,6 +38,10 @@ public class RootConfig {
 		
 		return new HikariDataSource(hikariConfig());
 	}
+	//DBCP end
+	
+	
+	//SQLSession : Connection을 생성하거나 원하는 SQL 및 결과를 리턴받는 구조
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception{
 		SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
