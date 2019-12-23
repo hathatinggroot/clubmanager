@@ -248,5 +248,12 @@ body{
 .on-off-ckbox:checked+.on-off-label span {
 	transform: translateX(26px);
 }
-
+.possible{
+	font-size: smaller;
+	color: green;
+}
+.impossible{
+	font-size: smaller;
+	color: red;
+}
 

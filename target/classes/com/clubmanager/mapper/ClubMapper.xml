@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.clubmanager.mapper.ClubMapper">
+
+	<resultMap type="com.clubmanager.domain.ClubVO" id="clubMap">
+		<id property="clubCode" column="clubCode"/>
+		<result property="clubCode" column="clubCode"/>
+		<result property="clubName" column="clubName"/>
+		<result property="clubDate" column="clubDate"/>
+		<result property="ownerId" column="ownerId"/>
+	</resultMap>
+
+<!-- 	<select id="get" resultType="memberMap"> -->
+	<select id="get" resultType="com.clubmanager.domain.ClubVO">
+		select * from tbl_clubs where clubCode = #{clubCode}
+	</select>
+	
+	<insert id="insert">
+		insert into tbl_clubs(clubName, clubCode, clubDate, ownerId)
+		values(#{clubName}, #{clubCode}, sysdate, #{ownerId})
+	</insert>
+</mapper>

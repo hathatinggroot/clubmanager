@@ -1,15 +1,15 @@
 create table tbl_members(
     userId varchar2(20),
-    userPw varchar2(50),
+    userPw varchar2(100),
     userName varchar2(20),
     joinDate date default sysdate,
-    auth varchar2(10),
+    auth varchar2(20),
     social varchar2(10),
     clubCode varchar2(20));
 alter table tbl_members add constraint pk_members primary key(userId);
 alter table tbl_members add constraint ck_members_auth check (auth in ('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGER', 'ROLE_MEMBER'));
 alter table tbl_members add constraint fk_members_clubCode_null foreign key(clubCode) references tbl_clubs(clubCode) on delete set null;
-
+alter table tbl_members modify (auth varchar2(20));
 
 create table tbl_clubs(
     clubName varchar2(20),

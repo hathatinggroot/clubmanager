@@ -9,12 +9,18 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import com.clubmanager.securiy.CustomAccessDeniedHandler;
+import com.clubmanager.securiy.CustomAuthenticationFailureHandler;
 import com.clubmanager.securiy.CustomLoginSuccessHandler;
+import com.clubmanager.securiy.CustomUserDetailsService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -29,19 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-			.antMatchers("/sample/all").permitAll()
-			.antMatchers("/sample/admin").access("hasRole('ROLE_ADMIN')")
-			.antMatchers("/sample/member").access("hasRole('ROLE_MEMBER')");
+//		http.authorizeRequests()
+//			.antMatchers("/*").permitAll();
+//			.antMatchers("/sample/admin").access("hasRole('ROLE_ADMIN')")
+//			.antMatchers("/sample/member").access("hasRole('ROLE_MEMBER')");
 		
-//		http.formLogin();
-//		http.formLogin().loginPage("/customlogin");
+		//로그인 로직
 		http.formLogin().loginPage("/customlogin").loginProcessingUrl("/loginpro")
-					    .successHandler(new CustomLoginSuccessHandler())//로그인 성공시
-					    .failureHandler(new CustomAccessDeniedHandler());//로그인 실패시
+					    .successHandler(loginSuccessHandler())//로그인 성공시
+					    .failureHandler(loginFailureHandler());//로그인 실패시
 		
-//		http.exceptionHandling().accessDeniedPage("/main");//권한 없을시 
-		http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());
+		
+//		http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());//권한 없을 시
 		
 		
 		http.logout().logoutUrl("/customLogout").invalidateHttpSession(true).logoutSuccessUrl("/intro");
@@ -67,44 +72,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return new CustomLoginSuccessHandler();
 	}
 	
+	@Bean //로그인 실패시 처리 로직
+	public AuthenticationFailureHandler loginFailureHandler() {
+		log.info("loginFailureHandler...............");
+		return new CustomAuthenticationFailureHandler();
+	}
+	
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// TODO Auto-generated method stub
 		
-		log.info("configure...............");
+		log.info("configure JDBC...............");
 		
-//		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
-		auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ADMIN");
-//		auth.inMemoryAuthentication().withUser("admin").password("{noop}admin").roles("ADMIN","MEMBER");
-//		auth.inMemoryAuthentication().withUser("member").password("$2a$10$libJf9T4.J7PzvQBBm5ioOr/rpYSG/sxkLlXRoC6vkabCHLpiF7cm").roles("MEMBER");
-		
+		auth.userDetailsService(customUserService())
+		.passwordEncoder(passwordEncoder());
 	}
 	
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		// TODO Auto-generated method stub
-//		
-//		log.info("configure JDBC...............");
-//		
-//		String queryUser = "SELECT userid, userpw, enabled FROM tbl_member WHERE userid =?";
-//		String queryDetails = "SELECT userid, auth FROM tbl_member_auth WHERE userid = ?";
-//		
-////		auth.jdbcAuthentication()
-////		.dataSource(dataSource)
-//		auth.userDetailsService(customUserService())
-//		.passwordEncoder(passwordEncoder());
-////		.usersByUsernameQuery(queryUser)
-////		.authoritiesByUsernameQuery(queryDetails);
-//	}
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 	
-//	@Bean
-//	public PasswordEncoder passwordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
-	
-//	@Bean
-//	public UserDetailsService customUserService() {
-//		return new CustomUserDetailsService();
-//	}
+	@Bean
+	public UserDetailsService customUserService() {
+		return new CustomUserDetailsService();
+	}
 }
