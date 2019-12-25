@@ -1,5 +1,7 @@
 package com.clubmanager.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -78,6 +80,29 @@ public class CommonController {
 			return "fail";
 		}
 	}
+	
+	
+	@PostMapping(value = "/modifyPInfo", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
+	@ResponseBody
+	public String modifyPInfo(@RequestBody Map<String, Object> params) {
+		MemberVO memberVo = new MemberVO();
+		ClubVO clubVo = new ClubVO();
+		memberVo.setUserId(params.get("userId").toString());
+		memberVo.setUserName(params.get("userName").toString());
+		clubVo.setClubCode(params.get("clubCode").toString());
+		clubVo.setClubName(params.get("clubName").toString());
+		log.info("MODIFY memberVo : " + memberVo);
+		log.info("MODIFY clubVo : " + clubVo);
+		int result = commonService.modify(memberVo, clubVo);
+		
+		log.info(result==1);
+		if (result == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
 	
 	
 	

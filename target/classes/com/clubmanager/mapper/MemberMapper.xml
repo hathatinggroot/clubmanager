@@ -24,4 +24,10 @@
 		insert into tbl_members(userId, userPw, userName, joinDate, auth, clubCode)
 		values(#{userId}, #{userPw}, #{userName}, sysdate, #{auth}, #{clubCode})
 	</insert>
+	
+	<update id="modify">
+		update tbl_members set userName = #{userName} 
+		where userId = #{userId}
+	</update> 
+	
 </mapper>

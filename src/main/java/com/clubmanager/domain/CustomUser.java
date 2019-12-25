@@ -18,6 +18,7 @@ public class CustomUser extends User {
 	
 	private MemberVO member;
 	
+	private String clubCode;
 	
 	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
@@ -27,6 +28,7 @@ public class CustomUser extends User {
 		super(vo.getUserId(), vo.getUserPw(), chType(vo.getAuth()));
 		log.info("CustomUser : " + vo);
 		this.member = vo;
+		this.clubCode = vo.getClubCode();
 	}
 	
 	static Collection<SimpleGrantedAuthority> chType(String auth){
@@ -35,7 +37,9 @@ public class CustomUser extends User {
 		return authList;
 	}
 
-	
-
+//	public String getClubCode() {
+//		
+//		return this.member.getClubCode();
+//	}
 	
 }

@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,7 +18,6 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import com.clubmanager.securiy.CustomAuthenticationFailureHandler;
-import com.clubmanager.securiy.CustomAuthenticationProvider;
 import com.clubmanager.securiy.CustomLoginSuccessHandler;
 import com.clubmanager.securiy.CustomUserDetailsService;
 
@@ -88,17 +86,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		System.out.println("configure JDBC...............");
 		log.info("configure JDBC...............");
 		
-//		auth.
-		
 		auth
-//		.authenticationProvider(customAuthenticationProvider())
 		.userDetailsService(customUserService())
 		.passwordEncoder(passwordEncoder())
 		;
-	}
-	@Bean
-	public AuthenticationProvider customAuthenticationProvider() {
-		return new CustomAuthenticationProvider();
 	}
 	@Bean
 	public PasswordEncoder passwordEncoder() {

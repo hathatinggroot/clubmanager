@@ -56,4 +56,13 @@ public class CommonServiceImpl implements CommonService {
 		return result;
 	}
 	
+	@Override
+	public int modify(MemberVO memberVo, ClubVO clubVo) {
+
+		int result1 = memberMapper.modify(memberVo);
+		int result2 = clubMapper.modify(clubVo);
+		log.warn("result : " + result1*result2);
+		return result1*result2;
+	}
+	
 }

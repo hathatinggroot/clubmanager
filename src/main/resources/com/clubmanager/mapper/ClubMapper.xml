@@ -21,4 +21,9 @@
 		insert into tbl_clubs(clubName, clubCode, clubDate, ownerId)
 		values(#{clubName}, #{clubCode}, sysdate, #{ownerId})
 	</insert>
+	
+	<update id="modify">
+		update tbl_clubs set clubName = #{clubName} 
+		where clubCode = #{clubCode}
+	</update> 
 </mapper>

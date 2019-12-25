@@ -8,14 +8,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.clubmanager.domain.CustomUser;
+import com.clubmanager.mapper.ClubMapper;
+
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
+	@Setter(onMethod_= {@Autowired})
+	private ClubMapper clubMapper;
+	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
@@ -25,9 +33,10 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		// 로그인한 사용자 권한 확인
 		List<String> authNames = new ArrayList<>();
 		authentication.getAuthorities().forEach(auth -> authNames.add(auth.getAuthority()));
-
 		log.warn("Logined User's Auth : " + authNames);
-
+		
+		
+		
 		// 관리자 : 공지사항 관리 페이지로 이동
 		if (authNames.contains("ROLE_ADMIN")) {
 			response.sendRedirect("/admin/announcements_list");
@@ -37,9 +46,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		// 구단주,매니져,멤버 : 구단 경기 일정 페이지로 이동
 		if (authNames.contains("ROLE_MEMBER") || authNames.contains("ROLE_OWNER") || authNames.contains("ROLE_MANAGER")) {
 
-			// 소속 구단 정보 전달 필요
-//			request.setAttribute("clubCode", "123123");
-
+			
 			response.sendRedirect("/schedule/list");
 			return;
 		}

@@ -6,4 +6,6 @@ public interface ClubMapper {
 	public ClubVO get(String clubCode);
 	
 	public int insert(ClubVO clubVO);
+	
+	public int modify(ClubVO clubVo);
 }

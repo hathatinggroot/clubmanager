@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+
+<sec:authentication property="principal" var="principal" />
 
 <!-- Login Modal start -->
 <div class="modal fade" role="dialog"
@@ -203,6 +206,8 @@
 <!-- /.modal -->
 <!-- Logout Modal end -->
 
+
+
 <!-- Personal Info Modify Modal start -->
 <div class="modal fade" role="dialog"
 	aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="pInfoMod">
@@ -222,7 +227,7 @@
 							<div class="form-group">
 								<label for="modUserName">이름</label><small>*모든 기록은 해당
 									이름으로 유지됩니다</small><input type="text" class="form-control"
-									id="modUserName" name="userName" placeholder="홍길동">
+									id="modUserName" name="userName">
 							</div>
 							<div class="form-group">
 								<label for="modClubName">구단명</label><input type="text"
@@ -247,22 +252,20 @@
 <!-- Personal Info Modify Modal end -->
 
 
+
 <script>
 	var token = '${_csrf.token }';
 	var header = '${_csrf.headerName }';
-	
-	function include(file){
+
+	function include(file) {
 		var includeJS = document.createElement("script");
 		includeJS.type = "text/javascript";
 		includeJS.src = file;
 		document.body.appendChild(includeJS);
 	}
-	
-	
+
 	include("/resources/js/join.js"); //JOIN MODULE
-	
-	
-	
+
 	$("#doLogin").on("click", function(e) {
 		// 		alert("doLogin clicked");
 		$("form[action='/loginprocess']").submit();
@@ -272,11 +275,6 @@
 		// 		alert("doLogout clicked");
 		$("form[action='/customLogout']").submit();
 	})
-	$("#doPInfoMod").on("click", function(e) {
-		alert("doPInfoMod clicked");
-	})
-
-	
 
 	//로그인 필요시 로그인 모달 팝업
 	var loginModal = "${loginModal}";
@@ -287,3 +285,66 @@
 		}
 	}
 </script>
+
+<sec:authorize access="isAuthenticated()">
+	<script>
+		//MODIFY PINFO MODULE
+		$.ajax({
+			method : "post",
+			url : "/club_exist_check",
+			contentType : "application/json",
+			data : JSON.stringify({
+				clubCode : "${principal.member.clubCode }"
+			}),
+			dataType : "json",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result) {
+				$("#modUserName").val("${principal.member.userName }");
+				console.log(result);
+				console.log(result.ownerId);
+				if (result.clubName != "") {
+					if ("${principal.member.userId }" == result.ownerId) {
+						$("#modClubName").attr("readonly", false);
+					}
+					$("#modClubName").val(result.clubName);
+				} else {
+					$("#modClubName").val("소속된 구단이 없습니다");
+				}
+			}
+		});
+
+		$("#doPInfoMod").on("click", function(e) {
+			// 	alert("doPInfoMod clicked");
+			var modUserId = "${principal.member.userId }";
+			var modName = $("#modUserName").val();
+			var modClubName = $("#modClubName").val();
+
+			$.ajax({
+				method : "post",
+				url : "/modifyPInfo",
+				contentType : "application/json",
+				data : JSON.stringify({
+					userId : "${principal.member.userId }",
+					userName : modName,
+					clubCode : "${principal.member.clubCode }",
+					clubName : modClubName
+				}),
+				dataType : "text",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(result) {
+					console.log("result : " + result);
+					if (result == "success") {
+						alert("회원 정보가 수정되었습니다");
+						$("#pInfoMod").hide();
+					}
+				}
+			});
+
+		})
+	</script>
+
+</sec:authorize>
