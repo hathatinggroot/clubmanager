@@ -54,8 +54,8 @@ public class CommonController {
 	
 	
 	@PostMapping(value = "/join", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
-//	@ResponseBody
-	public String join(MemberVO memberVo) {
+	@ResponseBody
+	public String join(@RequestBody MemberVO memberVo) {
 		log.info("JOIN vo : " + memberVo);
 		int result = commonService.join(memberVo);
 		if (result == 1) {
@@ -66,8 +66,8 @@ public class CommonController {
 	}
 	
 	@PostMapping(value = "/reg_club", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
-//	@ResponseBody
-	public String regClub(ClubVO clubVo) {
+	@ResponseBody
+	public String regClub(@RequestBody ClubVO clubVo) {
 
 		log.info("REG CLUB vo : " + clubVo);
 		int result = commonService.regClub(clubVo);
@@ -122,7 +122,12 @@ public class CommonController {
 	public void goToIntro() {
 		log.info("intro.jsp");
 	}
-
+	@GetMapping("/")
+	public String goToInitPage() {
+		log.info("intro.jsp");
+		return "intro";
+	}
+	
 	@GetMapping("/club_members")
 	public void goToClubMembers() {
 		log.info("club_members.jsp");

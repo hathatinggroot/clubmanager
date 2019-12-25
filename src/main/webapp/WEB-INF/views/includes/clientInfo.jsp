@@ -293,11 +293,14 @@
 					});
 				});
 	
+	//PW CHECK
+	var pwReChk = false;
 	//pw RegEx check
 	var pwRegChk = false;
 	var pwRegEx =  /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,15}$/; // 6~20 영문 대소문자, 최소 1개의 숫자 혹은 특수문자를 포함
 	$("#joinUserPw").on("keyup",function(e) {
 		var inputPw = $(this).val();
+		pwReChk = false;
 		if(pwRegEx.test(inputPw)){
 			$("#pwChk").attr("class", "possible");
 			$("#pwChk").html(" 사용가능한 비밀번호 입니다");
@@ -310,7 +313,7 @@
 	});
 	
 	//pw ReCheck
-	var pwReChk = false;
+	
 	$("#joinUserPwCheck").on("keyup",function(e) {
 		var inputRePw = $(this).val();
 		if(inputRePw == $("#joinUserPw").val()){
@@ -384,7 +387,8 @@
 	
 	$("#doJoin").on("click", function(e) {
 		// 		alert("doJoin clicked");
-		var formDataMember = new FormData();
+		var joinMemberInfo = new Object();
+		
 		
 		if(!idDuplChk){
 			alert("아이디 중복확인 바랍니다");	
@@ -398,41 +402,89 @@
 		}else if(!pwReChk){
 			alert("비밀번호가 일치하지 않습니다");
 			return;
+		}else if($("#joinUserName").val() == ""){
+			alert("이름을 입력해주세요");
+			return;
 		}
 		
-		formDataMember.append('userId', $('#joinUserId').val());
-		formDataMember.append('userPw', $('#joinUserPw').val());
-		formDataMember.append('userName', $('#joinUserName').val());
+		
+		joinMemberInfo.userId = $('#joinUserId').val();
+		joinMemberInfo.userPw = $('#joinUserPw').val();
+		joinMemberInfo.userName = $('#joinUserName').val();
 		
 		if(isOwnerMember){
-			var formDataClub = new FormData();
-			formDataClub.append('clubName', $('#joinClubName').val());
-			formDataClub.append('clubCode', $('#joinClubCode').val());
-			formDataClub.append('ownerId', $('#joinUserId').val());
+			var joinClubInfo = new Object();
 			
-			console.log("formDataClub : ", formDataClub);
-			var requestClub = new XMLHttpRequest();
-			requestClub.open("POST", "/reg_club");
-			requestClub.setRequestHeader(header, token);
-			requestClub.send(formDataClub);
 			
-			formDataMember.append('auth', "ROLE_OWNER");
+			joinClubInfo.clubName = $('#joinClubName').val();
+			joinClubInfo.clubCode = $('#joinClubCode').val();
+			joinClubInfo.ownerId = $('#joinUserId').val();
+			
+			
+			
+			console.log("joinClubInfo : ", joinClubInfo);
+			
+			$.ajax({
+						method : "post",
+						url : "/reg_club",
+						contentType : "application/json",
+						data : JSON.stringify(joinClubInfo),
+						dataType : "text",
+						beforeSend : function(xhr) {
+							xhr.setRequestHeader(header, token);
+						},
+						success : function(result) {
+							if (result == "success") {
+								alert("구단이 등록되었습니다");
+							} else {
+								alert("구단이 등록에 실패했습니다");
+							}
+						}
+					});
+			
+			
+			
+			
+			
+			
+			
+			joinMemberInfo.auth = "ROLE_OWNER";
+			joinMemberInfo.clubCode = $('#joinClubCode').val();
+			
 		}else{
 			if(!clubCodeChk){
 				alert("구단코드가 올바르지 않습니다");
 				return;
 			}
-			formDataMember.append('clubCode', $('#joinClubCode').val());
-			formDataMember.append('auth', "ROLE_MEMBER");
+			
+			joinMemberInfo.clubCode = $('#joinClubCode').val();
+			
+			joinMemberInfo.auth = "ROLE_MEMBER";
+			
 		}
-		console.log("formDataMember : ", formDataMember);		
-		var requestMember = new XMLHttpRequest();
-		requestMember.open("POST", "/join");
-		requestMember.setRequestHeader(header, token);
-		requestMember.send(formDataMember);
-		
+		console.log("joinMemberInfo : ", joinMemberInfo);
+		$.ajax({
+			method : "post",
+			url : "/join",
+			contentType : "application/json",
+			data : JSON.stringify(joinMemberInfo),
+			dataType : "text",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result) {
+				if (result == "success") {
+					alert("가입이 완료되었습니다");
+				} else {
+					alert("가입에 실패했습니다");
+				}
+			}
+		});
 	});
 
+	
+	
+	
 	$("#doLogout").on("click", function(e) {
 		// 		alert("doLogout clicked");
 		$("form[action='/customLogout']").submit();

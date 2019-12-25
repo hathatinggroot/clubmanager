@@ -8,8 +8,9 @@ create table tbl_members(
     clubCode varchar2(20));
 alter table tbl_members add constraint pk_members primary key(userId);
 alter table tbl_members add constraint ck_members_auth check (auth in ('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGER', 'ROLE_MEMBER'));
-alter table tbl_members add constraint fk_members_clubCode_null foreign key(clubCode) references tbl_clubs(clubCode) on delete set null;
+--alter table tbl_members add constraint fk_members_clubCode_null foreign key(clubCode) references tbl_clubs(clubCode) on delete set null;
 alter table tbl_members modify (auth varchar2(20));
+--alter table tbl_members drop constraint fk_members_clubCode_null;
 
 create table tbl_clubs(
     clubName varchar2(20),
@@ -17,8 +18,8 @@ create table tbl_clubs(
     clubDate date default sysdate,
     ownerId varchar2(20));
 alter table tbl_clubs add constraint pk_clubs primary key(clubCode);
-alter table tbl_clubs add constraint fk_clubs_ownerId_null foreign key(ownerId) references tbl_members(userId) on delete set null;
-
+--alter table tbl_clubs add constraint fk_clubs_ownerId_null foreign key(ownerId) references tbl_members(userId) on delete set null;
+--alter table tbl_clubs drop constraint fk_clubs_ownerId_null;
 
 create table tbl_announcements (
     annNo number,
