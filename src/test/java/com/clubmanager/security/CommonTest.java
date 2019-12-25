@@ -29,7 +29,7 @@ public class CommonTest {
 	@Setter(onMethod_ = { @Autowired })
 	private DataSource dataSource;
 
-	@Test
+//	@Test
 	public void testInsertMember() {
 		String sql = "insert into tbl_members(userId, userPw, userName, auth) values(?,?,?,?)";
 		for (int i = 0; i < 100; i++) {
@@ -77,4 +77,9 @@ public class CommonTest {
 		}
 	}
 
+	
+	@Test
+	public void loginTest() {
+		
+	}
 }

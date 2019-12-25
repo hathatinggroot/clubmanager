@@ -35,7 +35,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		}
 
 		// 구단주,매니져,멤버 : 구단 경기 일정 페이지로 이동
-		if (authNames.contains("ROLE_MEMBER")) {
+		if (authNames.contains("ROLE_MEMBER") || authNames.contains("ROLE_OWNER") || authNames.contains("ROLE_MANAGER")) {
 
 			// 소속 구단 정보 전달 필요
 //			request.setAttribute("clubCode", "123123");

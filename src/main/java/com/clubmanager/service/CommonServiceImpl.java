@@ -1,6 +1,7 @@
 package com.clubmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.clubmanager.domain.ClubVO;
@@ -21,6 +22,9 @@ public class CommonServiceImpl implements CommonService {
 	@Setter(onMethod_= {@Autowired})
 	private ClubMapper clubMapper;
 	
+	@Setter(onMethod_ = { @Autowired })
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public MemberVO getMember(String userId) {
 		log.info("getMember........"+userId);
@@ -39,7 +43,7 @@ public class CommonServiceImpl implements CommonService {
 	
 	@Override
 	public int join(MemberVO memberVO) {
-		
+		memberVO.setUserPw(passwordEncoder.encode(memberVO.getUserPw()));
 		int result = memberMapper.insert(memberVO);
 		
 		return result;
