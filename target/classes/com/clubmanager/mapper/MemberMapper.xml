@@ -30,4 +30,18 @@
 		where userId = #{userId}
 	</update> 
 	
+	<select id="getClubMembers" resultType="com.clubmanager.domain.MemberVO">
+		select * from tbl_members where clubCode = #{clubCode}
+	</select>
+	
+	<update id="modifyAuth">
+		update tbl_members set auth = #{auth} 
+		where userId = #{userId}
+	</update> 
+	
+	<update id="dismiss">
+		update tbl_members set clubCode = null 
+		where userId = #{userId}
+	</update>
+	
 </mapper>

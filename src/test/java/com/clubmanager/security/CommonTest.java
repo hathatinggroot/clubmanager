@@ -28,6 +28,8 @@ public class CommonTest {
 
 	@Setter(onMethod_ = { @Autowired })
 	private DataSource dataSource;
+	
+	
 
 //	@Test
 	public void testInsertMember() {
@@ -78,7 +80,63 @@ public class CommonTest {
 	}
 
 	
-	@Test
+//	@Test
+	public void initTestData() {
+		// 1. 备窜 A, B, C 积己   2. 阿 备窜狼 备窜林 ID ownerA, ownerB, ownerC 3. 备窜喊 memberA1~25, managerA26~30
+		String sql1 = "insert into tbl_clubs(clubName, clubCode, ownerId) values(?,?,?)";
+		String sql2 = "insert into tbl_members(userId, userPw, userName, auth, clubCode) values(?,?,?,?,?)";
+//		for (int i = 1; i <= 31; i++) {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+
+			try {
+				conn = dataSource.getConnection();
+				pstmt = conn.prepareStatement(sql1);
+
+//				pstmt.setString(2, passwordEncoder.encode("pw" + i));
+				
+//				if (i <= 25) {
+//					pstmt.setString(1, "memberC" + i);
+//					pstmt.setString(3, "memNameC" + i);
+//					pstmt.setString(4, "ROLE_MEMBER");
+//				} else if (i <= 30) {
+//					pstmt.setString(1, "managerC" + i);
+//					pstmt.setString(3, "manNameC" + i);
+//					pstmt.setString(4, "ROLE_MEMBER");
+//				} else {
+//					pstmt.setString(1, "ownerC");
+//					pstmt.setString(3, "ownNameC");
+//					pstmt.setString(4, "ROLE_OWNER");
+//					
+//				}
+				pstmt.setString(1, "clubA");
+				pstmt.setString(2, "A");
+				pstmt.setString(3, "ownerA");
+				
+				pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					if (pstmt != null)
+						pstmt.close();
+					if (conn != null)
+						conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+//		}
+	}
+	
+	
+	
+//	@Test
 	public void loginTest() {
 		
 	}

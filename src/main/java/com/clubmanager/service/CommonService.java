@@ -14,4 +14,6 @@ public interface CommonService {
 	public int regClub(ClubVO clubVO);
 	
 	public int modify(MemberVO memberVO, ClubVO clubVO);
+	
+	public int chOwner(ClubVO clubVO);
 }

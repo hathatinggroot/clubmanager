@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
+	
+<sec:authentication property="principal" var="principal"/>
+
 
 <!-- top-bar start -->
 <nav class="navbar navbar-default" id="top">
@@ -65,7 +68,7 @@
 							<li><a href="/poll/participate_list">참석 여부</a></li>
 							<li><a href="/poll/mom">MoM</a></li>
 						</ul></li>
-					<li><a href="/club_members">선수단</a></li>
+					<li><a href="/club_members?clubCode=${principal.member.clubCode }">선수단</a></li>
 				</sec:authorize>
 
 

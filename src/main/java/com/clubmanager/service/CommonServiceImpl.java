@@ -65,4 +65,14 @@ public class CommonServiceImpl implements CommonService {
 		return result1*result2;
 	}
 	
+	@Override
+	public int chOwner(ClubVO clubVO) {
+		ClubVO cvo = getClub(clubVO.getClubCode());
+		MemberVO mvo = getMember(cvo.getOwnerId());
+		mvo.setAuth("ROLE_MANAGER");
+		memberMapper.modifyAuth(mvo);
+		
+		clubMapper.chOwner(clubVO);
+		return 0;
+	}
 }

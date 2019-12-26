@@ -8,4 +8,6 @@ public interface ClubMapper {
 	public int insert(ClubVO clubVO);
 	
 	public int modify(ClubVO clubVo);
+	
+	public int chOwner(ClubVO clubVO);
 }

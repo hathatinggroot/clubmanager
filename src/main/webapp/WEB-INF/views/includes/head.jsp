@@ -16,4 +16,7 @@
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+	
+<sec:authentication property="principal" var="principal"/>

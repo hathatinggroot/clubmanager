@@ -26,4 +26,10 @@
 		update tbl_clubs set clubName = #{clubName} 
 		where clubCode = #{clubCode}
 	</update> 
+	
+	<update id="chOwner">
+		update tbl_clubs set ownerId = #{ownerId} 
+		where clubCode = #{clubCode}
+	</update> 
+	
 </mapper>
