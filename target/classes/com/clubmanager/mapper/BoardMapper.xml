@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.clubmanager.mapper.BoardMapper">
+
+
+	<select id="getBoardList" resultType="com.clubmanager.domain.BoardVO">
+	<![CDATA[
+		select boardNo, boardTitle, boardWriter, boardDate, replyCnt, boardLike, boardHit, boardTop  
+		from 
+			(
+			select /*+ INDEX_DESC(tbl_freeboard pk_freeboard) */
+			rownum rn, boardNo, boardTitle, boardWriter, boardDate, replyCnt, boardLike, boardHit, boardTop
+			from tbl_freeboard
+			where clubCode = #{clubCode}
+			and
+			(	
+				boardTitle like '%'||#{keyword}||'%'
+				or	boardWriter like '%'||#{keyword}||'%'
+				or  boardContent like '%'||#{keyword}||'%'
+			)
+			and
+			rownum <= #{pageNum} * #{amount}
+			) 
+		where rn > (#{pageNum}-1) * #{amount}
+		
+		]]>
+	</select>
+	
+	<insert id="insert">
+		insert into tbl_freeboard(boardNo, boardTitle, boardContent, boardWriter, clubCode, boardTop) 
+		values(seq_freeBoard.nextval,#{boardTitle},#{boardContent},#{boardWriter},#{clubCode},#{boardTop})
+	</insert>
+	
+	<select id="getTotalNum"  resultType="int">
+		select count(*) 
+		from tbl_freeboard
+		where clubCode = #{clubCode}
+			and
+			(	
+				boardTitle like '%'||#{keyword}||'%'
+				or	boardWriter like '%'||#{keyword}||'%'
+				or  boardContent like '%'||#{keyword}||'%'
+			)
+	</select>
+	
+	<select id="getBoard" resultType="com.clubmanager.domain.BoardVO">
+		select * from tbl_freeboard
+		where boardNo = #{boardNo }
+	</select>
+	
+	<update id="hit">
+		update tbl_freeboard 
+		set boardHit = boardHit + 1
+		where boardNo = #{boardNo}
+	</update>
+	
+	<update id="modify">
+		update tbl_freeboard 
+		set boardTitle = #{boardTitle}
+		, boardTop = #{boardTop}
+		, boardContent = #{boardContent}
+		, boardDate = sysdate
+		where boardNo = #{boardNo}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_freeboard
+		where boardNo = #{boardNo}
+	</delete>
+</mapper>

@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,23 +41,23 @@
 						<!-- Default panel contents -->
 						<div class="panel-heading input-lg">
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								홍길동 <small>2019-12-15</small>
+								${boardVO.boardWriter } <small>${boardVO.boardDate }</small>
 							</div>
 							<div class="col-xs-2 col-sm-2 col-md-2">
-								<span class="glyphicon glyphicon-comment">3</span>
+								<span class="glyphicon glyphicon-comment">${boardVO.replyCnt }</span>
 							</div>
 							<div class="col-xs-2 col-sm-2 col-md-2">
-								<span class="glyphicon glyphicon-thumbs-up">3</span>
+								<span class="glyphicon glyphicon-thumbs-up">${boardVO.boardLike }</span>
 							</div>
 							<div class="col-xs-2 col-sm-2 col-md-2">
-								<span class="glyphicon glyphicon-eye-open">33</span>
+								<span class="glyphicon glyphicon-eye-open">${boardVO.boardHit }</span>
 							</div>
 						</div>
 						<div class="panel-body">
 							<div class="col-xs-12 col-sm-12 col-md-12 large-font">
-								활동사진입니다</div>
+								${boardVO.boardTitle }</div>
 							<div>
-								<p>글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다글내용입니다</p>
+								<p>${boardVO.boardContent }</p>
 							</div>
 							<div class="scroll-box-attach">
 								<ul class="list-inline">
@@ -77,11 +81,21 @@
 
 
 							<div>
-								<button type="button" class="btn btn-default pull-left">목록</button>
-								<span class="pull-right">
-									<button type="button" class="btn btn-default pull-left">수정</button>
-									<button type="button" class="btn btn-default">삭제</button>
-								</span>
+								<button type="button" class="btn btn-default pull-left"
+									onclick="history.back()">목록</button>
+
+								<c:if test="${principal.member.userId == boardVO.boardWriter }">
+									<span class="pull-right">
+										<button type="button" class="btn btn-default pull-left" onclick="location.href='/freeboard/modify?boardNo=${boardVO.boardNo }'">수정</button>
+										<button type="button" class="btn btn-default" onclick="$('#deleteFrm').submit()">삭제</button>
+									</span>
+									<form id="deleteFrm" action="/freeboard/delete" method="post">
+											<input type="hidden" name="boardNo" value="${boardVO.boardNo }">
+											<input type="hidden" name="clubCode" value="${boardVO.clubCode }">
+											<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+										</form>
+								</c:if>
+													
 							</div>
 							<hr>
 							<div class="comment-box ">
@@ -104,12 +118,13 @@
 								</colgroup>
 								<tr>
 									<td>홍길동</td>
-									<td><p>좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
-										감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은
-										자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
-										감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은
-										자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
-										감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다</p></td>
+									<td><p>좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은
+											자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
+											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
+											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
+											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
+											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
+											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다</p></td>
 									<td>2019-12-15 17:45</td>
 									<td><button type="button" class="btn btn-default">수정</button>
 										<button type="button" class="btn btn-default">삭제</button></td>
@@ -188,7 +203,12 @@
 	</div>
 	<!-- container-fluid end -->
 
-
+<script>
+	$("#boardModBtn").on("click", function(e){
+		
+	})
+	
+</script>
 
 
 	<!-- INCLUDE footer.jsp -->

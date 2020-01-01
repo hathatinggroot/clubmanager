@@ -31,7 +31,7 @@
 							<!-- 								class="form-control" id="userPw" name="userPw"> -->
 						</div>
 						<div class="checkbox">
-							<label> <input type="checkbox" name="remember-me">
+							<label> <input type="checkbox" id="remember-me" name="rememberMe">
 								로그인 유지
 							</label>
 						</div>
@@ -284,6 +284,8 @@
 			loginModal = "";
 		}
 	}
+	
+	
 </script>
 
 <sec:authorize access="isAuthenticated()">

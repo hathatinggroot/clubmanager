@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>ACCESS DENIED</h1>
+	<script>
+		alert("접근 권한이 없습니다 홈으로 이동합니다");
+		location.href="/intro";
+	</script>
 </body>
 </html>

@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,92 +37,25 @@
 					<!-- Search condition start -->
 					<div class="col-sm-12 col-md-12 enter-row-1">
 						<form class="form-inline pull-right">
-							<div class="form-group text-white">
-								<label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox1" value="#" name="condition"> 작성자
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox2" value="#" name="condition"> 제목
-								</label>
-							</div>
 							<div class="form-group">
-								<input type="text" class="form-control" id="keyword"
-									placeholder="검색어를 입력하세요">
+								<input type="text" class="form-control input-lg" id="keyword"
+									name="keyword" placeholder="검색어를 입력하세요" value="${paginator.cri.keyword }" autofocus="autofocus" >
 							</div>
 						</form>
 					</div>
+					
 					<!-- Search condition start -->
-					<div class="table-responsive container-fluid">
-						<table
-							class="table table-condensed table-hover text-center text-white">
-							<tr>
-								<td>No</td>
-								<td>제목</td>
-								<td>작성자</td>
-								<td>작성일</td>
-								<td>댓글</td>
-								<td>좋아요</td>
-								<td>조회수</td>
-								<td>첨부</td>
-							</tr>
-							<tr class="board-top">
-								<td>123</td>
-								<td>공지사항</td>
-								<td><span class="badge badge-owner">구단주</span></td>
-								<td>17:06</td>
-								<td>3</td>
-								<td>45</td>
-								<td>75</td>
-								<td><span class="glyphicon glyphicon-folder-open"></span></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>활동사진이에요</td>
-								<td>홍길동&nbsp;<span class="badge badge-owner">구단주</span></td>
-								<td>17:06</td>
-								<td>3</td>
-								<td>45</td>
-								<td>75</td>
-								<td><span class="glyphicon glyphicon-folder-open"></span></td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>활동사진이에요</td>
-								<td>홍길동&nbsp;<span class="badge badge-manager">매니저</span></td>
-								<td>17:06</td>
-								<td>3</td>
-								<td>45</td>
-								<td>75</td>
-								<td><span class="glyphicon glyphicon-folder-open"></span></td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>배고파요</td>
-								<td>홍길동&nbsp;<span class="badge badge-user">일반</span></td>
-								<td>2019-12-11</td>
-								<td>3</td>
-								<td>45</td>
-								<td>75</td>
-								<td></td>
-							</tr>
-						</table>
-						<button type="button" class="btn btn-default pull-right">글쓰기</button>
+					<div class="table-responsive container-fluid" id="boardList">
 					</div>
+					<button type="button" class="btn btn-default pull-right" onclick="location.href='/freeboard/write';">글쓰기</button>
 				</div>
 				<!-- Free Board List Table end -->
 
 				<!-- Pagination start -->
 				<div class="text-center">
 					<nav>
-						<ul class="pagination">
-							<li class="disabled"><a href="#" aria-label="Previous"><span
-									aria-hidden="true">&laquo;</span></a></li>
-							<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">2 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">3 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">4 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">5 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#" aria-label="Previous"><span
-									aria-hidden="true">&raquo;</span></a></li>
+						<ul class="pagination" id="paginator">
+
 						</ul>
 					</nav>
 				</div>
@@ -130,7 +67,162 @@
 	</div>
 	<!-- container-fluid end -->
 
+<script>
+var token = '${_csrf.token }';
+var header = '${_csrf.headerName }';
+var cri = new Object();
+var showList = function(cri){
+	$.ajax({
+		method : "post",
+		url : "/freeboard/listByAjax",
+		contentType : "application/json",
+		data : JSON.stringify(cri),
+		dataType : "json",
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success : function(result) {
+			if (result != null) {
+				console.log(result);
+				var str = "";
+				
+				var str1 = "<table class='table table-condensed table-hover text-center text-white'>"
+							+"<tr>"
+							+"<td>No</td>"
+							+"<td>제목</td>"
+							+"<td>작성자</td>"
+							+"<td>작성일</td>"
+							+"<td>댓글</td>"
+							+"<td>좋아요</td>"
+							+"<td>조회수</td>"
+							+"</tr>";
+				var str2 = '';
+				var str3 = '';
+				for(var board of result){
+					if(board.boardTop == 1){
+						str2 +="<tr class='board-top'>"
+							  +  "<td>"+board.boardNo+"</td>"
+							  +  "<td><a href='/freeboard/view?boardNo="+board.boardNo+"'>"
+							  +board.boardTitle+
+							  "</a></td>"
+							  +  "<td>"+board.boardWriter+"</td>"
+							  +  "<td>"+board.boardDate+"</td>"
+							  +  "<td>"+board.boardNo+"</td>"
+							  +  "<td>"+board.boardLike+"</td>"
+							  +  "<td>"+board.boardHit+"</td>"
+							  +"</tr>";
+					}
+					
+					str3 += "<tr>"
+						  +  "<td>"+board.boardNo+"</td>"
+						  +  "<td><a href='/freeboard/view?boardNo="+board.boardNo+"'>"
+						  +board.boardTitle+
+						  "</a></td>"
+						  +  "<td>"+board.boardWriter+"</td>"
+						  +  "<td>"+board.boardDate+"</td>"
+						  +  "<td>"+board.boardNo+"</td>"
+						  +  "<td>"+board.boardLike+"</td>"
+						  +  "<td>"+board.boardHit+"</td>"
+						  +"</tr>";
+				}
+				str = str1+str2+str3+"</table>";
+				
+				$("#boardList").html(str);
+			} else {
+				alert("error");
+			}
+		}
+	});
+};
 
+
+var getPaginator = function(cri){
+	$.ajax({
+		method : "post",
+		url : "/freeboard/getPaginator",
+		contentType : "application/json",
+		data : JSON.stringify(cri),
+		dataType : "json",
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success : function(result) {
+			if (result != null) {
+				console.log(result);
+				var str = "";
+				if(result.prev){
+					str += "<li>";
+				}else{
+					str += "<li class='disabled'>";
+				}
+				
+				str += "<a href='/freeboard/list?clubCode=${principal.member.clubCode }&pageNum="+(result.startPage-1)
+						+"&keyword="+result.cri.keyword+"' aria-label='Previous'>"
+						+"<span	aria-hidden='true'>&laquo;</span></a></li>";
+				
+				for(var i = result.startPage; i<=result.endPage; i++ ){
+					if(i == cri.pageNum){
+						str += "<li class='active'>";
+					}else{
+						str += "<li>";
+					}
+					str += "<a href='/freeboard/list?clubCode=${principal.member.clubCode }"
+							+"&pageNum="+i
+							+"&keyword="+result.cri.keyword+"'>"
+							+i+"</a></li>";
+				}
+				if(result.next){
+					str += "<li>";
+				}else{
+					str += "<li class='disabled'>";
+				}
+			
+				str += "<a href='/freeboard/list?clubCode=${principal.member.clubCode }&pageNum="+(result.endPage+1)
+				+"&keyword="+result.cri.keyword+"' aria-label='Previous'>"
+				+"<span	aria-hidden='true'>&raquo;</span></a></li>";
+				
+				
+				$("#paginator").html(str);
+			} else {
+				alert("error");
+			}
+		}
+	});
+	
+}
+
+	window.onload=function(){
+		var writeResult = "${writeResult}";
+		if (writeResult == 'true'){
+			alert("글 등록이 완료되었습니다");
+			writeResult = '';
+		}
+		var modifyResult = "${modifyResult}";
+		if (modifyResult == 'true'){
+			alert("글 수정이 완료되었습니다");
+			modifyResult = '';
+		}
+		
+		cri.pageNum = '${cri.pageNum}';
+		cri.keyword = '${cri.keyword}';
+		cri.clubCode = '${cri.clubCode}';
+		cri.amount = '${cri.amount}';
+		
+		console.log(cri);
+		showList(cri);
+		getPaginator(cri);
+		
+		
+	}
+	
+	$("#keyword").on("keyup", function(e){
+		var keyword = $(this).val();
+		cri.keyword = keyword;
+		cri.pageNum = 1;
+		showList(cri);
+		getPaginator(cri);
+	})
+</script>
 
 
 	<!-- INCLUDE footer.jsp -->

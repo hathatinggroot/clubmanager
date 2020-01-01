@@ -59,7 +59,7 @@
 							<li><a href="/tactics/liveboard_list">라이브 보드</a></li>
 							<li><a href="/tactics/lineup_list">라인업</a></li>
 						</ul></li>
-					<li><a href="/freeboard/list">자유게시판</a></li>
+					<li><a href="/freeboard/list?clubCode=${principal.member.clubCode }">자유게시판</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-expanded="false">투표<span
 							class="caret"></span>

@@ -29,7 +29,39 @@ public class CommonTest {
 	@Setter(onMethod_ = { @Autowired })
 	private DataSource dataSource;
 	
-	
+	@Test
+	public void initAdmin() {
+		String sql = "insert into tbl_members(userId, userPw, userName, auth) values(?,?,?,?)";
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+
+			try {
+				conn = dataSource.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, "admin");
+				pstmt.setString(2, passwordEncoder.encode("admin"));
+				pstmt.setString(3, "°ü¸®ÀÚ ");
+				pstmt.setString(4, "ROLE_ADMIN");
+
+				pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					if (pstmt != null)
+						pstmt.close();
+					if (conn != null)
+						conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+	}
 
 //	@Test
 	public void testInsertMember() {

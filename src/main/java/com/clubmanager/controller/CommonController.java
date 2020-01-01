@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,8 @@ public class CommonController {
 	
 	@Setter(onMethod_ = { @Autowired })
 	private MemberService memberService;
+	
+	
 	
 	@PostMapping(value = "/id_dupl_check", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
@@ -88,7 +91,7 @@ public class CommonController {
 		}
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value = "/modifyPInfo", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
 	public String modifyPInfo(@RequestBody Map<String, Object> params) {
@@ -112,7 +115,7 @@ public class CommonController {
 	
 	
 	
-	
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/customlogin")
 	public String loginInput(String error, String logout, Model model) {
 		log.info("error : " + error);
@@ -129,7 +132,7 @@ public class CommonController {
 		return "intro";
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/club_members")
 	public void clubMembers(@Param("clubCode") String clubCode, Model model) {
 		log.info("clubCode : " + clubCode);
@@ -142,6 +145,8 @@ public class CommonController {
 		model.addAttribute("clubVO", clubVO);
 	}
 	
+	
+	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')")
 	@PostMapping(value = "/modify_auth", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
 	public String modifyAuth(@RequestBody Map<String, Object> params) {
@@ -167,6 +172,7 @@ public class CommonController {
 		}
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')")
 	@PostMapping(value = "/dismiss/{userId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
 	public String dismiss(@PathVariable("userId") String userId) {
@@ -213,7 +219,7 @@ public class CommonController {
 //		log.info("club_members.jsp");
 //	}
 
-	@GetMapping("/loginfailure")
+	@GetMapping("/loginFailure")
 	public void loginFailure() {
 		log.info("loginfailure.jsp");
 	}

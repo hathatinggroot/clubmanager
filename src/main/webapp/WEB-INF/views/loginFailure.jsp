@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>LOGIN FAILURE</h1>
+	<script>
+		alert("아이디 또는 비밀번호가 일치하지 않습니다");
+		location.href="/customlogin";
+	</script>
 </body>
 </html>

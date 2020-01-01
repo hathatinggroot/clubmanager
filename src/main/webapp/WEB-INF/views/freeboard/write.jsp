@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,19 +34,21 @@
 
 				<!-- Free Board List Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12">
-					<form>
+					<form id="boardFrm" action="/freeboard/writeAction" method="post">
+						<input type="hidden" name="boardWriter" value="${principal.member.userId}">
+						<input type="hidden" name="clubCode" value="${principal.member.clubCode}">
 						<div class="form-group">
-							<input type="text" class="form-control input-lg" name="title"
+							<input type="text" class="form-control input-lg" name="boardTitle"
 								autofocus placeholder="제목을 입력하세요">
 						</div>
-						<div class="form-group text-white">
+						<div class="form-group text-white" id="boardTop">
 							<label class="checkbox-inline"> <input type="checkbox"
-								id="inlineCheckbox1" value="1" name="boardTop" disabled>
+								 value="1" name="boardTop" >
 								상단 고정
 							</label>
 						</div>
 						<div class="form-group">
-							<input type="file" class="form-control" name="atthch" multiple>
+							<input type="file" class="form-control" name="attach" multiple>
 						</div>
 						<div class="form-group text-white">
 							<fieldset>
@@ -51,13 +57,14 @@
 							</fieldset>
 						</div>
 						<div class="form-group text-center">
-							<textarea class="form-control input-lg" name="content" rows="20"
+							<textarea class="form-control input-lg" name="boardContent" rows="20"
 								placeholder="내용을 입력하세요"></textarea>
 						</div>
+						<input type="hidden" name="${_csrf.parameterName }"
+							value="${_csrf.token }">
 						<button class="btn btn-default btn-block">
 							<h2>등록</h2>
 						</button>
-
 					</form>
 				</div>
 				<!-- Free Board List Table end -->
@@ -68,7 +75,16 @@
 	</div>
 	<!-- container-fluid end -->
 
-
+<script>
+	window.onload=function(){
+		var userAuth = "${principal.member.auth}";
+		if(userAuth == "ROLE_OWNER" | userAuth == "ROLE_ADMIN"){
+			$("#boardTop").show();
+		}else{
+			$("#boardTop").hide();
+		}
+	}
+</script>
 
 
 	<!-- INCLUDE footer.jsp -->
