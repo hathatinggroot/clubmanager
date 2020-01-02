@@ -56,6 +56,13 @@
 		where boardNo = #{boardNo}
 	</update>
 	
+	<update id="replyAdded">
+		update tbl_freeboard 
+		set replyCnt = replyCnt + 1
+		where boardNo = #{boardNo}
+	</update>
+	
+	
 	<update id="modify">
 		update tbl_freeboard 
 		set boardTitle = #{boardTitle}

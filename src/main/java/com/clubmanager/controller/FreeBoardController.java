@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.clubmanager.domain.BoardVO;
 import com.clubmanager.domain.Criteria;
+import com.clubmanager.domain.ReplyVO;
 import com.clubmanager.domain.pageDTO;
 import com.clubmanager.service.BoardService;
+import com.clubmanager.service.ReplyService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -32,7 +34,8 @@ public class FreeBoardController {
 	@Setter(onMethod_= @Autowired)
 	private BoardService boardService;
 	
-	
+	@Setter(onMethod_= @Autowired)
+	private ReplyService replyService;
 	
 	@GetMapping("/list")
 	public void getBoardList(Criteria cri, Model model) {
@@ -121,4 +124,26 @@ public class FreeBoardController {
 		return "redirect:/freeboard/list?clubCode="+boardVO.getClubCode();
 	}
 	
+	
+	@PostMapping(value= "/writeReply", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String writeReply(@RequestBody ReplyVO replyVO) {
+		log.info("writeReply replyVO : " + replyVO);
+		int result = replyService.insert(replyVO);
+		if(result==1) {
+			return "writeReply success";
+		}
+		
+		return "writeReply failed";
+	}
+	
+	@GetMapping(value = "/replyList/{boardNo}", produces={ MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@ResponseBody
+	public List<ReplyVO> getReplyList(@PathVariable("boardNo") int boardNo) {
+		log.info("replyList.jsp boardNo : " + boardNo);
+		
+		List<ReplyVO> replyList = replyService.getList(boardNo);
+		
+		return replyList;
+	}
 }

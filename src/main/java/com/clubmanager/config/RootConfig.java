@@ -17,7 +17,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @ComponentScan(basePackages = {"com.clubmanager.service"})
 //@EnableAspectJAutoProxy
 
-//@EnableTransactionManagement
+@EnableTransactionManagement
 
 @MapperScan(basePackages = {"com.clubmanager.mapper"})
 public class RootConfig {

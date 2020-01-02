@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.clubmanager.domain.BoardVO;
 import com.clubmanager.domain.Criteria;
+import com.clubmanager.domain.ReplyVO;
 import com.clubmanager.mapper.BoardMapper;
 
 import lombok.Setter;
@@ -61,4 +62,5 @@ public class BoardServiceImpl implements BoardService {
 	public int delete(BoardVO boardVO) {
 		return boardMapper.delete(boardVO);
 	}
+	
 }

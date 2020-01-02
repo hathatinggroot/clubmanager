@@ -20,4 +20,6 @@ public interface BoardMapper {
 	public int modify(BoardVO boardVO);
 	
 	public int delete(BoardVO boardVO);
+	
+	public int replyAdded(int boardNo);
 }

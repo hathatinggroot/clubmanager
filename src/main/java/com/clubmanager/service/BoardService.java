@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.clubmanager.domain.BoardVO;
 import com.clubmanager.domain.Criteria;
+import com.clubmanager.domain.ReplyVO;
 
 public interface BoardService {
 	public List<BoardVO> getBoardList(Criteria cri);
@@ -17,4 +18,5 @@ public interface BoardService {
 	public int modify(BoardVO boardVO);
 	
 	public int delete(BoardVO boardVO);
+	
 }

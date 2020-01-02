@@ -107,7 +107,7 @@ var showList = function(cri){
 							  "</a></td>"
 							  +  "<td>"+board.boardWriter+"</td>"
 							  +  "<td>"+board.boardDate+"</td>"
-							  +  "<td>"+board.boardNo+"</td>"
+							  +  "<td>"+board.replyCnt+"</td>"
 							  +  "<td>"+board.boardLike+"</td>"
 							  +  "<td>"+board.boardHit+"</td>"
 							  +"</tr>";
@@ -120,7 +120,7 @@ var showList = function(cri){
 						  "</a></td>"
 						  +  "<td>"+board.boardWriter+"</td>"
 						  +  "<td>"+board.boardDate+"</td>"
-						  +  "<td>"+board.boardNo+"</td>"
+						  +  "<td>"+board.replyCnt+"</td>"
 						  +  "<td>"+board.boardLike+"</td>"
 						  +  "<td>"+board.boardHit+"</td>"
 						  +"</tr>";

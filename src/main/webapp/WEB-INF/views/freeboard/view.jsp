@@ -63,19 +63,6 @@
 								<ul class="list-inline">
 									<li>첨부파일1.txt</li>
 									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
 								</ul>
 							</div>
 
@@ -100,96 +87,15 @@
 							<hr>
 							<div class="comment-box ">
 								<textarea class="col-xs-12 col-sm-11 col-md-11"
-									placeholder="댓글을 남겨주세요"></textarea>
+									placeholder="댓글을 남겨주세요" id="addReply"></textarea>
 								<button type="button"
-									class="btn btn-default input-lg col-xs-12 col-sm-1 col-md-1">등록</button>
+									class="btn btn-default input-lg col-xs-12 col-sm-1 col-md-1" id="addReplyBtn">등록</button>
 							</div>
 						</div>
 
 
 						<!-- Table -->
-						<div class="table-responsive container-fluid scroll-reply">
-							<table class="table table-condensed text-center">
-								<colgroup>
-									<col width=10% />
-									<col width=70% />
-									<col width=10% />
-									<col width=10% />
-								</colgroup>
-								<tr>
-									<td>홍길동</td>
-									<td><p>좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은
-											자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
-											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
-											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
-											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
-											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료 감사합니다좋은 자료
-											감사합니다좋은 자료 감사합니다좋은 자료 감사합니다</p></td>
-									<td>2019-12-15 17:45</td>
-									<td><button type="button" class="btn btn-default">수정</button>
-										<button type="button" class="btn btn-default">삭제</button></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>홍길동</td>
-									<td>좋은 자료 감사합니다</td>
-									<td>2019-12-15 17:45</td>
-									<td></td>
-								</tr>
-							</table>
+						<div class="table-responsive container-fluid scroll-reply" id="replyListDP">
 						</div>
 					</div>
 
@@ -197,16 +103,70 @@
 				<!-- Free Board Content Table end -->
 			</div>
 			<!-- Free Board View end-->
-
 		</div>
 		<!-- Container Main end-->
 	</div>
 	<!-- container-fluid end -->
-
 <script>
-	$("#boardModBtn").on("click", function(e){
+var token = '${_csrf.token }';
+var header = '${_csrf.headerName }';
+
+	$("#addReplyBtn").on("click",function(e){
+		var replyVO = new Object();
+		replyVO.replyWriter = "${principal.member.userId}";
+		replyVO.replyContent = $("#addReply").val();
+		replyVO.boardNo = '${boardVO.boardNo }';
 		
+		console.log(replyVO);
+		
+		$.ajax({
+			type:"post",
+			url:"/freeboard/writeReply",
+			data: JSON.stringify(replyVO),
+			contentType : "application/json",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result){
+				console.log(result);
+				location.reload();
+			}
+		});
 	})
+	
+var showReplyList = function(){
+		var boardNo = '${boardVO.boardNo }';
+		$.ajax({
+			type:"get",
+			url:"/freeboard/replyList/"+boardNo,
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result){
+				if(result != null){
+					str = "<table class='table table-condensed text-center'>"
+						+"<colgroup>"
+						+"<col width=10% />"
+						+"<col width=80% />"
+						+"<col width=10% />"
+						+"</colgroup>";
+				for(var reply of result){
+					str+= "<tr>"
+							+"<td>"+reply.replyWriter+"</td>"
+							+"<td>"+reply.replyContent+"</td>"
+							+"<td>"+reply.replyDate+"</td>"
+							+"</tr>";
+					}
+					str+= "</table>";	
+					$("#replyListDP").html(str);
+				}
+			}
+		});
+	};
+	
+		window.onload=function(){
+			showReplyList();
+		}
 	
 </script>
 
