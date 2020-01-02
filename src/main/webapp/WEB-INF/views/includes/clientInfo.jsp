@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 
 <sec:authentication property="principal" var="principal" />
 
@@ -31,8 +32,8 @@
 							<!-- 								class="form-control" id="userPw" name="userPw"> -->
 						</div>
 						<div class="checkbox">
-							<label> <input type="checkbox" id="remember-me" name="rememberMe">
-								로그인 유지
+							<label> <input type="checkbox" id="remember-me"
+								name="rememberMe"> 로그인 유지
 							</label>
 						</div>
 						<!-- CSRF 공격 방지 -->
@@ -252,6 +253,66 @@
 <!-- Personal Info Modify Modal end -->
 
 
+<!-- announcement popup Modal start -->
+<div class="modal fade" role="dialog"
+	aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="annPopup">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="gridSystemModalLabel">공지사항</h4>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid text-center" id="annDP">
+					<c:if test="${popupList !=null }">
+						<c:forEach items="${popupList}" var="pop">
+							<div>
+								<h3>${pop.annTitle }<sup>${pop.annDate }</sup>
+								</h3>
+								<p>${pop.annContent }</p>
+								<hr class="divider">
+							</div>
+						</c:forEach>
+					</c:if>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-primary" id="noPop">하루동안
+					보지 않기</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!-- announcement popup Modal end -->
+
+<script>
+	if('${popupList}' != '' && '${popupList}' != '[]'  ){
+		if(document.cookie.indexOf('noPop') == -1){
+			$("#annPopup").modal();
+			console.log('${popupList}');
+			
+			console.log(document.cookie.indexOf('noPop'));
+		}
+	}
+	
+	$("#noPop").on("click", function(e){
+		var expire = new Date();
+		expire.setDate(expire.getDate()+1);
+		console.log(expire);
+		document.cookie = "noPop=true;path=/;expires="+expire.toGMTString() +";";
+		$("#annPopup").hide();
+	})
+</script>
+
+
+
 
 <script>
 	var token = '${_csrf.token }';
@@ -284,8 +345,6 @@
 			loginModal = "";
 		}
 	}
-	
-	
 </script>
 
 <sec:authorize access="isAuthenticated()">

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.clubmanager.mapper.AnnMapper">
+
+
+	<select id="getAnnList" resultType="com.clubmanager.domain.AnnVO">
+	<![CDATA[
+		select annNo, annTitle, annContent, annPopup, annDate  
+		from 
+			(
+			select /*+ INDEX_DESC(tbl_announcements pk_announcements) */
+			rownum rn, annNo, annTitle, annContent, annPopup, annDate
+			from tbl_announcements
+			where
+			(	
+				annTitle like '%'||#{keyword}||'%'
+				or	annContent like '%'||#{keyword}||'%'
+			)
+			and
+			rownum <= #{pageNum} * #{amount}
+			) 
+		where rn > (#{pageNum}-1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="getAnnTotalNum"  resultType="int">
+		select count(*) 
+		from tbl_announcements
+		where 
+			(	
+				annTitle like '%'||#{keyword}||'%'
+				or	annContent like '%'||#{keyword}||'%'
+			)
+	</select>
+	
+	<insert id="insert">
+		insert into tbl_announcements (annNo, annTitle, annContent, annPopup)
+		values (seq_ann.nextval, #{annTitle}, #{annContent}, #{annPopup})
+	</insert>
+	
+	<delete id="delete">
+		delete tbl_announcements 
+		where annNo =  #{annNo}
+	</delete>
+	
+	<update id="modify">
+		update tbl_announcements
+		set annTitle = #{annTitle},
+			annContent = #{annContent},
+			annPopup = #{annPopup},
+			annDate = sysdate
+		where annNo = #{annNo}
+	</update>
+	
+	
+	<select id = "getAnnPopupList" resultType="com.clubmanager.domain.AnnVO">
+		select * from tbl_announcements where annPopup = 1
+	</select>
+</mapper>

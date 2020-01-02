@@ -95,6 +95,7 @@ create table tbl_freeBoard(
     boardTitle varchar2(100),
     boardContent varchar2(2048),
     boardWriter varchar2(20),
+    relplyCnt number default 0,
     boardDate date default sysdate,
     boardLike number default 0,
     boardHit number default 0,
@@ -103,6 +104,7 @@ create table tbl_freeBoard(
 alter table tbl_freeBoard add constraint pk_freeboard primary key(boardNo);
 alter table tbl_freeBoard add constraint fk_freeboard_clubCode_cascade foreign key(clubCode) references tbl_clubs(clubCode) on delete cascade;
 alter table tbl_freeBoard add constraint ck_freeboard_boardTop check (boardTop in (0,1));
+create sequence seq_freeBoard;
 
 create table tbl_reply(
     replyWriter varchar2(20),

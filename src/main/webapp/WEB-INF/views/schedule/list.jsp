@@ -276,6 +276,7 @@
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 
 
+
 <script>
 	$("#doPlanned").on("click",function(e){
 		alert("doPlanned clicked");

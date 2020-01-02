@@ -17,6 +17,7 @@ public class Criteria {
 	
 	private String clubCode;
 	
+	private int annPopup;
 //	private String sortBy;
 //	private boolean sortDirection;
 	

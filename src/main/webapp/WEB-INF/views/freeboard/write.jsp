@@ -34,7 +34,7 @@
 
 				<!-- Free Board List Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12">
-					<form id="boardFrm" action="/freeboard/writeAction" method="post">
+					<form id="boardFrm" action="/freeboard/writeAction" method="post" enctype="text/plain;charset=utf-8" >
 						<input type="hidden" name="boardWriter" value="${principal.member.userId}">
 						<input type="hidden" name="clubCode" value="${principal.member.clubCode}">
 						<div class="form-group">

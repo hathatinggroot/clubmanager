@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import com.clubmanager.domain.CustomUser;
 import com.clubmanager.mapper.ClubMapper;
 
 import lombok.Setter;
@@ -23,6 +22,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Setter(onMethod_= {@Autowired})
 	private ClubMapper clubMapper;
+	
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -45,7 +45,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		// 구단주,매니져,멤버 : 구단 경기 일정 페이지로 이동
 		if (authNames.contains("ROLE_MEMBER") || authNames.contains("ROLE_OWNER") || authNames.contains("ROLE_MANAGER")) {
-
+			
 			
 			response.sendRedirect("/schedule/list");
 			return;

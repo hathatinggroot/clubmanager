@@ -71,7 +71,7 @@ public class FreeBoardController {
 	}
 	
 	
-	@PostMapping("/writeAction")
+	@PostMapping(value= "/writeAction", produces= "text/plain;charset=UTF-8")
 	public String writeAction(BoardVO boardVO, RedirectAttributes rttr) {
 		log.info("writeAction boardVO : " + boardVO);
 		int result = boardService.insert(boardVO);

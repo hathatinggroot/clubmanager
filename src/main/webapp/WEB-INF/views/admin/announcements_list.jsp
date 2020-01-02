@@ -35,13 +35,6 @@
 					<!-- Search condition start -->
 					<div class="col-sm-12 col-md-12 enter-row-1">
 						<form class="form-inline pull-right">
-							<div class="form-group text-white">
-								<label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox1" value="#" name="condition"> 공지
-								</label> <label class="checkbox-inline"> <input type="checkbox"
-									id="inlineCheckbox2" value="#" name="condition"> 미공지
-								</label>
-							</div>
 							<div class="form-group">
 								<input type="text" class="form-control" id="keyword"
 									placeholder="검색어를 입력하세요">
@@ -49,52 +42,16 @@
 						</form>
 					</div>
 					<!-- Search condition end -->
-					<div class="table-responsive container-fluid">
-						<table
-							class="table table-condensed table-hover text-center text-white">
-							<tr>
-								<td>No</td>
-								<td>팝업</td>
-								<td>글제목</td>
-								<td>수정일</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><span class="badge-pop-on">ON</span></td>
-								<td>서비스 점검 안내</td>
-								<td>17:46</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td><span class="badge-pop-off">OFF</span></td>
-								<td>게시판 에티켓 준수 강조</td>
-								<td>2019-12-11</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td><span class="badge-pop-off">OFF</span></td>
-								<td>투표 방법</td>
-								<td>2019-12-01</td>
-							</tr>
-						</table>
-						<button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#write">글쓰기</button>
+					<div class="table-responsive container-fluid" id="annList">
 					</div>
+					<button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#write">글쓰기</button>
 				</div>
 				<!-- Announcement list Table end -->
 
 				<!-- Pagination start -->
 				<div class="text-center">
 					<nav>
-						<ul class="pagination">
-							<li class="disabled"><a href="#" aria-label="Previous"><span
-									aria-hidden="true">&laquo;</span></a></li>
-							<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">2 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">3 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">4 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">5 <span class="sr-only">(current)</span></a></li>
-							<li><a href="#" aria-label="Previous"><span
-									aria-hidden="true">&raquo;</span></a></li>
+						<ul class="pagination" id="paginator">
 						</ul>
 					</nav>
 				</div>
@@ -123,7 +80,9 @@
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
-						<form>
+						<form id="writeActionFrm" action = "/admin/writeAction" method="post">
+							<input type="hidden" name="${_csrf.parameterName }"
+							value="${_csrf.token }">
 							<div class="form-group">
 								<label for="annTitle">제목</label> <input type="text"
 									class="form-control" id="annTitle" name="annTitle">
@@ -135,7 +94,7 @@
 							<div class="checkbox">
 								<span>팝업</span>
 								<div class="text-center center-block">
-									<input type="checkbox" class="on-off-ckbox" id="checkbox" name="isPopup" value="true"
+									<input type="checkbox" class="on-off-ckbox" id="checkbox" name="annPopup" value="1"
 										checked> <label for="checkbox" class="on-off-label"><span></span></label>
 								</div>
 							</div>
@@ -144,7 +103,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" id="doWrite">등록</button>
+					<button type="button" class="btn btn-primary" id="doWrite" onclick="$('#writeActionFrm').submit();">등록</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -168,20 +127,23 @@
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
-						<form>
+						<form id="modFrm" action="/admin/modify" method="post">
+							<input type="hidden" name="${_csrf.parameterName }"
+							value="${_csrf.token }">
+							<input type="hidden" name="annNo" id="modAnnNo">
 							<div class="form-group">
-								<label for="annTitle">제목</label> <input type="text"
-									class="form-control" id="annTitle" name="annTitle" placeholder="서비스 점검 안내">
+								<label for="modAnnTitle">제목</label> <input type="text"
+									class="form-control" id="modAnnTitle" name="annTitle" autofocus="autofocus">
 							</div>
 							<div class="form-group">
-								<label for="annContent">내용</label>
-								<textarea class="form-control" id="annContent" name="annContent" placeholder="기존의 내용입니다"></textarea>
+								<label for="modAnnContent">내용</label>
+								<textarea class="form-control" id="modAnnContent" name="annContent" ></textarea>
 							</div>
 							<div class="checkbox">
 								<span>팝업</span>
 								<div class="text-center center-block">
-									<input type="checkbox" class="on-off-ckbox" id="checkbox" name="isPopup" value="true"
-										checked> <label for="checkbox" class="on-off-label"><span></span></label>
+									<input type="checkbox" class="on-off-ckbox" id="modAnnPopup" name="annPopup" value="1"
+										> <label for="modAnnPopup" class="on-off-label"><span></span></label>
 								</div>
 							</div>
 						</form>
@@ -189,7 +151,13 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" id="doModify">수정</button>
+					<button type="button" class="btn btn-primary" id="doModify" onclick="$('#modFrm').submit();">수정</button>
+					<button type="button" class="btn btn-warning" id="doDelete" onclick="$('#delFrm').submit();">삭제</button>
+					<form id="delFrm" action="/admin/deleteAnn" method="post">
+						<input type="hidden" name="${_csrf.parameterName }"
+							value="${_csrf.token }">
+							<input type="hidden" name="annNo" id="delAnnNo">
+					</form>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -204,9 +172,167 @@
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 
 <script>
-// $("#doWrite").on("click", function(e){
-// 	$("#do").submit();
-// })
+var token = '${_csrf.token }';
+var header = '${_csrf.headerName }';
+var cri = new Object();
+var showList = function(cri){
+	$.ajax({
+		method : "post",
+		url : "/admin/annListByAjax",
+		contentType : "application/json",
+		data : JSON.stringify(cri),
+		dataType : "json",
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success : function(result) {
+			if (result != null) {
+				console.log(result);
+				var str = "";
+				
+				var str1 = "<table class='table table-condensed table-hover text-center text-white'>"
+							+"<tr>"
+							+"<td>No</td>"
+							+"<td>팝업</td>"
+							+"<td>글제목</td>"
+							+"<td>작성일</td>"
+							+"</tr>";
+				var str2 = '';
+				var str3 = '';
+				for(var ann of result){
+					if(ann.annPopup == 1){
+						str2 +="<tr>"
+							  +  "<td>"+ann.annNo+"</td>"
+							  +  "<td><span class='badge badge-pop-on'>ON</span></td>"
+							  +  "<td><a href='#' data-toggle='modal' data-target='#modify' data-annNo='"+ann.annNo
+							  +	 "' data-annTitle='"+ann.annTitle
+							  +  "' data-annContent='"+ann.annContent
+							  +  "' data-annPopup=true>"+ann.annTitle+"</a></td>"
+							  +  "<td>"+ann.annDate+"</td>"
+							  +"</tr>";
+					} else{
+						str3 +="<tr>"
+							  +  "<td>"+ann.annNo+"</td>"
+							  +  "<td><span class='badge badge-pop-off'>OFF</span></td>"
+							  +  "<td><a href='#' data-toggle='modal' data-target='#modify' data-annNo='"+ann.annNo
+							  +	 "' data-annTitle='"+ann.annTitle
+							  +  "' data-annContent='"+ann.annContent
+							  +  "' data-annPopup=false>"+ann.annTitle+"</a></td>"
+							  +  "<td>"+ann.annDate+"</td>"
+							  +"</tr>";
+					}
+				}
+				str = str1+str2+str3+"</table>";
+				
+				$("#annList").html(str);
+			} else {
+				alert("error");
+			}
+		}
+	});
+};
+
+
+var getPaginator = function(cri){
+	$.ajax({
+		method : "post",
+		url : "/admin/getPaginator",
+		contentType : "application/json",
+		data : JSON.stringify(cri),
+		dataType : "json",
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success : function(result) {
+			if (result != null) {
+				console.log(result);
+				var str = "";
+				if(result.prev){
+					str += "<li>";
+				}else{
+					str += "<li class='disabled'>";
+				}
+				
+				str += "<a href='/admin/announcements_list?pageNum="+(result.startPage-1)
+						+"&keyword="+result.cri.keyword+"' aria-label='Previous'>"
+						+"<span	aria-hidden='true'>&laquo;</span></a></li>";
+				
+				for(var i = result.startPage; i<=result.endPage; i++ ){
+					if(i == cri.pageNum){
+						str += "<li class='active'>";
+					}else{
+						str += "<li>";
+					}
+					str += "<a href='/admin/announcements_list?pageNum="+i
+							+"&keyword="+result.cri.keyword+"'>"
+							+i+"</a></li>";
+				}
+				if(result.next){
+					str += "<li>";
+				}else{
+					str += "<li class='disabled'>";
+				}
+			
+				str += "<a href='/admin/announcements_list?pageNum="+(result.endPage+1)
+				+"&keyword="+result.cri.keyword+"' aria-label='Previous'>"
+				+"<span	aria-hidden='true'>&raquo;</span></a></li>";
+				
+				
+				$("#paginator").html(str);
+			} else {
+				alert("error");
+			}
+		}
+	});
+	
+}
+
+	window.onload=function(){
+		cri.pageNum = '${cri.pageNum}';
+		cri.keyword = '${cri.keyword}';
+		cri.annPopup = '${cri.annPopup}';
+		cri.amount = '${cri.amount}';
+		
+		console.log(cri);
+		showList(cri);
+		getPaginator(cri);
+		
+		if('${writeResult}' != ''){
+			alert('${writeResult}');
+		}
+		if('${modifyResult}' != ''){
+			alert('${modifyResult}');
+		}
+		if('${deleteResult}' != ''){
+			alert('${deleteResult}');
+		}
+		
+	}
+	
+	$("#keyword").on("keyup", function(e){
+		var keyword = $(this).val();
+		cri.keyword = keyword;
+		cri.pageNum = 1;
+		showList(cri);
+		getPaginator(cri);
+	})
+	
+	$("#modify").on("show.bs.modal", function(e) {
+			
+		console.log($(e.relatedTarget).data());
+			
+		$("#modAnnNo").val($(e.relatedTarget).data("annno"));
+		$("#modAnnTitle").val($(e.relatedTarget).data("anntitle"));
+		$("#modAnnContent").html($(e.relatedTarget).data("anncontent"));
+		$("#delAnnNo").val($(e.relatedTarget).data("annno"));
+		if($(e.relatedTarget).data("annpopup")){
+			$("#modAnnPopup").attr("checked",true);
+		}else{
+			$("#modAnnPopup").attr("checked",false);
+		}
+		
+		
+	})
 </script>
 </body>
 </html>

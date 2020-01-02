@@ -1,7 +1,10 @@
 package com.clubmanager.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.clubmanager.domain.AnnVO;
 import com.clubmanager.domain.ClubVO;
 import com.clubmanager.domain.MemberVO;
+import com.clubmanager.mapper.AnnMapper;
 import com.clubmanager.service.CommonService;
 import com.clubmanager.service.MemberService;
 
@@ -34,7 +40,8 @@ public class CommonController {
 	@Setter(onMethod_ = { @Autowired })
 	private MemberService memberService;
 	
-	
+	@Setter(onMethod_ = { @Autowired })
+	private AnnMapper annMapper;
 	
 	@PostMapping(value = "/id_dupl_check", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
@@ -209,8 +216,13 @@ public class CommonController {
 		log.info("intro.jsp");
 	}
 	@GetMapping("/")
-	public String goToInitPage() {
+	public String goToInitPage(Model model) {
 		log.info("intro.jsp");
+		
+		List<AnnVO> popupList = annMapper.getAnnPopupList();
+		log.info("popupList : " + popupList);
+		model.addAttribute("popupList", popupList);
+		
 		return "intro";
 	}
 	
@@ -229,8 +241,19 @@ public class CommonController {
 		log.info("accessdenied.jsp");
 	}
 
-//	@GetMapping("/home")
-//	public void goToHome() {
-//		log.info("home.jsp");
-//	}
+	@PreAuthorize("isAnonymous()")
+	@GetMapping("/test")
+	public void test() {
+		log.info("test.jsp");
+	}
+	
+	@RequestMapping("/testWrite")
+	public String testResult(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
+		request.setCharacterEncoding("UTF-8");
+		String test1= request.getParameter("test1");
+		log.info("testWrite test1 : " + test1);
+		model.addAttribute("test1", test1);
+		return "testResult";
+	}
+	
 }
