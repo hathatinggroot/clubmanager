@@ -3,9 +3,8 @@ package com.clubmanager.domain;
 import java.text.DateFormat;
 import java.util.Date;
 
-import lombok.Data;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 public class MemberVO {
 	@Getter

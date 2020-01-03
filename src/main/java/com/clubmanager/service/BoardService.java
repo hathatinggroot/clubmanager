@@ -2,9 +2,11 @@ package com.clubmanager.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.clubmanager.domain.AttachVO;
 import com.clubmanager.domain.BoardVO;
 import com.clubmanager.domain.Criteria;
-import com.clubmanager.domain.ReplyVO;
 
 public interface BoardService {
 	public List<BoardVO> getBoardList(Criteria cri);
@@ -19,4 +21,5 @@ public interface BoardService {
 	
 	public int delete(BoardVO boardVO);
 	
+	public List<AttachVO> upload(MultipartFile[] upload);
 }

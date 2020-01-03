@@ -29,8 +29,16 @@
 	</select>
 	
 	<insert id="insert">
+		<selectKey keyProperty="boardNo" order="BEFORE" resultType="int">
+			select seq_freeBoard.nextval from dual
+		</selectKey>
 		insert into tbl_freeboard(boardNo, boardTitle, boardContent, boardWriter, clubCode, boardTop) 
-		values(seq_freeBoard.nextval,#{boardTitle},#{boardContent},#{boardWriter},#{clubCode},#{boardTop})
+		values(#{boardNo},#{boardTitle},#{boardContent},#{boardWriter},#{clubCode},#{boardTop})
+	</insert>
+	
+	<insert id="insertAttach">
+		insert into tbl_attach(fileName, filePath, isImg, boardNo)
+		values(#{fileName},#{filePath},#{isImg},#{boardNo})
 	</insert>
 	
 	<select id="getTotalNum"  resultType="int">
@@ -47,6 +55,11 @@
 	
 	<select id="getBoard" resultType="com.clubmanager.domain.BoardVO">
 		select * from tbl_freeboard
+		where boardNo = #{boardNo }
+	</select>
+	
+	<select id="getAttachList" resultType="com.clubmanager.domain.AttachVO">
+		select * from tbl_attach
 		where boardNo = #{boardNo }
 	</select>
 	

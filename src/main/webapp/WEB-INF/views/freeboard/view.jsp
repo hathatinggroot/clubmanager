@@ -2,7 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="cc"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -56,14 +58,24 @@
 						<div class="panel-body">
 							<div class="col-xs-12 col-sm-12 col-md-12 large-font">
 								${boardVO.boardTitle }</div>
+							<ul class="list-inline" id="attachListLink">
+								<c:forEach items="${boardVO.attachList }" var="attach">
+									<li>${attach.fileName }</li>
+								</c:forEach>
+							</ul>
+							
+							<div id="imgDisplay">
+								<c:forEach items="${boardVO.attachList }" var="attach">
+									<c:if test="${attach.isImg == 1 }">
+									<c:set var="arr" value="${fn: split(attach.filePath,'\\')}"/>
+<%-- 									${fn: join(arr,'/') } --%>
+<%-- 										<img src="/freeboard/viewImg?filePath=${fn: join(split(attach.filePath,'\\'),'/') }&fileName=${attach.fileName }" style="width:100%;height:400px;margin-bottom:5px;"> --%>
+									</c:if>
+								</c:forEach>
+							</div>
+
 							<div>
 								<p>${boardVO.boardContent }</p>
-							</div>
-							<div class="scroll-box-attach">
-								<ul class="list-inline">
-									<li>첨부파일1.txt</li>
-									<li>첨부파일1.txt</li>
-								</ul>
 							</div>
 
 
@@ -73,30 +85,35 @@
 
 								<c:if test="${principal.member.userId == boardVO.boardWriter }">
 									<span class="pull-right">
-										<button type="button" class="btn btn-default pull-left" onclick="location.href='/freeboard/modify?boardNo=${boardVO.boardNo }'">수정</button>
-										<button type="button" class="btn btn-default" onclick="$('#deleteFrm').submit()">삭제</button>
+										<button type="button" class="btn btn-default pull-left"
+											onclick="location.href='/freeboard/modify?boardNo=${boardVO.boardNo }'">수정</button>
+										<button type="button" class="btn btn-default"
+											onclick="$('#deleteFrm').submit()">삭제</button>
 									</span>
 									<form id="deleteFrm" action="/freeboard/delete" method="post">
-											<input type="hidden" name="boardNo" value="${boardVO.boardNo }">
-											<input type="hidden" name="clubCode" value="${boardVO.clubCode }">
-											<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-										</form>
+										<input type="hidden" name="boardNo"
+											value="${boardVO.boardNo }"> <input type="hidden"
+											name="clubCode" value="${boardVO.clubCode }"> <input
+											type="hidden" name="${_csrf.parameterName }"
+											value="${_csrf.token }">
+									</form>
 								</c:if>
-													
+
 							</div>
 							<hr>
 							<div class="comment-box ">
 								<textarea class="col-xs-12 col-sm-11 col-md-11"
 									placeholder="댓글을 남겨주세요" id="addReply"></textarea>
 								<button type="button"
-									class="btn btn-default input-lg col-xs-12 col-sm-1 col-md-1" id="addReplyBtn">등록</button>
+									class="btn btn-default input-lg col-xs-12 col-sm-1 col-md-1"
+									id="addReplyBtn">등록</button>
 							</div>
 						</div>
 
 
 						<!-- Table -->
-						<div class="table-responsive container-fluid scroll-reply" id="replyListDP">
-						</div>
+						<div class="table-responsive container-fluid scroll-reply"
+							id="replyListDP"></div>
 					</div>
 
 				</div>
@@ -107,7 +124,7 @@
 		<!-- Container Main end-->
 	</div>
 	<!-- container-fluid end -->
-<script>
+	<script>
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
 

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.clubmanager.domain.AttachVO;
 import com.clubmanager.domain.BoardVO;
 import com.clubmanager.domain.Criteria;
 import com.clubmanager.domain.ReplyVO;
@@ -85,6 +87,17 @@ public class FreeBoardController {
 		return "redirect:/freeboard/list?clubCode="+boardVO.getClubCode();
 	}
 	
+	@PostMapping(value= "/uploadAttach", produces={ MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@ResponseBody
+	public List<AttachVO> upload(MultipartFile[] upload) {
+		log.info("uploadAttach upload : " + upload);
+		return boardService.upload(upload);
+	}
+	
+	
+	
+	
+	
 	
 	@GetMapping("/view")
 	public void goToView(BoardVO boardVO, Model model) {
@@ -93,6 +106,17 @@ public class FreeBoardController {
 		BoardVO bvo = boardService.getBoard(boardVO);
 		model.addAttribute("boardVO", bvo);
 	}
+	
+	@GetMapping("/viewImg")
+	@ResponseBody
+	public byte[] viewImg(@RequestBody AttachVO attachVO) {
+		log.info("viewImg attachVO : " + attachVO);
+		
+		
+		
+		return null;
+	}
+	
 	
 	
 	@GetMapping("/modify")

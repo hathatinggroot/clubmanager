@@ -18,5 +18,5 @@ public class BoardVO {
 	private int boardTop;
 	private int replyCnt;
 	
-	private List<ReplyVO> replyList;
+	private List<AttachVO> attachList;
 }

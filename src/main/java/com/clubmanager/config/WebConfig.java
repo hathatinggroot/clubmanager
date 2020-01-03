@@ -1,6 +1,7 @@
 package com.clubmanager.config;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,10 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	@Override
 	protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 		registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
-	
+		
+		MultipartConfigElement multipartConfig = 
+				new MultipartConfigElement("C:\\ClubManager\\upload\\temp");
+		registration.setMultipartConfig(multipartConfig);
 	
 	}
 

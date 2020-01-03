@@ -2,6 +2,7 @@ package com.clubmanager.mapper;
 
 import java.util.List;
 
+import com.clubmanager.domain.AttachVO;
 import com.clubmanager.domain.BoardVO;
 import com.clubmanager.domain.Criteria;
 
@@ -22,4 +23,8 @@ public interface BoardMapper {
 	public int delete(BoardVO boardVO);
 	
 	public int replyAdded(int boardNo);
+	
+	public int insertAttach(AttachVO attachVO);
+	
+	public List<AttachVO> getAttachList(int boardNo);
 }

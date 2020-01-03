@@ -30,6 +30,7 @@ create table tbl_announcements (
 alter table tbl_announcements add constraint pk_announcements primary key(annNo);
 alter table tbl_announcements add constraint ck_announcements_annStatus check (annStatus in (0,1));
 
+create sequence seq_ann;
 
 create table tbl_matches(
     matchNo number,
@@ -113,6 +114,7 @@ create table tbl_reply(
     boardNo number);
 alter table tbl_reply add constraint fk_reply_boardNo_cascade foreign key(boardNo) references tbl_freeboard(boardNo) on delete cascade;
 
+create index idx_reply on tbl_reply(boardNo, replyDate asc);
 
 create table tbl_attach(
     attachName varchar2(100),
