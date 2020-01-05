@@ -117,7 +117,7 @@ var header = '${_csrf.headerName }';
 					var str1 = "<img src='"+e.target.result+"'>";
 					preview.append(str1);
 					var previewImg = $("#preview>img");
-			 		previewImg.css({"width":"100%","height":"400px","margin-bottom":"5px"});
+			 		previewImg.css({"width":"100%","height":"auto","margin-bottom":"5px"});
 				}
 			}else{
 				str += "<li data-isImg='0'>"+el.name+"</li>";

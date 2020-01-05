@@ -1,5 +1,12 @@
 package com.clubmanager.service;
 
-public interface MatchService {
+import java.util.List;
 
+import com.clubmanager.domain.MatchVO;
+
+public interface MatchService {
+	
+	public boolean register(MatchVO matchVO);
+	
+	public List<MatchVO> getPlannedList(String clubCode);
 }

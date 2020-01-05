@@ -1,12 +1,20 @@
 package com.clubmanager.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -107,14 +115,32 @@ public class FreeBoardController {
 		model.addAttribute("boardVO", bvo);
 	}
 	
-	@GetMapping("/viewImg")
+	@GetMapping(value= "/viewImg")
 	@ResponseBody
-	public byte[] viewImg(@RequestBody AttachVO attachVO) {
-		log.info("viewImg attachVO : " + attachVO);
+	public ResponseEntity<byte[]> viewImg(String filePath, String fileName) {
+		log.info("viewImg file : " + filePath+fileName );
+		try {
+			File imgFile = new File(filePath+fileName);
+			log.info("imgFile.toPath() : " + imgFile.toPath());
+			log.info("Files.probeContentType(imgFile.toPath()) : " + Files.probeContentType(imgFile.toPath()));
+			
+			HttpHeaders header = new HttpHeaders();
+			header.add("Content-Type", Files.probeContentType(imgFile.toPath()));
+			
+			return new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(imgFile), header, HttpStatus.OK);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@GetMapping(value= "/getAttachListByJson/{boardNo}",produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@ResponseBody
+	public List<AttachVO> getAttachListByJson(@PathVariable("boardNo") int boardNo) {
+		log.info("getAttachListByJson boardNo : " + boardNo );
 		
-		
-		
-		return null;
+		return boardService.getAttachList(boardNo);
 	}
 	
 	
@@ -146,6 +172,18 @@ public class FreeBoardController {
 		}
 		
 		return "redirect:/freeboard/list?clubCode="+boardVO.getClubCode();
+	}
+	
+	@DeleteMapping(value="/deleteAttach", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String deleteAttach(@RequestBody AttachVO attachVO) {
+		log.info("deleteAttach attachVO : " + attachVO);
+		
+		if(boardService.deleteAttach(attachVO)) {
+			return "success";
+		}
+		
+		return "fail";
 	}
 	
 	

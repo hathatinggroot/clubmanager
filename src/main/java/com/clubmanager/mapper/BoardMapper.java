@@ -27,4 +27,8 @@ public interface BoardMapper {
 	public int insertAttach(AttachVO attachVO);
 	
 	public List<AttachVO> getAttachList(int boardNo);
+	
+	public AttachVO getAttach(AttachVO attachVO);
+	
+	public int deleteAttach(AttachVO attachVO);
 }

@@ -37,14 +37,14 @@ create table tbl_matches(
     apposingTeam varchar2(20),
     matchDate date,
     stadium varchar2(20),
-    matchStatus number,  -- 0:종료된 경기, 1: 확정된 경기, 2:미확정 경기
-    matchRecordStatus number,  -- 0:기록완료, 1: 기록중, 2:미기록
+    matchStatus number default 2,  -- 0:종료된 경기, 1: 확정된 경기, 2:미확정 경기
+    matchRecordStatus number default 2,  -- 0:기록완료, 1: 기록중, 2:미기록
     clubCode varchar2(20));
 alter table tbl_matches add constraint pk_matches primary key(matchNo);
 alter table tbl_matches add constraint ck_matches_matchStatus check (matchStatus in (0,1,2));
 alter table tbl_matches add constraint ck_matches_matchRecordStatus check (matchRecordStatus in (0,1,2));   
 alter table tbl_matches add constraint fk_matches_clubCode_cascade foreign key(clubCode) references tbl_clubs(clubCode) on delete cascade;
-
+create sequence seq_matches;
 
 create table tbl_matchRecord(
     goal number default 0,
@@ -117,8 +117,9 @@ alter table tbl_reply add constraint fk_reply_boardNo_cascade foreign key(boardN
 create index idx_reply on tbl_reply(boardNo, replyDate asc);
 
 create table tbl_attach(
-    attachName varchar2(100),
-    attachType varchar2(10),
-    attachContent blob,
+    fileName varchar2(100),
+    isImg number default 0,  -- 1: 이미지파일
+    filePath varchar2(100),
     boardNo number);
 alter table tbl_attach add constraint fk_attach_boardNo_cascade foreign key(boardNo) references tbl_freeboard(boardNo) on delete cascade;
+

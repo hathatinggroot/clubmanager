@@ -40,27 +40,33 @@
 
 				<sec:authorize access="isAuthenticated()">
 					<!-- if login start-->
-					<li><a href="/schedule/list?clubCode=${principal.member.clubCode }">경기 일정</a></li>
+					<li><a href="/schedule/list">경기 일정</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-expanded="false">기록실<span
 							class="badge badge-notification pull-right">&nbsp;</span> <span
 							class="caret"></span>
 					</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="/record/club_record?clubCode=${principal.member.clubCode }">구단 기록<span
+							<li><a href="/record/club_record">구단 기록<span
 									class="badge badge-notification pull-right">&nbsp;</span></a></li>
-							<li><a href="/record/personal_record?clubCode=${principal.member.clubCode }">개인 기록</a></li>
+							<li><a href="/record/personal_record">개인 기록</a></li>
 						</ul></li>
-						
-					<li><a href="/liveboard/list?clubCode=${principal.member.clubCode }">라이브 보드</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-expanded="false">전술
+							<span class="caret"></span>
+					</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/tactics/liveboard_list">라이브 보드</a></li>
+							<li><a href="/tactics/lineup_list">라인업</a></li>
+						</ul></li>
 					<li><a href="/freeboard/list?clubCode=${principal.member.clubCode }">자유게시판</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-expanded="false">투표<span
 							class="caret"></span>
 					</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="/poll/participate_list?clubCode=${principal.member.clubCode }">참석 여부</a></li>
-							<li><a href="/poll/mom?clubCode=${principal.member.clubCode }">MoM</a></li>
+							<li><a href="/poll/participate_list">참석 여부</a></li>
+							<li><a href="/poll/mom">MoM</a></li>
 						</ul></li>
 					<li><a href="/club_members?clubCode=${principal.member.clubCode }">선수단</a></li>
 				</sec:authorize>

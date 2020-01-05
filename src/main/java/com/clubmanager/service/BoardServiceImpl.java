@@ -10,12 +10,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.clubmanager.domain.AttachVO;
 import com.clubmanager.domain.BoardVO;
 import com.clubmanager.domain.Criteria;
-import com.clubmanager.domain.ReplyVO;
 import com.clubmanager.mapper.BoardMapper;
 
 import lombok.Setter;
@@ -75,14 +75,30 @@ public class BoardServiceImpl implements BoardService {
 		return bvo;
 	}
 	
+	@Transactional
 	@Override
 	public int modify(BoardVO boardVO) {
+		int result1 = 0;
+		int result2 = 1;
+		result1 = boardMapper.modify(boardVO);
+		if(boardVO.getAttachList() == null || boardVO.getAttachList().size()==0) {
+			return result1;
+		}
+		for(AttachVO avo : boardVO.getAttachList()) {
+			avo.setBoardNo(boardVO.getBoardNo());
+			result2 *= boardMapper.insertAttach(avo);
+		}
 		
-		return boardMapper.modify(boardVO);
+		
+		return result1*result2;
 	}
 	
+	@Transactional
 	@Override
 	public int delete(BoardVO boardVO) {
+		getAttachList(boardVO.getBoardNo()).forEach(attach -> deleteAttach(attach));
+		
+		
 		return boardMapper.delete(boardVO);
 	}
 	
@@ -154,6 +170,37 @@ public class BoardServiceImpl implements BoardService {
 			
 		}
 		return uploadList;
+	}
+	
+	
+	@Override
+	public File getImgAsFile(AttachVO attachVO) {
+		List<byte[]> byteList = new ArrayList<byte[]>();
+		 AttachVO imgAttach = boardMapper.getAttach(attachVO);
+		 File imgFile = new File(imgAttach.getFilePath(),imgAttach.getFileName());
+		 
+		 return imgFile;
+	}
+	
+	@Override
+	public List<AttachVO> getAttachList(int boardNo) {
+		
+		return boardMapper.getAttachList(boardNo);
+	}
+	
+	@Transactional
+	@Override
+	public boolean deleteAttach(AttachVO attachVO) {
+		File delFile = getImgAsFile(attachVO);
+		if(delFile.exists()) {
+			delFile.delete();
+		}
+		
+		if(boardMapper.deleteAttach(attachVO)==1) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

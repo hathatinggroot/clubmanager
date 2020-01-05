@@ -63,6 +63,12 @@
 		where boardNo = #{boardNo }
 	</select>
 	
+	<select id="getAttach" resultType="com.clubmanager.domain.AttachVO">
+		select * from tbl_attach
+		where boardNo = #{boardNo }
+			  and fileName = #{fileName}
+	</select>
+	
 	<update id="hit">
 		update tbl_freeboard 
 		set boardHit = boardHit + 1
@@ -88,5 +94,11 @@
 	<delete id="delete">
 		delete from tbl_freeboard
 		where boardNo = #{boardNo}
+	</delete>
+	
+	<delete id="deleteAttach">
+		delete from tbl_attach	
+		where boardNo = #{boardNo }
+			  and fileName = #{fileName}
 	</delete>
 </mapper>

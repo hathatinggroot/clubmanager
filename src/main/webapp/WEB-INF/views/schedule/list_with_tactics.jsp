@@ -25,7 +25,7 @@
 			<div class="row">
 				<div class="text-center text-white text-nowrap">
 					<h1>
-						<dfn>2019-12-11 19:00</dfn>
+						<dfn>다음 경기</dfn>
 					</h1>
 				</div>
 				<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
@@ -33,14 +33,61 @@
 						VS<span class="tab-space-1 large-font">222FC</span>
 					</div>
 					<div>
-						<span class="tab-space-1">백석구장</span>
+						<span>2019-12-11 19:00</span><span class="tab-space-1">백석구장</span>
 					</div>
 				</div>
+
+				<!-- Tactics Short View  start -->
+				<div class="col-xs-12 col-sm-12 col-md-12 enter-row-1">
+					<div role="tabpanel">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active"><a href="#A"
+								role="tab" data-toggle="tab">PLAN_A</a></li>
+							<li role="presentation"><a href="#B" role="tab"
+								data-toggle="tab">PLAN_B</a></li>
+							<li role="presentation"><a href="#C" role="tab"
+								data-toggle="pill">PLAN_C</a></li>
+						</ul>
+
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane fade in active" id="A">
+								<div class="col-xs-12 col-sm-6 col-md-6">
+									<img class="tactics-board" src="/resources/img/lineup.gif">
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
+									<h2>전술 중점</h2>
+									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
+								</div>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="B">
+								<div class="col-xs-12 col-sm-6 col-md-6">
+									<img class="tactics-board" src="/resources/img/lineup.gif">
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
+									<h2>전술 중점</h2>
+									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
+								</div>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="C">
+								<div class="col-xs-12 col-sm-6 col-md-6">
+									<img class="tactics-board" src="/resources/img/lineup.gif">
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
+									<h2>전술 중점</h2>
+									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- Tactics Short View  end -->
 
 				<!-- Participate Members Table Start -->
 				<div class="col-xs-12 col-sm-12 col-md-12 ">
 					<div class="text-center text-white text-nowrap">
-						<hr class="divider">
 						<h1>
 							<dfn>참석 명단</dfn>
 						</h1>
@@ -87,13 +134,11 @@
 
 			<!--  All Schedule List start-->
 			<div class="row">
-				<hr>
-<!-- 				<div class="text-center text-white text-nowrap"> -->
-					
-<!-- 					<h1> -->
-<!-- 						<dfn>전체 일정</dfn> -->
-<!-- 					</h1> -->
-<!-- 				</div> -->
+				<div class="text-center text-white text-nowrap">
+					<h1>
+						<dfn>전체 일정</dfn>
+					</h1>
+				</div>
 				<!-- All Schedule list Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="table-responsive container-fluid">
@@ -188,25 +233,27 @@
 					<div class="container-fluid">
 						<form>
 							<div class="form-group">
-								<label for="registerApposingTeam">상대팀</label> <input type="text"
-									class="form-control" id=registerApposingTeam placeholder="미확정" value="미정">
+								<label for="opponentName">상대팀</label> <input type="text"
+									class="form-control" id="opponentName" name="opponentName"
+									placeholder="미확정">
 							</div>
 							<div class="form-group">
-								<label for="registerMatchDate">경기 날짜</label> <input type="date"
-									class="form-control" id="registerMatchDate">
+								<label for="date">경기 날짜</label> <input type="date"
+									class="form-control" id="date" name="date">
 							</div>
 							<div class="form-group">
-								<label for="registerMatchTime">경기 시간</label> <input type="time"
-									class="form-control" id="registerMatchTime" name="matchTime">
+								<label for="time">경기 시간</label> <input type="time"
+									class="form-control" id="time" name="time">
 							</div>
 							<div class="form-group">
-								<label for="registerStadium">구장</label> <input type="text"
-									class="form-control" id="registerStadium" placeholder="미정" value="미정">
+								<label for="stadium">구장</label> <input type="text"
+									class="form-control" id="stadium" name="stadium"
+									placeholder="미정">
 							</div>
 							<div class="form-group">
-								<label for="registerEndDate">참석 여부 투표 마감 시간</label> 
-								<div>경기 시간으로부터
-								<input type="number" class="form-control width-20" id="registerEndDate" placeholder="7" value="7">
+								<label for="pollTime">참석 여부 투표 마감 시간</label> 
+								<div>경기 시간으로부터 <input type="number"
+									class="form-control width-20" id="pollTimeBeforeMatch" name="pollTimeBeforeMatch" placeholder="7">
 								일 전</div>
 							</div>
 						</form>
@@ -231,43 +278,11 @@
 
 
 <script>
-var token = '${_csrf.token }';
-var header = '${_csrf.headerName }';
-
 	$("#doPlanned").on("click",function(e){
 		alert("doPlanned clicked");
 	})
 	$("#doRegister").on("click",function(e){
-		var matchObj = new Object();
-		
-		var dateArr = $("#registerMatchDate").val().split("-");
-		var timeArr = $("#registerMatchTime").val().split(":");
-		var matchD = new Date(dateArr[0], parseInt(dateArr[1], 10)-1, parseInt(dateArr[2], 10),timeArr[0],timeArr[1],0,0 );
-		console.log(matchD);
-		
-		matchObj.apposingTeam = $("#registerApposingTeam").val();
-		matchObj.matchDate = matchD;
-		matchObj.stadium = $("#registerStadium").val();
-		matchObj.clubCode = '${principal.member.clubCode}';
-		matchObj.pollTime = $("#registerEndDate").val();
-		console.log(matchObj);
-		
-		$.ajax({
-			type:"post",
-			url:"/schedule/register",
-			data: JSON.stringify(matchObj),
-			contentType : "application/json",
-			beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			success : function(result){
-				console.log(result);
-				location.reload();
-			}
-		});
-		
-		
-		
+		alert("doRegister clicked");
 	})
 </script>
 </body>

@@ -58,18 +58,21 @@
 						<div class="panel-body">
 							<div class="col-xs-12 col-sm-12 col-md-12 large-font">
 								${boardVO.boardTitle }</div>
+							<div class="col-xs-12 col-sm-12 col-md-12">
 							<ul class="list-inline" id="attachListLink">
 								<c:forEach items="${boardVO.attachList }" var="attach">
 									<li>${attach.fileName }</li>
 								</c:forEach>
 							</ul>
-							
+							</div>
 							<div id="imgDisplay">
 								<c:forEach items="${boardVO.attachList }" var="attach">
 									<c:if test="${attach.isImg == 1 }">
-									<c:set var="arr" value="${fn: split(attach.filePath,'\\')}"/>
-<%-- 									${fn: join(arr,'/') } --%>
-<%-- 										<img src="/freeboard/viewImg?filePath=${fn: join(split(attach.filePath,'\\'),'/') }&fileName=${attach.fileName }" style="width:100%;height:400px;margin-bottom:5px;"> --%>
+										<c:url value="/freeboard/viewImg" var="url">
+											<c:param name="filePath" value="${attach.filePath }" />
+											<c:param name="fileName" value="${attach.fileName }" />
+										</c:url>
+										<img src='${url}'>
 									</c:if>
 								</c:forEach>
 							</div>
@@ -127,7 +130,7 @@
 	<script>
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
-
+console.log("${boardVO.attachList[0].fileName}");
 	$("#addReplyBtn").on("click",function(e){
 		var replyVO = new Object();
 		replyVO.replyWriter = "${principal.member.userId}";
@@ -183,6 +186,9 @@ var showReplyList = function(){
 	
 		window.onload=function(){
 			showReplyList();
+			$("#imgDisplay>img").css({"width":"100%","height":"auto","margin-bottom":"5px"});
+			
+			
 		}
 	
 </script>

@@ -1,5 +1,6 @@
 package com.clubmanager.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -22,4 +23,10 @@ public interface BoardService {
 	public int delete(BoardVO boardVO);
 	
 	public List<AttachVO> upload(MultipartFile[] upload);
+	
+	public File getImgAsFile(AttachVO attachVO);
+	
+	public List<AttachVO> getAttachList(int boardNo);
+	
+	public boolean deleteAttach(AttachVO attachVO);
 }

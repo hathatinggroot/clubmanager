@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.clubmanager.mapper.MatchMapper">
+
+
+<!-- 	<select id="getBoardList" resultType="com.clubmanager.domain.MatchVO"> -->
+<!-- 	<![CDATA[ -->
+<!-- 		select boardNo, boardTitle, boardWriter, boardDate, replyCnt, boardLike, boardHit, boardTop   -->
+<!-- 		from  -->
+<!-- 			( -->
+<!-- 			select /*+ INDEX_DESC(tbl_freeboard pk_freeboard) */ -->
+<!-- 			rownum rn, boardNo, boardTitle, boardWriter, boardDate, replyCnt, boardLike, boardHit, boardTop -->
+<!-- 			from tbl_freeboard -->
+<!-- 			where clubCode = #{clubCode} -->
+<!-- 			and -->
+<!-- 			(	 -->
+<!-- 				boardTitle like '%'||#{keyword}||'%' -->
+<!-- 				or	boardWriter like '%'||#{keyword}||'%' -->
+<!-- 				or  boardContent like '%'||#{keyword}||'%' -->
+<!-- 			) -->
+<!-- 			and -->
+<!-- 			rownum <= #{pageNum} * #{amount} -->
+<!-- 			)  -->
+<!-- 		where rn > (#{pageNum}-1) * #{amount} -->
+		
+<!-- 		]]> -->
+<!-- 	</select> -->
+	
+	<insert id="insert">
+		<selectKey keyProperty="matchNo" order="BEFORE" resultType="int">
+			select seq_matches.nextval from dual
+		</selectKey>
+		insert into tbl_matches(matchNo, apposingTeam, matchDate, stadium, clubCode) 
+		values(#{matchNo},#{apposingTeam},#{matchDate},#{stadium},#{clubCode})
+	</insert>
+	
+	<select id="getList" resultType="com.clubmanager.domain.MatchVO">
+		select /*+ INDEX(tbl_matches idx_matches) */ * 
+		from tbl_matches
+		where clubCode = #{clubCode} 
+	</select>
+<!-- 	<insert id="insertAttach"> -->
+<!-- 		insert into tbl_attach(fileName, filePath, isImg, boardNo) -->
+<!-- 		values(#{fileName},#{filePath},#{isImg},#{boardNo}) -->
+<!-- 	</insert> -->
+	
+<!-- 	<select id="getTotalNum"  resultType="int"> -->
+<!-- 		select count(*)  -->
+<!-- 		from tbl_freeboard -->
+<!-- 		where clubCode = #{clubCode} -->
+<!-- 			and -->
+<!-- 			(	 -->
+<!-- 				boardTitle like '%'||#{keyword}||'%' -->
+<!-- 				or	boardWriter like '%'||#{keyword}||'%' -->
+<!-- 				or  boardContent like '%'||#{keyword}||'%' -->
+<!-- 			) -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="getBoard" resultType="com.clubmanager.domain.BoardVO"> -->
+<!-- 		select * from tbl_freeboard -->
+<!-- 		where boardNo = #{boardNo } -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="getAttachList" resultType="com.clubmanager.domain.AttachVO"> -->
+<!-- 		select * from tbl_attach -->
+<!-- 		where boardNo = #{boardNo } -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="getAttach" resultType="com.clubmanager.domain.AttachVO"> -->
+<!-- 		select * from tbl_attach -->
+<!-- 		where boardNo = #{boardNo } -->
+<!-- 			  and fileName = #{fileName} -->
+<!-- 	</select> -->
+	
+<!-- 	<update id="hit"> -->
+<!-- 		update tbl_freeboard  -->
+<!-- 		set boardHit = boardHit + 1 -->
+<!-- 		where boardNo = #{boardNo} -->
+<!-- 	</update> -->
+	
+<!-- 	<update id="replyAdded"> -->
+<!-- 		update tbl_freeboard  -->
+<!-- 		set replyCnt = replyCnt + 1 -->
+<!-- 		where boardNo = #{boardNo} -->
+<!-- 	</update> -->
+	
+	
+<!-- 	<update id="modify"> -->
+<!-- 		update tbl_freeboard  -->
+<!-- 		set boardTitle = #{boardTitle} -->
+<!-- 		, boardTop = #{boardTop} -->
+<!-- 		, boardContent = #{boardContent} -->
+<!-- 		, boardDate = sysdate -->
+<!-- 		where boardNo = #{boardNo} -->
+<!-- 	</update> -->
+	
+<!-- 	<delete id="delete"> -->
+<!-- 		delete from tbl_freeboard -->
+<!-- 		where boardNo = #{boardNo} -->
+<!-- 	</delete> -->
+	
+<!-- 	<delete id="deleteAttach"> -->
+<!-- 		delete from tbl_attach	 -->
+<!-- 		where boardNo = #{boardNo } -->
+<!-- 			  and fileName = #{fileName} -->
+<!-- 	</delete> -->
+</mapper>
