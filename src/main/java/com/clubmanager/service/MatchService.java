@@ -9,4 +9,10 @@ public interface MatchService {
 	public boolean register(MatchVO matchVO);
 	
 	public List<MatchVO> getPlannedList(String clubCode);
+	
+	public boolean modify(MatchVO matchVO);
+	
+	public boolean delete(int matchNo);
+	
+	public MatchVO get(int matchNo);
 }

@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,38 +44,27 @@
 								<td>마감 시간</td>
 								<td>투표율</td>
 							</tr>
-							<tr>
-								<td>1</td>
-								<td>123FC</td>
-								<td>2019-12-16 18:00</td>
-								<td>대화구장</td>
-								<td>2019-12-15 18:00</td>
-								<td><span class="badge badge-vote-over-80">84%</span></td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>456FC</td>
-								<td>2019-12-12 17:00</td>
-								<td>백석구장</td>
-								<td>2019-12-15 18:00</td>
-								<td><span class="badge badge-vote-over-50">64%</span></td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>789FC</td>
-								<td>2019-12-08 17:00</td>
-								<td>백석구장</td>
-								<td>2019-12-15 18:00</td>
-								<td><span class="badge badge-vote-under-50">40%</span></td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>111FC</td>
-								<td>2019-12-08 17:00</td>
-								<td>백석구장</td>
-								<td>2019-12-15 18:00</td>
-								<td><span class="badge badge-vote-end">투표 종료</span></td>
-							</tr>
+							<c:forEach items="${ppList }" var="pp" varStatus="status">
+								<c:choose>
+									<c:when
+										test="${principal.member.auth == 'ROLE_OWNER' ||principal.member.auth == 'ROLE_MANAGER' }">
+										<tr data-matchNo="${pp.matchVO.matchNo }" class="ppViewTr">
+									</c:when>
+									<c:otherwise>
+										<tr>
+									</c:otherwise>
+								</c:choose>
+									<td>${status.count }</td>
+									<td>${pp.matchVO.apposingTeam }</td>
+									<td><fmt:formatDate value="${pp.matchVO.matchDate }"
+											pattern="yyyy-MM-dd E  HH:mm" /></td>
+									<td>${pp.matchVO.stadium }</td>
+									<td><fmt:formatDate value="${pp.endDate }"
+											pattern="yyyy-MM-dd E  HH:mm" /></td>
+									<td><span class="badge badge-vote-over-80 voteRate">84%</span></td>
+								</tr>
+							</c:forEach>
+
 						</table>
 					</div>
 				</div>
@@ -88,15 +81,16 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
 					<div class="col-xs-12 col-sm-6 col-md-6 enter-row-1">
 						<div class="col-xs-12 col-sm-12 col-md-12">
-							<span>VS&nbsp;</span><span class="large-font">222FC</span>
+							<span>VS&nbsp;</span><span class="large-font" id="apposingTeam"></span>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
-							<span>2019-12-11 19:00</span><span class="tab-space-1">백석구장</span>
+							<span id="matchDate">
+							</span><span class="tab-space-1"  id="stadium"></span>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-6 enter-row-4">
 						<div class="col-xs-12 col-sm-12 col-md-12">
-							<span class="large-font">3일 14:33:25</span>
+							<span class="large-font"  id="remainTime"></span>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
 							<span>남은 투표 시간</span>&nbsp;
@@ -134,124 +128,30 @@
 					</h1>
 					<div class="col-xs-12 col-sm-4 col-md-4">
 						<h2>참석</h2>
-						<div class="table-responsive container-fluid">
-							<table
-								class="table table-condensed table-hover text-center text-white">
-								<tr>
-									<td>No</td>
-									<td>이름</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td>홍길동</td>
-								</tr>
-							</table>
+						<div class="table-responsive container-fluid" id="attendList">
 						</div>
 					</div>
 
 					<div class="col-xs-12 col-sm-4 col-md-4">
 						<h2>미투표</h2>
-						<div class="table-responsive container-fluid">
-							<table
-								class="table table-condensed table-hover text-center text-white">
-								<tr>
-									<td>No</td>
-									<td>이름</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td>홍길동</td>
-								</tr>
-							</table>
+						<div class="table-responsive container-fluid" id="noVoteList">
 						</div>
 					</div>
 
 					<div class="col-xs-12 col-sm-4 col-md-4">
 						<h2>미참석</h2>
-						<div class="table-responsive container-fluid">
-							<table
-								class="table table-condensed table-hover text-center text-white">
-								<tr>
-									<td>No</td>
-									<td>이름</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td>홍길동</td>
-								</tr>
-							</table>
+						<div class="table-responsive container-fluid" id="absenceList">
+<!-- 							<table -->
+<!-- 								class="table table-condensed table-hover text-center text-white"> -->
+<!-- 								<tr> -->
+<!-- 									<td>No</td> -->
+<!-- 									<td>이름</td> -->
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<td>1</td> -->
+<!-- 									<td>홍길동</td> -->
+<!-- 								</tr> -->
+<!-- 							</table> -->
 						</div>
 					</div>
 				</div>
@@ -268,6 +168,88 @@
 
 
 	<script>
+	var token = '${_csrf.token }';
+	var header = '${_csrf.headerName }';
+	
+	var timer = function(endDate){
+		var dateInterval = new Date(new Date(endDate)-new Date());
+		var remainTimeStr = '';
+		remainTimeStr += dateInterval.getDate() + "일 " +
+		dateInterval.getHours() + "시간 "+
+		dateInterval.getMinutes() + "분 "+
+		dateInterval.getSeconds() + "초 전";
+		$("#remainTime").html(remainTimeStr);
+	}
+	
+	var showDetail = function(clubCode, matchNo){
+		$.ajax({
+			type : "get",
+			url : "/poll/getPP/"+clubCode+"/"+matchNo,
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result) {
+				console.log(result);
+				if(result!=null){
+					$("#apposingTeam").html(result.matchVO.apposingTeam);
+					
+					var date = new Date(result.matchVO.matchDate);
+					dateStr = (date.getYear()+1900) + "-";
+					dateStr += (date.getMonth()+1)>10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
+					dateStr += date.getDate()>10? date.getDate()+"  ":"0"+date.getDate()+"  ";
+					dateStr += date.getHours()>10? date.getHours() + ":":"0"+date.getHours() + ":";
+					dateStr += date.getMinutes()>10 ? date.getMinutes():"0"+date.getMinutes();
+					$("#matchDate").html(dateStr);
+					
+					$("#stadium").html(result.matchVO.stadium);
+					setInterval(function(){timer(result.endDate)},1000);
+					console.log(result.psList);
+					var strAttend="<table class='table table-condensed table-hover text-center text-white'>"
+								  + "<tr><td>No</td><td>이름</td></tr>";
+					var strAbsence="<table class='table table-condensed table-hover text-center text-white'>"
+						  + "<tr><td>No</td><td>이름</td></tr>";
+					var strNoVote="<table class='table table-condensed table-hover text-center text-white'>"
+						  + "<tr><td>No</td><td>이름</td></tr>";	
+					var i=1;
+					var j=1;
+					var k=1;
+					
+					for(var ps of result.psList){
+						if(ps.status==0){
+							strNoVote += "<tr>"
+									   + "<td>"+(k++)+"</td>"
+									   + "<td>"+ps.userName+"</td>"
+									   +"</tr>";
+						}else if(ps.status ==1){
+							strAttend += "<tr>"
+								   + "<td>"+(i++)+"</td>"
+								   + "<td>"+ps.userName+"</td>"
+								   +"</tr>";
+						}else{
+							strAbsence += "<tr>"
+								   + "<td>"+(j++)+"</td>"
+								   + "<td>"+ps.userName+"</td>"
+								   +"</tr>";
+						}
+					}
+					strAttend += "</table>";
+					strAbsence += "</table>";
+					strNoVote += "</table>";
+					$("#attendList").html(strAttend);
+					$("#asenceList").html(strAbsence);
+					$("#noVoteList").html(strNoVote);
+				}
+			
+			
+			}
+		});
+		
+		
+		
+	}
+	
+	
+	
 				var isParticipate = document.getElementsByName("isParticipate");
 				var isChecked = function(){
 					for(var el of isParticipate){
@@ -287,7 +269,10 @@
 				for(var el of isParticipate){
 					el.addEventListener("click",isChecked);
 				};
-				window.onload=isChecked;
+				window.onload=function(){
+// 					isChecked;
+					showDetail('${ppList[0].clubCode}','${ppList[0].matchNo}' );
+				}
 				
 	</script>
 </body>

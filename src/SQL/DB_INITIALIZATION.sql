@@ -37,14 +37,15 @@ create table tbl_matches(
     apposingTeam varchar2(20),
     matchDate date,
     stadium varchar2(20),
-    matchStatus number default 2,  -- 0:종료된 경기, 1: 확정된 경기, 2:미확정 경기
-    matchRecordStatus number default 2,  -- 0:기록완료, 1: 기록중, 2:미기록
+    matchStatus number default 0,  -- 0:미확정 경기, 1: 확정된 경기, 2:종료된 경기
+    matchRecordStatus number default 0,  -- 0:미기록, 1: 기록중, 2:기록완료
     clubCode varchar2(20));
 alter table tbl_matches add constraint pk_matches primary key(matchNo);
 alter table tbl_matches add constraint ck_matches_matchStatus check (matchStatus in (0,1,2));
 alter table tbl_matches add constraint ck_matches_matchRecordStatus check (matchRecordStatus in (0,1,2));   
 alter table tbl_matches add constraint fk_matches_clubCode_cascade foreign key(clubCode) references tbl_clubs(clubCode) on delete cascade;
 create sequence seq_matches;
+create index idx_matches on tbl_matches(clubCode, matchDate asc);
 
 create table tbl_matchRecord(
     goal number default 0,
@@ -89,6 +90,14 @@ create table tbl_pollMoM(
     endDate date,
     matchNo number);
 alter table tbl_pollMoM add constraint fk_pollM_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
+
+create table tbl_pollStatus(
+    matchNo number,
+    userId varchar2(20),
+    userName varchar2(20),
+    pollType number, --1: participate , 2: MoM
+    status number default 0  -- 0: 미투표, 1:투표 or 참석  2: 미참석 
+);
 
 
 create table tbl_freeBoard(
