@@ -141,17 +141,6 @@
 					<div class="col-xs-12 col-sm-4 col-md-4">
 						<h2>미참석</h2>
 						<div class="table-responsive container-fluid" id="absenceList">
-<!-- 							<table -->
-<!-- 								class="table table-condensed table-hover text-center text-white"> -->
-<!-- 								<tr> -->
-<!-- 									<td>No</td> -->
-<!-- 									<td>이름</td> -->
-<!-- 								</tr> -->
-<!-- 								<tr> -->
-<!-- 									<td>1</td> -->
-<!-- 									<td>홍길동</td> -->
-<!-- 								</tr> -->
-<!-- 							</table> -->
 						</div>
 					</div>
 				</div>
@@ -179,8 +168,9 @@
 		dateInterval.getMinutes() + "분 "+
 		dateInterval.getSeconds() + "초 전";
 		$("#remainTime").html(remainTimeStr);
-	}
-	
+	};
+	var timerInteval ;
+		
 	var showDetail = function(clubCode, matchNo){
 		$.ajax({
 			type : "get",
@@ -191,6 +181,7 @@
 			success : function(result) {
 				console.log(result);
 				if(result!=null){
+					clearInterval(timerInteval);
 					$("#apposingTeam").html(result.matchVO.apposingTeam);
 					
 					var date = new Date(result.matchVO.matchDate);
@@ -202,7 +193,9 @@
 					$("#matchDate").html(dateStr);
 					
 					$("#stadium").html(result.matchVO.stadium);
-					setInterval(function(){timer(result.endDate)},1000);
+					timerInteval = setInterval(timer,1000,result.endDate);
+					
+					
 					console.log(result.psList);
 					var strAttend="<table class='table table-condensed table-hover text-center text-white'>"
 								  + "<tr><td>No</td><td>이름</td></tr>";
@@ -213,7 +206,6 @@
 					var i=1;
 					var j=1;
 					var k=1;
-					
 					for(var ps of result.psList){
 						if(ps.status==0){
 							strNoVote += "<tr>"
@@ -231,6 +223,11 @@
 								   + "<td>"+ps.userName+"</td>"
 								   +"</tr>";
 						}
+						if(ps.userId == "${principal.member.userId}"){
+							var status = ps.status;
+							
+						}
+						
 					}
 					strAttend += "</table>";
 					strAbsence += "</table>";
@@ -247,6 +244,12 @@
 		
 		
 	}
+	$(".ppViewTr").on("click", function(e){
+		var matchNo = $(e.currentTarget).data("matchno");
+		console.log(matchNo);
+		showDetail('${ppList[0].clubCode}',matchNo );
+	})
+	
 	
 	
 	
