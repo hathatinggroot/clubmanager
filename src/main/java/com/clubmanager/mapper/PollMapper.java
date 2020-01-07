@@ -19,4 +19,8 @@ public interface PollMapper {
 	public List<PollStatusDTO> getPSList(PollPartVO ppVO);
 	
 	public PollPartVO getPP(@Param("clubCode") String clubCode,@Param("matchNo")  int matchNo);
+	
+	public int modifyPS(PollStatusDTO psDTO);
+	
+	public int modifyPP(PollPartVO ppVO);
 }

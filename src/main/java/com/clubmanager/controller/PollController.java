@@ -1,6 +1,5 @@
 package com.clubmanager.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.clubmanager.domain.MatchVO;
-import com.clubmanager.domain.MemberVO;
 import com.clubmanager.domain.PollPartVO;
+import com.clubmanager.domain.PollStatusDTO;
 import com.clubmanager.service.MatchService;
-import com.clubmanager.service.MemberService;
 import com.clubmanager.service.PollService;
 
 import lombok.Setter;
@@ -42,7 +41,7 @@ public class PollController {
 
 		ppList.forEach(ppVO->{
 			ppVO.setMatchVO(matchService.get(ppVO.getMatchNo()));
-//			ppVO.setPsList(pollService.getPSList(ppVO));
+			ppVO.setPsList(pollService.getPSList(ppVO));
 		});
 		
 		
@@ -63,9 +62,25 @@ public class PollController {
 		return ppVO;
 	}
 	
+	@PutMapping(value="/vote",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String vote(@RequestBody PollStatusDTO psDTO) {
+		log.info("vote psDTO : " + psDTO);
+		
+		if(pollService.vote(psDTO)) return "success";
+		
+		return "fail";
+	}
 	
-	
-	
+	@PutMapping(value="/modifyPP",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String modifyPP(@RequestBody PollPartVO ppVO) {
+		log.info("modifyPP ppVO : " + ppVO);
+		
+		if(pollService.modifyPP(ppVO)) return "success";
+		
+		return "fail";
+	}
 	
 	@GetMapping("/mom")
 	public void goToMoM() {

@@ -402,11 +402,13 @@
 					var matchDay = $("#modMatchDay").val();
 					var matchHour = $("#modMatchHour").val();
 					var matchMin = $("#modMatchMin").val();
-					var matchStatus = $("#modMatchStatus").prop("checked") ? 1
-							: 0;
 					var matchD = new Date(matchYear, matchMonth - 1, matchDay,
 							matchHour, matchMin, 0, 0);
 					console.log(matchD);
+					
+					var matchStatus = $("#modMatchStatus").prop("checked") ? 1
+							: 0;
+					
 
 					matchObj.apposingTeam = $("#modApposingTeam").val();
 					matchObj.matchDate = matchD;

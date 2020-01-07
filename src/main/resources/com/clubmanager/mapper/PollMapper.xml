@@ -38,5 +38,18 @@
 		where matchNo = #{matchNo}
 	</select> 
 	
+	<update id="modifyPS">
+		update tbl_pollstatus 
+		set status = ${status}
+		where matchNo = #{matchNo}
+			and userId = #{userId}
+	</update>
+	
+	<update id="modifyPP">
+		update tbl_pollparticipate 
+		set endDate = #{endDate}
+		where matchNo = #{matchNo}
+	</update>
+	
 
 </mapper>

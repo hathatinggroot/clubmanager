@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.clubmanager.mapper.RecordMapper">
+
+	<insert id="insertPR">
+		insert into tbl_personalrecord(mom, goals, assists, saves, userId, matchNo)
+		values(#{mom},#{goals},#{assists},#{saves},#{userId},#{matchNo})
+	</insert>
+
+	<delete id="deletePR">
+		delete from tbl_personalrecord
+		where matchNo = #{matchNo}
+			and userId = #{userId}
+	</delete>
+
+<!-- 	<select id="getPPList" resultType="com.clubmanager.domain.PollPartVO"> -->
+<!-- 		select /*+ INDEX(tbl_pollparticipate idx_pp) */ *  -->
+<!-- 		from tbl_pollparticipate -->
+<!-- 		where clubCode = #{clubCode} -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="getPP" resultType="com.clubmanager.domain.PollPartVO"> -->
+<!-- 		select /*+ INDEX(tbl_pollparticipate idx_pp) */ *  -->
+<!-- 		from tbl_pollparticipate -->
+<!-- 		where clubCode = #{clubCode} -->
+<!-- 			and matchNo = #{matchNo} -->
+<!-- 	</select> -->
+	
+<!-- 	<insert id="insertPS"> -->
+<!-- 		insert into tbl_pollstatus(matchNo, userId, userName, pollType) -->
+<!-- 		values(#{matchNo},#{userId},#{userName},#{pollType}) -->
+<!-- 	</insert> -->
+	
+<!-- 	<select id="getPSList" resultType="com.clubmanager.domain.PollStatusDTO"> -->
+<!-- 		select *  -->
+<!-- 		from tbl_pollstatus -->
+<!-- 		where matchNo = #{matchNo} -->
+<!-- 	</select>  -->
+	
+<!-- 	<update id="modifyPS"> -->
+<!-- 		update tbl_pollstatus  -->
+<!-- 		set status = ${status} -->
+<!-- 		where matchNo = #{matchNo} -->
+<!-- 			and userId = #{userId} -->
+<!-- 	</update> -->
+	
+<!-- 	<update id="modifyPP"> -->
+<!-- 		update tbl_pollparticipate  -->
+<!-- 		set endDate = #{endDate} -->
+<!-- 		where matchNo = #{matchNo} -->
+<!-- 	</update> -->
+	
+
+</mapper>

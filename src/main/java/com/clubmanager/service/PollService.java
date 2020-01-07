@@ -11,4 +11,8 @@ public interface PollService {
 	public List<PollStatusDTO> getPSList(PollPartVO ppVO);
 	
 	public PollPartVO getPP(String clubCode, int matchNo);
+	
+	public boolean vote(PollStatusDTO psDTO);
+	
+	public boolean modifyPP(PollPartVO ppVO);
 }

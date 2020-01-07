@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
@@ -45,15 +46,7 @@
 								<td>투표율</td>
 							</tr>
 							<c:forEach items="${ppList }" var="pp" varStatus="status">
-								<c:choose>
-									<c:when
-										test="${principal.member.auth == 'ROLE_OWNER' ||principal.member.auth == 'ROLE_MANAGER' }">
-										<tr data-matchNo="${pp.matchVO.matchNo }" class="ppViewTr">
-									</c:when>
-									<c:otherwise>
-										<tr>
-									</c:otherwise>
-								</c:choose>
+								<tr data-matchNo="${pp.matchVO.matchNo }" class="ppViewTr">
 									<td>${status.count }</td>
 									<td>${pp.matchVO.apposingTeam }</td>
 									<td><fmt:formatDate value="${pp.matchVO.matchDate }"
@@ -61,7 +54,28 @@
 									<td>${pp.matchVO.stadium }</td>
 									<td><fmt:formatDate value="${pp.endDate }"
 											pattern="yyyy-MM-dd E  HH:mm" /></td>
-									<td><span class="badge badge-vote-over-80 voteRate">84%</span></td>
+									
+									<c:set var="cnt" value="0"/>
+									<c:set var="size" value="${fn:length(pp.psList) }"/>
+									
+									<c:forEach items="${pp.psList }" var="ps">
+										<c:if test="${ps.status ==0 }">
+											<c:set var="cnt" value="${cnt+1 }"/>
+										</c:if>
+									</c:forEach>		
+									<fmt:parseNumber var="rate" integerOnly="true" value="${(1-(cnt/size))*100 }"/>
+									<c:choose>
+										<c:when test="${rate>=80 }">
+											<td><span class="badge badge-vote-over-80 voteRate">${rate }%</span></td>
+										</c:when>
+										<c:when test="${rate>=50 }">
+											<td><span class="badge badge-vote-over-50 voteRate">${rate }%</span></td>
+										</c:when>
+										<c:otherwise>
+											<td><span class="badge badge-vote-under-50 voteRate">${rate }%</span></td>
+										</c:otherwise>
+									</c:choose>
+									
 								</tr>
 							</c:forEach>
 
@@ -84,17 +98,20 @@
 							<span>VS&nbsp;</span><span class="large-font" id="apposingTeam"></span>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
-							<span id="matchDate">
-							</span><span class="tab-space-1"  id="stadium"></span>
+							<span id="matchDate"> </span><span class="tab-space-1"
+								id="stadium"></span>
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-6 enter-row-4">
 						<div class="col-xs-12 col-sm-12 col-md-12">
-							<span class="large-font"  id="remainTime"></span>
+							<span class="large-font" id="remainTime"></span>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
 							<span>남은 투표 시간</span>&nbsp;
-							<button type="button" class="btn btn-default">시간 조정</button>
+							<c:if
+								test="${principal.member.auth == 'ROLE_OWNER' || principal.member.auth == 'ROLE_MANAGER'}">
+								<button type="button" class="btn btn-default" data-endTime=""  data-matchNo="" id="endTimeModBtn">시간 조정</button>
+							</c:if>
 						</div>
 					</div>
 				</div>
@@ -102,20 +119,13 @@
 
 				<!-- Vote Button start -->
 				<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
-					<div>
-						<div>
-							<input type="radio" class="dp-none" value="" name="isParticipate"
-								checked>
-						</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 isPart" data-value="true"
+						data-matchNo="">
+						<span class="large-font">참석</span>
 					</div>
-					<div class="col-xs-6 col-sm-6 col-md-6">
-						<label class="large-font">참석<input type="radio"
-							class="dp-none" value="true" name="isParticipate"></label>
-					</div>
-					<div class="col-xs-6 col-sm-6 col-md-6">
-						<label class="large-font">미참석<input type="radio"
-							class="dp-none" value="false" name="isParticipate"></label>
-
+					<div class="col-xs-6 col-sm-6 col-md-6 isPart" data-value="false"
+						data-matchNo="">
+						<span class="large-font">미참석</span>
 					</div>
 				</div>
 				<!-- Vote Button end -->
@@ -126,7 +136,7 @@
 					<h1>
 						<dfn>투표 현황</dfn>
 					</h1>
-					<div class="col-xs-12 col-sm-4 col-md-4">
+					<div class="col-xs-12 col-sm-4 col-md-4" >
 						<h2>참석</h2>
 						<div class="table-responsive container-fluid" id="attendList">
 						</div>
@@ -152,6 +162,67 @@
 	</div>
 	<!-- container-fluid end -->
 
+	<!-- Modify endDate Modal start -->
+	<div class="modal fade" role="dialog"
+		aria-labelledby="gridSystemModalLabel" aria-hidden="true"
+		id="modifyEndDate">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="gridSystemModalLabel">투표 마감 시간 변경</h4>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<form>
+							<div class="form-group">
+								<label for="registerMatchDate">마감 시간</label>
+								<div id="modEndDate">
+									<select id="modEndYear">
+										<option value="2020">2020</option>
+										<option value="2019">2019</option>
+									</select> <label for="modEndYear">년 </label> <select
+										id="modEndMonth">
+										<c:forEach begin="1" end="12" var="mon">
+											<option value="${mon }">${mon }</option>
+										</c:forEach>
+									</select> <label for="modEndMonth">월 </label> <select
+										id="modEndDay">
+										<c:forEach begin="1" end="31" var="day">
+											<option value="${day }">${day }</option>
+										</c:forEach>
+									</select> <label for="modEndDay">일 </label> <select
+										id="modEndHour">
+										<c:forEach begin="0" end="24" var="hour">
+											<option value="${hour }"><c:if test="${hour < 10}">0</c:if>${hour }</option>
+										</c:forEach>
+									</select> <label for="modEndHour">: </label> <select
+										id="modEndMin">
+										<c:forEach begin="00" end="59" var="min">
+											<option value="${min }"><c:if test="${min < 10}">0</c:if>${min }</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary" id="doModifyEndTime">등록</button>
+					<button type="button" class="btn btn-danger" id="endVote">투표마감</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!-- Modify endDate Modal end -->
+
 	<!-- INCLUDE footer.jsp -->
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 
@@ -160,14 +231,80 @@
 	var token = '${_csrf.token }';
 	var header = '${_csrf.headerName }';
 	
+	
+	var myStatus = "";
+	
+	
+	var chColorByStatus = function(status){
+		var isPart = $(".isPart");
+		switch(status){
+		case 0 : alert("투표에 참여하지 않았습니다");isPart[0].style.backgroundColor="transparent";isPart[1].style.backgroundColor="transparent"; break;
+		case 1 : alert("이 경기에 참석합니다");isPart[0].style.backgroundColor="green";isPart[1].style.backgroundColor="transparent"; break;
+		case 2 : alert("이 경기에 참석하지 않습니다");isPart[0].style.backgroundColor="transparent";isPart[1].style.backgroundColor="green"; break;
+		}
+	};
+	
+	var voteEventOn = function(){$(".isPart").off("click").on("click", function(e){
+		var psDTO = new Object();
+		psDTO.matchNo = $(e.currentTarget).data('matchno');
+		psDTO.userId = "${principal.member.userId}";
+		var voteStatus = $(e.currentTarget).data('value');
+		psDTO.status = voteStatus?1:2;
+		
+		console.log("psDTO for vote-------" );
+		console.log(psDTO);
+		
+		$.ajax({
+			type:"put",
+			url:"/poll/vote/",
+			data : JSON.stringify(psDTO),
+			contentType : "application/json",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result){
+				console.log("vote Result : " + result);
+				showDetail("${principal.member.clubCode}",psDTO.matchNo );
+			}
+		})
+		
+	})};		
+	
+	var voteEventOff = function(){$(".isPart").off("click").on("click", function(e){
+			alert("투표가 종료되었습니다");
+	})};
+	
+	console.log(new Date(0));
 	var timer = function(endDate){
-		var dateInterval = new Date(new Date(endDate)-new Date());
-		var remainTimeStr = '';
-		remainTimeStr += dateInterval.getDate() + "일 " +
-		dateInterval.getHours() + "시간 "+
-		dateInterval.getMinutes() + "분 "+
-		dateInterval.getSeconds() + "초 전";
-		$("#remainTime").html(remainTimeStr);
+		var dateIntervalSec = endDate-new Date().getTime();
+
+		var rDate = Math.floor(dateIntervalSec/(1000*60*60*24));
+		dateIntervalSec = dateIntervalSec%(1000*60*60*24);
+		
+		var rHour = Math.floor(dateIntervalSec/(1000*60*60));
+		dateIntervalSec = dateIntervalSec%(1000*60*60);
+		
+		var rMin = Math.floor(dateIntervalSec/(1000*60));
+		dateIntervalSec = dateIntervalSec%(1000*60);
+		
+		var rSec = Math.floor(dateIntervalSec/(1000));
+		
+		if(rSec<0){
+			console.log("running");
+			$("#remainTime").html('투표 종료').css("color","red");
+			voteEventOff();
+			clearInterval(timerInteval);
+		}else{
+			var remainTimeStr = '';
+			remainTimeStr += rDate>0 ? rDate + "일 ":"" ;
+			remainTimeStr += rHour>0 ? rHour + "시간 ":"";
+			remainTimeStr += rMin >0 ? rMin + "분 ":"";
+			remainTimeStr += rSec + "초 전";
+			
+			$("#remainTime").html(remainTimeStr).css("color","white");
+		}
+		
+		
 	};
 	var timerInteval ;
 		
@@ -181,9 +318,13 @@
 			success : function(result) {
 				console.log(result);
 				if(result!=null){
+					voteEventOn();
 					clearInterval(timerInteval);
 					$("#apposingTeam").html(result.matchVO.apposingTeam);
 					
+					$("#endTimeModBtn")[0].dataset.endtime = result.endDate;
+					$("#endTimeModBtn")[0].dataset.matchno = result.matchNo;
+						
 					var date = new Date(result.matchVO.matchDate);
 					dateStr = (date.getYear()+1900) + "-";
 					dateStr += (date.getMonth()+1)>10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
@@ -224,8 +365,8 @@
 								   +"</tr>";
 						}
 						if(ps.userId == "${principal.member.userId}"){
-							var status = ps.status;
-							
+							myStatus = ps.status;
+							chColorByStatus(myStatus);
 						}
 						
 					}
@@ -233,14 +374,15 @@
 					strAbsence += "</table>";
 					strNoVote += "</table>";
 					$("#attendList").html(strAttend);
-					$("#asenceList").html(strAbsence);
+					$("#absenceList").html(strAbsence);
 					$("#noVoteList").html(strNoVote);
 				}
 			
 			
 			}
 		});
-		
+		$(".isPart")[0].dataset.matchno = matchNo;
+		$(".isPart")[1].dataset.matchno = matchNo;
 		
 		
 	}
@@ -250,33 +392,86 @@
 		showDetail('${ppList[0].clubCode}',matchNo );
 	})
 	
-	
-	
-	
-				var isParticipate = document.getElementsByName("isParticipate");
-				var isChecked = function(){
-					for(var el of isParticipate){
-						if(el.checked) {
-							var status = el.value;
-							if(status == 'true') status = '참석합';
-							else if(status == "false") status = '미참석합';
-							else status = '투표하지 않았습';
-							alert("이 경기에 "+status+"니다");
-							el.parentElement.parentElement.style.backgroundColor="green";
-						}
-						else {
-							el.parentElement.parentElement.style.backgroundColor="transparent";
-						}
-					};
-				}
-				for(var el of isParticipate){
-					el.addEventListener("click",isChecked);
-				};
 				window.onload=function(){
-// 					isChecked;
 					showDetail('${ppList[0].clubCode}','${ppList[0].matchNo}' );
 				}
 				
+	$("#endTimeModBtn").on("click",function(e){
+		$("#modifyEndDate").modal('show');
+	})
+	
+	$("#modifyEndDate").on("show.bs.modal",function(e){
+		var milliSec = parseInt($("#endTimeModBtn")[0].dataset.endtime);
+// 		console.log(new Date(milliSec));
+// 		console.log(new Date($("#endTimeModBtn").data('endtime')));
+		var originEndTime = new Date(milliSec);
+		console.log(originEndTime);
+		
+		$("#modEndYear").val(originEndTime.getYear()+1900);
+		$("#modEndMonth").val(originEndTime.getMonth()+1);
+		$("#modEndDay").val(originEndTime.getDate());
+		$("#modEndHour").val(originEndTime.getHours());
+		$("#modEndMin").val(originEndTime.getMinutes());
+	})
+	
+	$("#doModifyEndTime").on("click",function(e){
+		
+		var matchNo = $("#endTimeModBtn").data("matchno");
+		console.log(matchNo);
+		var modEndYear = $("#modEndYear").val();
+		var modEndMonth = $("#modEndMonth").val();
+		var modEndDay = $("#modEndDay").val();
+		var modEndHour = $("#modEndHour").val();
+		var modEndMin = $("#modEndMin").val();
+		var modEndD = new Date(modEndYear, modEndMonth - 1, modEndDay,
+				modEndHour, modEndMin, 0, 0);
+		console.log(modEndD);
+		var ppVO = new Object();
+		ppVO.matchNo = matchNo;
+		ppVO.endDate = modEndD;
+		
+		$.ajax({
+			type:"put",
+			url:"/poll/modifyPP/",
+			data : JSON.stringify(ppVO),
+			contentType : "application/json",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result){
+				console.log("modifyPP Result : " + result);
+				$("#modifyEndDate").modal('hide');
+				showDetail("${principal.member.clubCode}",ppVO.matchNo );
+			}
+		})
+		
+	})
+	$("#endVote").on("click",function(e){
+		
+		var matchNo = $("#endTimeModBtn").data("matchno");
+		console.log(matchNo);
+		var ppVO = new Object();
+		ppVO.matchNo = matchNo;
+		ppVO.endDate = new Date();
+		
+		$.ajax({
+			type:"put",
+			url:"/poll/modifyPP/",
+			data : JSON.stringify(ppVO),
+			contentType : "application/json",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result){
+				console.log("modifyPP Result : " + result);
+				$("#modifyEndDate").modal('hide');
+				showDetail("${principal.member.clubCode}",ppVO.matchNo );
+			}
+		})
+		
+	})
+	
+	
 	</script>
 </body>
 </html>

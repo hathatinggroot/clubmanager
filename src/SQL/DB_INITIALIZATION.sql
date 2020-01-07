@@ -59,7 +59,6 @@ alter table tbl_matchRecord add constraint fk_mRecord_matchNo_cascade foreign ke
 
 
 create table tbl_personalRecord(  -- total = 1(Âü¼®) + mom(3) + goals(2) + assists(1) + savess(1) )
-    total number default 0,
     mom number default 0,
     goals number default 0,
     assists number default 0,
@@ -82,13 +81,15 @@ alter table tbl_tactics add constraint fk_tactics_matchNo_cascade foreign key(ma
 
 create table tbl_pollParticipate(
     endDate date,
-    matchNo number);
+    matchNo number,
+    clubCode varchar2(20));
 alter table tbl_pollParticipate add constraint fk_pollP_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
-
+create index idx_pp on tbl_pollParticipate(clubCode, endDate asc);
 
 create table tbl_pollMoM(
     endDate date,
-    matchNo number);
+    matchNo number,
+    clubCode varchar2(20));
 alter table tbl_pollMoM add constraint fk_pollM_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
 
 create table tbl_pollStatus(

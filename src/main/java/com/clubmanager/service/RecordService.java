@@ -1,5 +1,7 @@
 package com.clubmanager.service;
 
-public interface RecordService {
+import com.clubmanager.domain.PersonalRecordDTO;
 
+public interface RecordService {
+	public boolean attendMatch(PersonalRecordDTO prDTO);
 }
