@@ -22,6 +22,17 @@
 		where matchNo = #{matchNo}
 	</select>
 	
+	<select id="getMR" resultType="com.clubmanager.domain.MatchRecordVO">
+		select * 
+		from tbl_matchrecord
+		where matchNo = #{matchNo}
+	</select>
+	
+	<insert id="insertMR">
+		insert into tbl_matchrecord(matchNo)
+		values(#{matchNo})
+	</insert>
+	
 <!-- 	<select id="getPP" resultType="com.clubmanager.domain.PollPartVO"> -->
 <!-- 		select /*+ INDEX(tbl_pollparticipate idx_pp) */ *  -->
 <!-- 		from tbl_pollparticipate -->

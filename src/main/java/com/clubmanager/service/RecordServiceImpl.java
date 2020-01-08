@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.clubmanager.domain.MatchRecordVO;
 import com.clubmanager.domain.PersonalRecordDTO;
+import com.clubmanager.mapper.MatchMapper;
 import com.clubmanager.mapper.RecordMapper;
 
 import lombok.Setter;
@@ -15,6 +17,9 @@ import lombok.Setter;
 public class RecordServiceImpl implements RecordService {
 	@Setter(onMethod_=@Autowired)
 	private RecordMapper recordMapper;
+	
+	@Setter(onMethod_=@Autowired)
+	private MatchMapper matchMapper;
 	
 	@Override
 	public boolean attendMatch(PersonalRecordDTO prDTO) {
@@ -35,5 +40,14 @@ public class RecordServiceImpl implements RecordService {
 		return prList;
 	}
 	
-	
+	@Override
+	public MatchRecordVO getMR(int matchNo) {
+		MatchRecordVO mrVO = new MatchRecordVO();
+		
+		mrVO = recordMapper.getMR(matchNo);
+		mrVO.setPrDTOList(getPRList(matchNo));
+		
+		
+		return mrVO;
+	}
 }

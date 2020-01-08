@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,27 +43,28 @@
 					<hr class="divider">
 				</div>
 
-
 				<!-- match info start -->
 				<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
 					<div>
 						<div class="col-xs-6 col-sm-6 col-md-6">
-							<span>VS&nbsp;</span><span class="large-font">222FC</span>
+							<span>VS&nbsp;</span><span class="large-font">${matchVO.apposingTeam }</span>
 						</div>
 						<div class="col-xs-6 col-sm-6 col-md-6">
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								<span class="large-font">5:3</span>&nbsp;
+								<span class="large-font"><span id="goal">5</span>:<span
+									id="lostPoint">3</span></span>&nbsp;
 							</div>
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								<button type="button" class="btn btn-primary btn-block">실점
-									+</button>
-								<button type="button" class="btn btn-default btn-block">실점
-									-</button>
+								<button type="button" class="btn btn-primary btn-block lostBtn"
+									data-amount="1">실점 +</button>
+								<button type="button" class="btn btn-default btn-block lostBtn"
+									data-amount="-1">실점 -</button>
 							</div>
 						</div>
 					</div>
 					<div>
-						<span>2019-12-11 19:00</span><span class="tab-space-1">백석구장</span>
+						<span><fmt:formatDate value="${matchVO.matchDate }"
+								pattern="yyyy-MM-dd E  HH:mm" /></span><span class="tab-space-1">${matchVO.stadium }</span>
 					</div>
 				</div>
 				<!-- match info end -->
@@ -71,9 +77,9 @@
 					</h1>
 					<div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<div class="table-responsive container-fluid">
-								<button type="button" class="btn btn-primary btn-block"
-									data-toggle="modal" data-target="#addGoal">득점 추가</button>
+							<button type="button" class="btn btn-primary btn-block"
+								data-toggle="modal" data-target="#addGoal">득점 추가</button>
+							<div class="table-responsive container-fluid" id="goalList">
 								<table
 									class="table table-condensed table-hover text-center text-white">
 									<tr>
@@ -86,43 +92,13 @@
 										<td>홍길동</td>
 										<td>2</td>
 									</tr>
-									<tr>
-										<td>2</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>6</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>7</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
 								</table>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<div class="table-responsive container-fluid">
-								<button type="button" class="btn btn-primary btn-block"
-									data-toggle="modal" data-target="#addAssist">도움 추가</button>
+							<button type="button" class="btn btn-primary btn-block"
+								data-toggle="modal" data-target="#addAssist">도움 추가</button>
+							<div class="table-responsive container-fluid" id="assistList">
 								<table
 									class="table table-condensed table-hover text-center text-white">
 									<tr>
@@ -135,33 +111,13 @@
 										<td>홍길동</td>
 										<td>2</td>
 									</tr>
-									<tr>
-										<td>2</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
 								</table>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<div class="table-responsive container-fluid">
-								<button type="button" class="btn btn-primary btn-block"
-									data-toggle="modal" data-target="#addSave">선방 추가</button>
+							<button type="button" class="btn btn-primary btn-block"
+								data-toggle="modal" data-target="#addSave">선방 추가</button>
+							<div class="table-responsive container-fluid" id="saveList">
 								<table
 									class="table table-condensed table-hover text-center text-white">
 									<tr>
@@ -173,26 +129,6 @@
 										<td>1</td>
 										<td>홍길동</td>
 										<td>2</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>홍길동</td>
-										<td>1</td>
 									</tr>
 								</table>
 							</div>
@@ -208,64 +144,10 @@
 						<dfn>코멘트</dfn>
 					</h1>
 					<div class="text-gray">
-						<textarea rows="10" class="comment-text"></textarea>
+						<textarea rows="10" class="comment-text" id="comments"></textarea>
 					</div>
 				</div>
 				<!-- match comment start -->
-
-
-
-				<!-- Tactics Short View  start -->
-				<div class="col-xs-12 col-sm-12 col-md-12 enter-row-1">
-					<hr class="divider">
-					<h1 class="text-white text-center">
-						<dfn>전술</dfn>
-					</h1>
-					<div role="tabpanel">
-						<!-- Nav tabs -->
-						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation" class="active"><a href="#A"
-								role="tab" data-toggle="tab">PLAN_A</a></li>
-							<li role="presentation"><a href="#B" role="tab"
-								data-toggle="tab">PLAN_B</a></li>
-							<li role="presentation"><a href="#C" role="tab"
-								data-toggle="pill">PLAN_C</a></li>
-						</ul>
-
-						<!-- Tab panes -->
-						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane fade in active" id="A">
-								<div class="col-xs-12 col-sm-6 col-md-6">
-									<img class="tactics-board" src="/resources/img/lineup.gif">
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
-									<h2>전술 중점</h2>
-									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
-								</div>
-							</div>
-							<div role="tabpanel" class="tab-pane fade" id="B">
-								<div class="col-xs-12 col-sm-6 col-md-6">
-									<img class="tactics-board" src="/resources/img/lineup.gif">
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
-									<h2>전술 중점</h2>
-									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
-								</div>
-							</div>
-							<div role="tabpanel" class="tab-pane fade" id="C">
-								<div class="col-xs-12 col-sm-6 col-md-6">
-									<img class="tactics-board" src="/resources/img/lineup.gif">
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
-									<h2>전술 중점</h2>
-									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-				<!-- Tactics Short View  end -->
 
 				<!-- Participate Members Table Start -->
 				<div class="col-xs-12 col-sm-12 col-md-12 ">
@@ -287,26 +169,17 @@
 								<td>No</td>
 								<td>이름</td>
 							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td>2</td>
-								<td>홍길동</td>
-								<td>3</td>
-								<td>홍길동</td>
-								<td>4</td>
-								<td>홍길동</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>홍길동</td>
-								<td>6</td>
-								<td>홍길동</td>
-								<td>7</td>
-								<td>홍길동</td>
-								<td>8</td>
-								<td>홍길동</td>
-							</tr>
+							<c:set var="rowNum" value="${fn:length(prList)/4 }" />
+							<c:forEach begin="1" end="${rowNum + (1-rowNum%1) }" var="i">
+								<tr>
+									<c:forEach begin="1" end="4" var="j">
+										<c:if test="${((i-1)*4 + j)<=(rowNum*4)}">
+											<td>${(i-1)*4 + j}</td>
+											<td>${prList[(i-1)*4 + j-1].userId }</td>
+										</c:if>
+									</c:forEach>
+								</tr>
+							</c:forEach>
 						</table>
 					</div>
 				</div>
@@ -338,76 +211,21 @@
 					<h4 class="modal-title" id="gridSystemModalLabel">득점 추가</h4>
 				</div>
 				<div class="modal-body">
-					<div
-						class="table-responsive container-fluid scroll-box-personal-record">
-						<table class="table table-condensed table-hover text-center">
-							<tr>
-								<td>No</td>
-								<td>이름</td>
-								<td>득점</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-						</table>
-					</div>
+					<form>
+						<div class="form-group">
+							<label for="addGoalMember">선수명</label>
+							<select class="form-control" id="addGoalMember">
+								<option value="">--------</option>
+								<c:forEach items="${prList }" var="pr">
+									<option value="${pr.userId }">${pr.userId }</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="addGoalAmount">득점</label>
+							<input type='number' class='text-center width-20' id="addGoalAmount">
+						</div>
+					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -436,76 +254,21 @@
 					<h4 class="modal-title" id="gridSystemModalLabel">도움 추가</h4>
 				</div>
 				<div class="modal-body">
-					<div
-						class="table-responsive container-fluid scroll-box-personal-record">
-						<table class="table table-condensed table-hover text-center">
-							<tr>
-								<td>No</td>
-								<td>이름</td>
-								<td>도움</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-						</table>
-					</div>
+					<form>
+						<div class="form-group">
+							<label for="addAssistMember">선수명</label>
+							<select class="form-control" id="addAssistMember">
+								<option value="">--------</option>
+								<c:forEach items="${prList }" var="pr">
+									<option value="${pr.userId }">${pr.userId }</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="addAssistAmount">득점</label>
+							<input type='number' class='text-center width-20' id="addAssistAmount">
+						</div>
+					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -521,8 +284,7 @@
 
 	<!-- Add Save Modal start -->
 	<div class="modal fade" role="dialog"
-		aria-labelledby="gridSystemModalLabel" aria-hidden="true"
-		id="addSave">
+		aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="addSave">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -533,76 +295,21 @@
 					<h4 class="modal-title" id="gridSystemModalLabel">선방 추가</h4>
 				</div>
 				<div class="modal-body">
-					<div
-						class="table-responsive container-fluid scroll-box-personal-record">
-						<table class="table table-condensed table-hover text-center">
-							<tr>
-								<td>No</td>
-								<td>이름</td>
-								<td>도움</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td><input type="number" class="text-center width-20"
-									name="goal" placeholder="0"></td>
-							</tr>
-						</table>
-					</div>
+					<form>
+						<div class="form-group">
+							<label for="addSaveMember">선수명</label>
+							<select class="form-control" id="addSaveMember">
+								<option value="">--------</option>
+								<c:forEach items="${prList }" var="pr">
+									<option value="${pr.userId }">${pr.userId }</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="addSaveAmount">득점</label>
+							<input type='number' class='text-center width-20' id="addSaveAmount">
+						</div>
+					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -615,12 +322,126 @@
 	</div>
 	<!-- /.modal -->
 	<!-- Add Save Modal end -->
-	
+
 	<!-- INCLUDE footer.jsp -->
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 
 
 	<script>
+	var token = '${_csrf.token }';
+	var header = '${_csrf.headerName }';
+	
+	var goaler = '';
+	var assister = '';
+	var saver = '';
+	
+	
+	
+		var showScore = function(matchNo) {
+			$.ajax({
+				type : "get",
+				url : "/liveboard/get/" + matchNo,
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(result) {
+					console.log("get............");
+					console.log(result);
+					if (result != null && result != '') {
+						$("#goal").html(result.goal);
+						$("#lostPoint").html(result.lostPoint);
+						$("#comments").html(result.comments);
+						
+						var str = "<table "
+								+ "class='table table-condensed table-hover text-center text-white'>"
+								+ "<tr><td>이름</td>";
+						var goalStr = str +"<td>득점</td></tr>" ;
+						var assistStr = str+"<td>도움</td></tr>";
+						var saveStr = str+"<td>선방</td></tr>";
+						
+						goaler = result.prDTOList;
+						assister = result.prDTOList;
+						saver = result.prDTOList;
+						
+						goaler.sort(function(a,b){
+							return b.goals-a.goals;
+						})
+						assister.sort(function(a,b){
+							return b.assists-a.assists;
+						})
+						saver.sort(function(a,b){
+							return b.saves-a.saves;
+						})
+						
+						console.log(goaler);
+						console.log(assister);
+						console.log(saver);
+						
+						for(var g of goaler){
+							if(g.goals==0) break;
+							goalStr += "<tr>"
+									 +   "<td>" + g.userId + "</td>"
+									 +   "<td>" + g.goals + "</td>";
+						}
+						for(var a of assister){
+							if(a.assists==0) break;
+							assistStr += "<tr>"
+									 +   "<td>" + a.userId + "</td>"
+									 +   "<td>" + a.assists + "</td>";
+						}
+						for(var s of saver){
+							if(s.saves==0) break;
+							saveStr += "<tr>"
+								saveStr	 +   "<td>" + s.userId + "</td>"
+									 +   "<td>" + s.saves + "</td>";
+						}
+						
+						goalStr += "</table>" ;
+						assistStr += "</table>";
+						saveStr += "</table>";
+						
+						$("#goalList").html(goalStr);
+						$("#assistList").html(assistStr);
+						$("#saveList").html(saveStr);
+						
+						
+					}
+				}
+			});
+
+		}
+		$("#addGoalMember").on("change",function(e){
+			console.log($(e.target).val());
+			for(var g of goaler){
+				if(g.userId== $(e.target).val()){
+					$("#addGoalAmount").val(g.goals);
+					break;
+				}
+			}
+		})
+		$("#addAssistMember").on("change",function(e){
+			console.log($(e.target).val());
+			for(var a of assister){
+				if(a.userId== $(e.target).val()){
+					$("#addAssistAmount").val(a.assists);
+					break;
+				}
+			}
+		})
+		$("#addSaveMember").on("change",function(e){
+			console.log($(e.target).val());
+			for(var s of saver){
+				if(s.userId== $(e.target).val()){
+					$("#addSaveAmount").val(s.saves);
+					break;
+				}
+			}
+		})
+		
+		window.onload = function() {
+			showScore('${matchVO.matchNo}');
+		}
+		
 		$("#doAddGoal").on("click", function(e) {
 			alert("doAddGoal clicked");
 		})

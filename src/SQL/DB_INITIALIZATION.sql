@@ -68,7 +68,7 @@ create table tbl_personalRecord(  -- total = 1(참석) + mom(3) + goals(2) + assis
 alter table tbl_personalRecord add constraint ck_personalRecord_mom check (mom in (0,1));
 alter table tbl_personalRecord add constraint fk_pRecord_userId_cascade foreign key(userId) references tbl_members(userId) on delete cascade;
 alter table tbl_personalRecord add constraint fk_pRecord_matchNo_null foreign key(matchNo) references tbl_matches(matchNo) on delete set null;
-
+create index idx_pr on tbl_personalRecord(matchNO);
 
 create table tbl_tactics(
     tacticsNo number,
@@ -91,6 +91,7 @@ create table tbl_pollMoM(
     matchNo number,
     clubCode varchar2(20));
 alter table tbl_pollMoM add constraint fk_pollM_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
+create index idx_pm on tbl_pollMoM(clubCode, endDate asc);
 
 create table tbl_pollStatus(
     matchNo number,
@@ -100,7 +101,7 @@ create table tbl_pollStatus(
     status number default 0,  -- 0: 미투표, 1:투표 or 참석  2: 미참석 
     picked number default 0   -- MoM 득표수
 );
-alter table tbl_pollStatus add (picked number default 0);
+alter table tbl_pollStatus modify (status number default 0);
 
 create table tbl_freeBoard(
     boardNo number,

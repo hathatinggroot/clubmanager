@@ -15,6 +15,7 @@ import com.clubmanager.domain.PollStatusDTO;
 import com.clubmanager.mapper.MatchMapper;
 import com.clubmanager.mapper.MemberMapper;
 import com.clubmanager.mapper.PollMapper;
+import com.clubmanager.mapper.RecordMapper;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -31,6 +32,9 @@ public class MatchServiceImpl implements MatchService {
 	
 	@Setter(onMethod_ = @Autowired)
 	private MemberMapper memberMapper;
+	
+	@Setter(onMethod_ = @Autowired)
+	private RecordMapper recordMapper;
 
 	@Transactional
 	@Override
@@ -67,18 +71,33 @@ public class MatchServiceImpl implements MatchService {
 	public List<MatchVO> getPlannedList(String clubCode) {
 		List<MatchVO> matchList = new ArrayList<MatchVO>();
 
-//		matchList = matchMapper.getList(clubCode);
-
 		matchList = matchMapper.getList(clubCode).stream().filter(attach -> attach.getMatchStatus() < 2)
 				.collect(Collectors.toList());
 
 		return matchList;
 	}
+	
+	@Override
+	public List<MatchVO> getConfirmedList(String clubCode) {
+		List<MatchVO> matchList = new ArrayList<MatchVO>();
+
+		matchList = matchMapper.getList(clubCode).stream().filter(attach -> attach.getMatchStatus() == 1)
+				.collect(Collectors.toList());
+
+		return matchList;
+	}
+	
 
 	@Override
 	public boolean modify(MatchVO matchVO) {
 		int result = matchMapper.modify(matchVO);
-
+		
+		if(matchVO.getMatchStatus()==1) {
+			
+			recordMapper.insertMR(matchVO.getMatchNo());
+		}
+		
+		
 		if (result == 1) {
 			return true;
 		}

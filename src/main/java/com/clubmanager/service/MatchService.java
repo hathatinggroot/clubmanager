@@ -10,6 +10,8 @@ public interface MatchService {
 	
 	public List<MatchVO> getPlannedList(String clubCode);
 	
+	public List<MatchVO> getConfirmedList(String clubCode);
+	
 	public boolean modify(MatchVO matchVO);
 	
 	public boolean delete(int matchNo);

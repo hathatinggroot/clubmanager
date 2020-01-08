@@ -2,6 +2,7 @@ package com.clubmanager.mapper;
 
 import java.util.List;
 
+import com.clubmanager.domain.MatchRecordVO;
 import com.clubmanager.domain.PersonalRecordDTO;
 
 public interface RecordMapper {
@@ -12,5 +13,7 @@ public interface RecordMapper {
 	
 	public List<PersonalRecordDTO> getPRList(int matchNo);
 	
+	public MatchRecordVO getMR(int matchNo );
 	
+	public int insertMR(int matchNo);
 }
