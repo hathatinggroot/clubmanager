@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.clubmanager.domain.PollMoMVO;
 import com.clubmanager.domain.PollPartVO;
 import com.clubmanager.domain.PollStatusDTO;
 import com.clubmanager.service.MatchService;
 import com.clubmanager.service.PollService;
+import com.clubmanager.service.RecordService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -32,6 +34,9 @@ public class PollController {
 	@Setter(onMethod_=@Autowired)
 	private PollService pollService;
 	
+	@Setter(onMethod_=@Autowired)
+	private RecordService recordService;
+	
 	
 	@GetMapping("/participate_list")
 	public void goToParticipateList(String clubCode, Model model) {
@@ -41,7 +46,7 @@ public class PollController {
 
 		ppList.forEach(ppVO->{
 			ppVO.setMatchVO(matchService.get(ppVO.getMatchNo()));
-			ppVO.setPsList(pollService.getPSList(ppVO));
+			ppVO.setPsList(pollService.getPSList(ppVO.getMatchNo(), 1));
 		});
 		
 		
@@ -56,7 +61,7 @@ public class PollController {
 		
 		PollPartVO ppVO = pollService.getPP(clubCode, matchNo);
 		ppVO.setMatchVO(matchService.get(ppVO.getMatchNo()));
-		ppVO.setPsList(pollService.getPSList(ppVO));
+		ppVO.setPsList(pollService.getPSList(ppVO.getMatchNo(), 1));
 		log.info("getPP ppVO : "+ppVO);
 		
 		return ppVO;
@@ -86,4 +91,34 @@ public class PollController {
 	public void goToMoM() {
 		log.info("mom.jsp");
 	}
+	
+	@GetMapping(value="/getPM/{clubCode}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@ResponseBody
+	public PollMoMVO getPM(@PathVariable("clubCode") String clubCode) {
+		log.info("getPM clubCode : " + clubCode);
+		PollMoMVO pmVO = pollService.getPM(clubCode);
+		if(pmVO == null) return null;
+		pmVO.setMatchVO(matchService.get(pmVO.getMatchNo()));
+		pmVO.setPsList(pollService.getPSList(pmVO.getMatchNo(), 2));
+		pmVO.setPrList(recordService.getPRList(pmVO.getMatchNo()));
+		
+		log.info("getPM pmVO : "+pmVO);
+		
+		
+		
+		
+		return pmVO;
+	}
+	
+	@PutMapping(value="/modifyPM",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String modifyPM(@RequestBody PollMoMVO pmVO) {
+		log.info("modifyPM pmVO : " + pmVO);
+		
+		if(pollService.modifyPM(pmVO)) return "success";
+		
+		return "fail";
+	}
+	
+	
 }

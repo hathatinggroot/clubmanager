@@ -127,7 +127,7 @@
 
 <script>
 	$("button").on("click",function(e){
-		location.href="/tactics/liveboard_write"
+		location.href="/liveboard/write"
 	})
 </script>
 </body>

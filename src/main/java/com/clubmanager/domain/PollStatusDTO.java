@@ -12,4 +12,5 @@ public class PollStatusDTO {
 	private int pollType; //--1: participate , 2: MoM
 	private int status; //-- 0: 미투표, 1:투표 or 참석  2: 미참석 
 	private int picked; // MoM 득표수
+	private String voteTo; //투표한 사용자 아이디
 }

@@ -36,6 +36,7 @@
 		select * 
 		from tbl_pollstatus
 		where matchNo = #{matchNo}
+			and pollType = #{pollType}
 	</select> 
 	
 	<update id="modifyPS">
@@ -43,7 +44,17 @@
 		set status = ${status}
 		where matchNo = #{matchNo}
 			and userId = #{userId}
+			and pollType = #{pollType}
 	</update>
+	
+	<update id="picked">
+		update tbl_pollstatus 
+		set picked = picked+1
+		where matchNo = #{matchNo}
+			and userId = #{userId}
+			and pollType = #{pollType}
+	</update>
+	
 	
 	<update id="modifyPP">
 		update tbl_pollparticipate 
@@ -51,5 +62,21 @@
 		where matchNo = #{matchNo}
 	</update>
 	
+	<insert id="insertPM">
+		insert into tbl_pollmom(endDate, matchNo, clubCode)
+		values(#{endDate},#{matchNo},#{clubCode})
+	</insert>
+	
+	<select id="getPM" resultType="com.clubmanager.domain.PollMoMVO">
+		select /*+ INDEX(tbl_pollmom idx_pm) */ * 
+		from tbl_pollmom
+		where clubCode = #{clubCode}
+	</select>
+	
+	<update id="modifyPM">
+		update tbl_pollmom 
+		set endDate = #{endDate}
+		where matchNo = #{matchNo}
+	</update>
 
 </mapper>

@@ -15,11 +15,12 @@
 			and userId = #{userId}
 	</delete>
 
-<!-- 	<select id="getPPList" resultType="com.clubmanager.domain.PollPartVO"> -->
-<!-- 		select /*+ INDEX(tbl_pollparticipate idx_pp) */ *  -->
-<!-- 		from tbl_pollparticipate -->
-<!-- 		where clubCode = #{clubCode} -->
-<!-- 	</select> -->
+	
+	<select id="getPRList" resultType="com.clubmanager.domain.PersonalRecordDTO">
+		select /*+ INDEX(tbl_personalRecord idx_pr) */ * 
+		from tbl_personalrecord
+		where matchNo = #{matchNo}
+	</select>
 	
 <!-- 	<select id="getPP" resultType="com.clubmanager.domain.PollPartVO"> -->
 <!-- 		select /*+ INDEX(tbl_pollparticipate idx_pp) */ *  -->

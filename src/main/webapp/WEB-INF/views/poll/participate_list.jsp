@@ -120,11 +120,11 @@
 				<!-- Vote Button start -->
 				<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
 					<div class="col-xs-6 col-sm-6 col-md-6 isPart" data-value="true"
-						data-matchNo="">
+						data-matchNo="" id="attendChecked">
 						<span class="large-font">참석</span>
 					</div>
 					<div class="col-xs-6 col-sm-6 col-md-6 isPart" data-value="false"
-						data-matchNo="">
+						data-matchNo="" id="absenceChecked">
 						<span class="large-font">미참석</span>
 					</div>
 				</div>
@@ -238,18 +238,21 @@
 	var chColorByStatus = function(status){
 		var isPart = $(".isPart");
 		switch(status){
-		case 0 : alert("투표에 참여하지 않았습니다");isPart[0].style.backgroundColor="transparent";isPart[1].style.backgroundColor="transparent"; break;
-		case 1 : alert("이 경기에 참석합니다");isPart[0].style.backgroundColor="green";isPart[1].style.backgroundColor="transparent"; break;
-		case 2 : alert("이 경기에 참석하지 않습니다");isPart[0].style.backgroundColor="transparent";isPart[1].style.backgroundColor="green"; break;
+		case 0 : alert("투표에 참여하지 않았습니다");$("#attendChecked").css('background-color',"transparent");$("#absenceChecked").css('background-color',"transparent"); break;
+		case 1 : alert("이 경기에 참석합니다");$("#attendChecked").off("click");$("#attendChecked").css('background-color',"green");$("#absenceChecked").css('background-color',"transparent"); break;
+		case 2 : alert("이 경기에 참석하지 않습니다");$("#absenceChecked").off("click");$("#attendChecked").css('background-color',"transparent");$("#absenceChecked").css('background-color',"green"); break;
 		}
 	};
 	
 	var voteEventOn = function(){$(".isPart").off("click").on("click", function(e){
 		var psDTO = new Object();
-		psDTO.matchNo = $(e.currentTarget).data('matchno');
+		console.log($(e.currentTarget));
+		psDTO.matchNo = $(e.currentTarget)[0].dataset.matchno;
 		psDTO.userId = "${principal.member.userId}";
 		var voteStatus = $(e.currentTarget).data('value');
 		psDTO.status = voteStatus?1:2;
+		
+		psDTO.pollType = 1;
 		
 		console.log("psDTO for vote-------" );
 		console.log(psDTO);
@@ -297,9 +300,9 @@
 		}else{
 			var remainTimeStr = '';
 			remainTimeStr += rDate>0 ? rDate + "일 ":"" ;
-			remainTimeStr += rHour>0 ? rHour + "시간 ":"";
-			remainTimeStr += rMin >0 ? rMin + "분 ":"";
-			remainTimeStr += rSec + "초 전";
+			remainTimeStr += rHour>10 ? rHour + ":": rHour>0 ? "0"+rHour+":" : "00:";
+			remainTimeStr += rMin>10 ? rMin + ":": rMin>0 ? "0"+rMin+":" : "00:";
+			remainTimeStr += rSec>10 ? rSec : "0"+rSec;
 			
 			$("#remainTime").html(remainTimeStr).css("color","white");
 		}
@@ -322,9 +325,11 @@
 					clearInterval(timerInteval);
 					$("#apposingTeam").html(result.matchVO.apposingTeam);
 					
-					$("#endTimeModBtn")[0].dataset.endtime = result.endDate;
-					$("#endTimeModBtn")[0].dataset.matchno = result.matchNo;
-						
+					if("${principal.member.auth}" == 'ROLE_OWNER' ||"${principal.member.auth}" == 'ROLE_MANAGER'){
+						$("#endTimeModBtn")[0].dataset.endtime = result.endDate;
+						$("#endTimeModBtn")[0].dataset.matchno = result.matchNo;
+					}
+					
 					var date = new Date(result.matchVO.matchDate);
 					dateStr = (date.getYear()+1900) + "-";
 					dateStr += (date.getMonth()+1)>10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
@@ -416,7 +421,7 @@
 	
 	$("#doModifyEndTime").on("click",function(e){
 		
-		var matchNo = $("#endTimeModBtn").data("matchno");
+		var matchNo = $("#endTimeModBtn")[0].dataset.matchno;
 		console.log(matchNo);
 		var modEndYear = $("#modEndYear").val();
 		var modEndMonth = $("#modEndMonth").val();

@@ -97,9 +97,10 @@ create table tbl_pollStatus(
     userId varchar2(20),
     userName varchar2(20),
     pollType number, --1: participate , 2: MoM
-    status number default 0  -- 0: 미투표, 1:투표 or 참석  2: 미참석 
+    status number default 0,  -- 0: 미투표, 1:투표 or 참석  2: 미참석 
+    picked number default 0   -- MoM 득표수
 );
-
+alter table tbl_pollStatus add (picked number default 0);
 
 create table tbl_freeBoard(
     boardNo number,
