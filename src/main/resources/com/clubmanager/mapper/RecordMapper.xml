@@ -5,8 +5,8 @@
 <mapper namespace="com.clubmanager.mapper.RecordMapper">
 
 	<insert id="insertPR">
-		insert into tbl_personalrecord(mom, goals, assists, saves, userId, matchNo)
-		values(#{mom},#{goals},#{assists},#{saves},#{userId},#{matchNo})
+		insert into tbl_personalrecord(mom, goals, assists, saves, userId, userName, matchNo)
+		values(#{mom},#{goals},#{assists},#{saves},#{userId},#{userName},#{matchNo})
 	</insert>
 
 	<delete id="deletePR">
@@ -23,15 +23,54 @@
 	</select>
 	
 	<select id="getMR" resultType="com.clubmanager.domain.MatchRecordVO">
-		select * 
+		select /*+ INDEX(tbl_matchrecord idx_mr) */ *  
 		from tbl_matchrecord
 		where matchNo = #{matchNo}
+	</select>
+	
+	<select id="getMRList" resultType="com.clubmanager.domain.MatchRecordVO">
+		select /*+ INDEX(tbl_matchrecord idx_mr) */ * 
+		from tbl_matchrecord
+		where clubCode = #{clubCode}
 	</select>
 	
 	<insert id="insertMR">
 		insert into tbl_matchrecord(matchNo)
 		values(#{matchNo})
 	</insert>
+	
+	<update id="modifyPR">
+		update tbl_personalrecord
+		set goals = #{goals}
+			,assists = #{assists}
+			,saves = #{saves}
+		where matchNo = #{matchNo}
+		and userId = #{userId}
+	</update>
+	
+	
+	<update id="modifyMR">
+		update tbl_matchrecord
+		set goal = #{goal}
+			,extraGoal = #{extraGoal}
+			,lostPoint = #{lostPoint}
+			,comments = #{comments}
+			,results = #{results}
+		where matchNo = #{matchNo}
+	</update>
+	
+	<update id="picked">
+		update tbl_personalrecord
+		set mom = 1
+		where matchNo=#{matchNo}
+			and userId=#{userId}
+	</update>
+	
+	<update id="writeMoM">
+		update tbl_matchrecord
+		set mom=#{userName}
+		where matchNo = #{matchNo}
+	</update>
 	
 <!-- 	<select id="getPP" resultType="com.clubmanager.domain.PollPartVO"> -->
 <!-- 		select /*+ INDEX(tbl_pollparticipate idx_pp) */ *  -->

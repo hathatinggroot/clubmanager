@@ -13,6 +13,17 @@
 		delete from tbl_pollparticipate
 		where matchNo = #{matchNo}
 	</delete>
+	
+	<delete id="deletePM">
+		delete from tbl_pollmom
+		where matchNo = #{matchNo}
+	</delete>
+	
+	<delete id="deletePS">
+		delete from tbl_pollstatus
+		where matchNo = #{matchNo}
+			and pollType = #{pollType}
+	</delete>
 
 	<select id="getPPList" resultType="com.clubmanager.domain.PollPartVO">
 		select /*+ INDEX(tbl_pollparticipate idx_pp) */ * 

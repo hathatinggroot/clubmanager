@@ -49,10 +49,11 @@ create index idx_matches on tbl_matches(clubCode, matchDate asc);
 
 create table tbl_matchRecord(
     goal number default 0,
+    extraGoal number default 0, -- ¿ëº´ µæÁ¡ or »ó´ë ÀÚÃ¥°ñ
     lostPoint number default 0,
     results number(1), -- 1:½Â¸®, 0:¹«, -1:ÆÐ
     mom varchar2(20),
-    comments varchar2(2048),
+    comments varchar2(2048) default '',
     matchNo number);
 alter table tbl_matchRecord add constraint ck_matcheRecord_results check (results in (-1,0,1));
 alter table tbl_matchRecord add constraint fk_mRecord_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
@@ -64,6 +65,7 @@ create table tbl_personalRecord(  -- total = 1(Âü¼®) + mom(3) + goals(2) + assis
     assists number default 0,
     saves number default 0,
     userId varchar2(20),
+    userName varchar2(20),
     matchNo number);
 alter table tbl_personalRecord add constraint ck_personalRecord_mom check (mom in (0,1));
 alter table tbl_personalRecord add constraint fk_pRecord_userId_cascade foreign key(userId) references tbl_members(userId) on delete cascade;

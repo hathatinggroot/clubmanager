@@ -2,6 +2,7 @@ package com.clubmanager.controller;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -119,6 +120,18 @@ public class PollController {
 		
 		return "fail";
 	}
+	
+	@GetMapping("/endMoMVote")
+	public String endMoMVote(@Param("clubCode") String clubCode,@Param("matchNo") int matchNo) {
+		log.info("endMoMVote clubCode : " + clubCode + " matchNo : " + matchNo);
+		
+		pollService.deletePM(clubCode, matchNo);
+		
+		return "redirect:/record/club_record?clubCode="+clubCode;
+		
+	}
+	
+	
 	
 	
 }

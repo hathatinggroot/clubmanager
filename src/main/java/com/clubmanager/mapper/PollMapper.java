@@ -32,4 +32,8 @@ public interface PollMapper {
 	public int modifyPM(PollMoMVO pmVO);
 	
 	public int picked(PollStatusDTO psDTO);
+	
+	public int deletePS(@Param("matchNo") int matchNo,@Param("pollType")  int pollType);
+	
+	public int deletePM(int matchNo);
 }

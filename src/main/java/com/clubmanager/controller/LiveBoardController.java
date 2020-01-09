@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -71,6 +73,44 @@ public class LiveBoardController {
 		
 		return mrVO;
 	}
+	
+	@PutMapping(value="/writeScore", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String writeScore(@RequestBody PersonalRecordDTO prDTO) {
+		log.info("writeScore  prDTO : "+prDTO);
+		
+		if(recordService.writeScore(prDTO)) {
+			return "success";
+		}
+		
+		return "fail";
+	}
+	
+	@PutMapping(value="/modifyMR", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String modifyMR(@RequestBody MatchRecordVO mrVO) {
+		log.info("modifyMR  mrVO : "+mrVO);
+		
+		if(recordService.modifyMR(mrVO)) {
+			return "success";
+		}
+		
+		return "fail";
+	}
+	
+	@GetMapping(value="/endMatch")
+	public String endMatch(@Param("matchNo") Integer matchNo, @Param("clubCode") String clubCode) {
+		log.info("endMatch  matchNo : "+matchNo);
+		log.info("endMatch  clubCode : "+clubCode);
+		if(recordService.endMatch(matchNo, clubCode)) {
+			return "redirect:/poll/mom";
+		}
+		
+		return "/";
+	}
+	
+	
+	
 	
 	
 }

@@ -249,6 +249,7 @@
 		console.log($(e.currentTarget));
 		psDTO.matchNo = $(e.currentTarget)[0].dataset.matchno;
 		psDTO.userId = "${principal.member.userId}";
+		psDTO.userName = "${principal.member.userName}";
 		var voteStatus = $(e.currentTarget).data('value');
 		psDTO.status = voteStatus?1:2;
 		

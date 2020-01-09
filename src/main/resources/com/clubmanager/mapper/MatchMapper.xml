@@ -35,7 +35,14 @@
 		, matchStatus = #{matchStatus}
 		where matchNo = #{matchNo}
 	</update>
-
+	
+	<update id="chStat">
+		update tbl_matches
+		set matchRecordStatus = #{matchRecordStatus}
+			, matchStatus = #{matchStatus}
+		where matchNo = #{matchNo}
+	</update>
+		
 
 	<delete id="delete">
 	delete from tbl_matches

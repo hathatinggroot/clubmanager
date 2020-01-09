@@ -20,4 +20,6 @@ public interface PollService {
 	public PollMoMVO getPM(String clubCode);
 	
 	public boolean modifyPM(PollMoMVO pmVO);
+	
+	public boolean deletePM(String clubCode, int matchNo);
 }

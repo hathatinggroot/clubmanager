@@ -11,6 +11,7 @@ public class PersonalRecordDTO {
 	private int assists;
 	private int saves;
 	private String userId;
+	private String userName;
 	private int matchNo;
 	
 	public int getTotal() {//-- total = 1(Âü¼®) + mom(3) + goals(2) + assists(1) + savess(1) )
@@ -20,4 +21,5 @@ public class PersonalRecordDTO {
 		
 		return total;
 	}
+	
 }

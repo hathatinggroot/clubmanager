@@ -11,4 +11,10 @@ public interface RecordService {
 	public List<PersonalRecordDTO> getPRList(int matchNo);
 	
 	public MatchRecordVO getMR(int matchNo);
+	
+	public boolean writeScore(PersonalRecordDTO prDTO);
+	
+	public boolean modifyMR(MatchRecordVO mrVO);
+	
+	public boolean endMatch(int matchNo, String clubCode);
 }

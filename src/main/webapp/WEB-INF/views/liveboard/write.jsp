@@ -34,10 +34,8 @@
 				</div>
 
 				<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
-					<button type="button" class="btn btn-default btn-block">
-						<h3>기록 임시 저장</h3>
-					</button>
-					<button type="button" class="btn btn-primary btn-block">
+					<button type="button"
+						class="btn btn-primary btn-block" id="endMatch">
 						<h3>기록 저장 및 경기 종료</h3>
 					</button>
 					<hr class="divider">
@@ -51,8 +49,8 @@
 						</div>
 						<div class="col-xs-6 col-sm-6 col-md-6">
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								<span class="large-font"><span id="goal">5</span>:<span
-									id="lostPoint">3</span></span>&nbsp;
+								<span class="large-font"><span id="goal"></span>:<span
+									id="lostPoint"></span></span>&nbsp;
 							</div>
 							<div class="col-xs-6 col-sm-6 col-md-6">
 								<button type="button" class="btn btn-primary btn-block lostBtn"
@@ -75,62 +73,21 @@
 					<h1>
 						<dfn>공격 포인트</dfn>
 					</h1>
+					<button type="button" class="btn btn-primary btn-block enter-row-1"
+						data-toggle="modal" data-target="#addGoal">
+						<h4>기록 추가</h4>
+					</button>
 					<div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<button type="button" class="btn btn-primary btn-block"
-								data-toggle="modal" data-target="#addGoal">득점 추가</button>
 							<div class="table-responsive container-fluid" id="goalList">
-								<table
-									class="table table-condensed table-hover text-center text-white">
-									<tr>
-										<td>No</td>
-										<td>이름</td>
-										<td>득점</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>홍길동</td>
-										<td>2</td>
-									</tr>
-								</table>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<button type="button" class="btn btn-primary btn-block"
-								data-toggle="modal" data-target="#addAssist">도움 추가</button>
 							<div class="table-responsive container-fluid" id="assistList">
-								<table
-									class="table table-condensed table-hover text-center text-white">
-									<tr>
-										<td>No</td>
-										<td>이름</td>
-										<td>도움</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>홍길동</td>
-										<td>2</td>
-									</tr>
-								</table>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<button type="button" class="btn btn-primary btn-block"
-								data-toggle="modal" data-target="#addSave">선방 추가</button>
 							<div class="table-responsive container-fluid" id="saveList">
-								<table
-									class="table table-condensed table-hover text-center text-white">
-									<tr>
-										<td>No</td>
-										<td>이름</td>
-										<td>선방</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>홍길동</td>
-										<td>2</td>
-									</tr>
-								</table>
 							</div>
 						</div>
 					</div>
@@ -143,6 +100,8 @@
 					<h1>
 						<dfn>코멘트</dfn>
 					</h1>
+					<button type="button"
+							class="btn btn-default btn-block enter-row-1" id="saveCommentsBtn"><h4>저장</h4></button>
 					<div class="text-gray">
 						<textarea rows="10" class="comment-text" id="comments"></textarea>
 					</div>
@@ -208,22 +167,34 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="gridSystemModalLabel">득점 추가</h4>
+					<h4 class="modal-title" id="gridSystemModalLabel">공격 포인트 추가</h4>
 				</div>
 				<div class="modal-body">
 					<form>
 						<div class="form-group">
-							<label for="addGoalMember">선수명</label>
-							<select class="form-control" id="addGoalMember">
+							<label for="addGoalMember">선수명</label> <select
+								class="form-control" id="addGoalMember">
 								<option value="">--------</option>
+								<option value="extra">상대 자책 또는 용병</option>
 								<c:forEach items="${prList }" var="pr">
-									<option value="${pr.userId }">${pr.userId }</option>
+									<option value="${pr.userId }">${pr.userName }</option>
 								</c:forEach>
 							</select>
 						</div>
-						<div class="form-group">
-							<label for="addGoalAmount">득점</label>
-							<input type='number' class='text-center width-20' id="addGoalAmount">
+						<input type="hidden" id="originGoal">
+						<div class="form-group col-xs-4 col-sm-4 col-md-4 text-center">
+							<label for="addGoalAmount">득점</label> <input type='number'
+								class='text-center width-20' id="addGoalAmount">
+						</div>
+						<div
+							class="form-group col-xs-4 col-sm-4 col-md-4 text-center isExtra">
+							<label for="addGoalAmount">도움</label> <input type='number'
+								class='text-center width-20' id="addAssistAmount">
+						</div>
+						<div
+							class="form-group col-xs-4 col-sm-4 col-md-4 text-center isExtra">
+							<label for="addGoalAmount">선방</label> <input type='number'
+								class='text-center width-20' id="addSaveAmount">
 						</div>
 					</form>
 				</div>
@@ -239,217 +210,218 @@
 	<!-- /.modal -->
 	<!-- Add Goal Modal end -->
 
-
-	<!-- Add Assist Modal start -->
-	<div class="modal fade" role="dialog"
-		aria-labelledby="gridSystemModalLabel" aria-hidden="true"
-		id="addAssist">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="gridSystemModalLabel">도움 추가</h4>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="addAssistMember">선수명</label>
-							<select class="form-control" id="addAssistMember">
-								<option value="">--------</option>
-								<c:forEach items="${prList }" var="pr">
-									<option value="${pr.userId }">${pr.userId }</option>
-								</c:forEach>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="addAssistAmount">득점</label>
-							<input type='number' class='text-center width-20' id="addAssistAmount">
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" id="doAddAssist">등록</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-	<!-- Add Assist Modal end -->
-
-	<!-- Add Save Modal start -->
-	<div class="modal fade" role="dialog"
-		aria-labelledby="gridSystemModalLabel" aria-hidden="true" id="addSave">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="gridSystemModalLabel">선방 추가</h4>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="addSaveMember">선수명</label>
-							<select class="form-control" id="addSaveMember">
-								<option value="">--------</option>
-								<c:forEach items="${prList }" var="pr">
-									<option value="${pr.userId }">${pr.userId }</option>
-								</c:forEach>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="addSaveAmount">득점</label>
-							<input type='number' class='text-center width-20' id="addSaveAmount">
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" id="doAddSave">등록</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
-	<!-- Add Save Modal end -->
-
 	<!-- INCLUDE footer.jsp -->
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 
 
 	<script>
-	var token = '${_csrf.token }';
-	var header = '${_csrf.headerName }';
-	
-	var goaler = '';
-	var assister = '';
-	var saver = '';
-	
-	
-	
+		var token = '${_csrf.token }';
+		var header = '${_csrf.headerName }';
+
+		var goaler = new Object();
+		var assister = new Object();
+		var saver = new Object();
+
+		var mrObj = new Object();
+
 		var showScore = function(matchNo) {
+			$
+					.ajax({
+						type : "get",
+						url : "/liveboard/get/" + matchNo,
+						beforeSend : function(xhr) {
+							xhr.setRequestHeader(header, token);
+						},
+						success : function(result) {
+							console.log("get............");
+							console.log(result);
+							if (result != null && result != '') {
+
+								mrObj = result;
+								console.log("mrObj 초기화");
+								console.log(mrObj);
+
+								$("#goal").html(result.goal + result.extraGoal);
+								$("#lostPoint").html(result.lostPoint);
+								$("#comments").html(result.comments);
+
+								var str = "<table "
+								+ "class='table table-condensed table-hover text-center text-white'>"
+										+ "<tr><td>이름</td>";
+								var goalStr = str + "<td>득점</td></tr>";
+								var assistStr = str + "<td>도움</td></tr>";
+								var saveStr = str + "<td>선방</td></tr>";
+
+								console.log(result.prDTOList);
+
+								result.prDTOList.sort(function(a, b) {
+									return b.goals - a.goals;
+								})
+								goaler = $.extend({}, result.prDTOList);
+								goaler[result.prDTOList.length] = {
+									goals : result.extraGoal,
+									userName : '상대 자책 또는 용병',
+									userId : 'extra'
+								};
+
+								result.prDTOList.sort(function(a, b) {
+									return b.assists - a.assists;
+								})
+								assister = $.extend({}, result.prDTOList);
+
+								result.prDTOList.sort(function(a, b) {
+									return b.saves - a.saves;
+								})
+								saver = $.extend({}, result.prDTOList);
+
+								console.log(goaler);
+								console.log(assister);
+								console.log(saver);
+
+								for ( var g in goaler) {
+									if (goaler[g].goals == 0)
+										break;
+									goalStr += "<tr>" + "<td>"
+											+ goaler[g].userName + "</td>"
+											+ "<td>" + goaler[g].goals
+											+ "</td>";
+								}
+								for ( var a in assister) {
+									if (assister[a].assists == 0)
+										break;
+									assistStr += "<tr>" + "<td>"
+											+ assister[a].userName + "</td>"
+											+ "<td>" + assister[a].assists
+											+ "</td>";
+								}
+								for ( var s in saver) {
+									if (saver[s].saves == 0)
+										break;
+									saveStr += "<tr>" + "<td>"
+											+ saver[s].userName + "</td>"
+											+ "<td>" + saver[s].saves + "</td>";
+								}
+
+								goalStr += "</table>";
+								assistStr += "</table>";
+								saveStr += "</table>";
+
+								$("#goalList").html(goalStr);
+								$("#assistList").html(assistStr);
+								$("#saveList").html(saveStr);
+
+							}
+						}
+					});
+
+		}
+		$("#addGoalMember").on("change", function(e) {
+			console.log($(e.target).val());
+			var userId = $(e.target).val();
+			if (userId == "extra") {
+				$(".isExtra").hide();
+			} else {
+				$(".isExtra").show();
+			}
+			for ( var g in goaler) {
+				if (goaler[g].userId == $(e.target).val()) {
+					$("#addGoalAmount").val(goaler[g].goals);
+					$("#originGoal").val(goaler[g].goals);
+					$("#addAssistAmount").val(goaler[g].assists);
+					$("#addSaveAmount").val(goaler[g].saves);
+					break;
+				}
+			}
+		})
+
+		window.onload = function() {
+			showScore('${matchVO.matchNo}');
+		}
+
+		$("#doAddGoal").on("click", function(e) {
+			if ($("#addGoalMember").val() == 'extra') {
+				//MR수정
+				mrObj.extraGoal = $("#addGoalAmount").val();
+
+				console.log("자책골 추가");
+				console.log(mrObj);
+
+				modifyMR(mrObj);
+			} else if ($("#addGoalMember").val() == '') {
+				$("#addGoal").modal('hide');
+			} else {
+				var prDTO = new Object();
+				prDTO.userId = $("#addGoalMember").val();
+				prDTO.goals = $("#addGoalAmount").val();
+				prDTO.assists = $("#addAssistAmount").val();
+				prDTO.saves = $("#addSaveAmount").val();
+				prDTO.matchNo = '${matchVO.matchNo}';
+				console.log(prDTO);
+				$.ajax({
+					type : "put",
+					url : "/liveboard/writeScore/",
+					data : JSON.stringify(prDTO),
+					contentType : "application/json",
+					beforeSend : function(xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success : function(result) {
+						console.log("writeScore Result : " + result);
+
+						var goalGap = prDTO.goals - $("#originGoal").val();
+
+						if (goalGap != 0) {
+							//MR수정
+							mrObj.goal += goalGap;
+							modifyMR(mrObj);
+							console.log("득점 추가");
+							console.log(mrObj);
+						} else {
+							console.log("득점 변경 없음");
+							console.log(mrObj);
+							location.reload();
+						}
+					}
+				})
+			}
+		})
+
+		var modifyMR = function(obj) {
+			mrObj = obj;
+			console.log("modifyMR........");
+			console.log(mrObj);
 			$.ajax({
-				type : "get",
-				url : "/liveboard/get/" + matchNo,
+				type : "put",
+				url : "/liveboard/modifyMR/",
+				data : JSON.stringify(mrObj),
+				contentType : "application/json",
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader(header, token);
 				},
 				success : function(result) {
-					console.log("get............");
-					console.log(result);
-					if (result != null && result != '') {
-						$("#goal").html(result.goal);
-						$("#lostPoint").html(result.lostPoint);
-						$("#comments").html(result.comments);
-						
-						var str = "<table "
-								+ "class='table table-condensed table-hover text-center text-white'>"
-								+ "<tr><td>이름</td>";
-						var goalStr = str +"<td>득점</td></tr>" ;
-						var assistStr = str+"<td>도움</td></tr>";
-						var saveStr = str+"<td>선방</td></tr>";
-						
-						goaler = result.prDTOList;
-						assister = result.prDTOList;
-						saver = result.prDTOList;
-						
-						goaler.sort(function(a,b){
-							return b.goals-a.goals;
-						})
-						assister.sort(function(a,b){
-							return b.assists-a.assists;
-						})
-						saver.sort(function(a,b){
-							return b.saves-a.saves;
-						})
-						
-						console.log(goaler);
-						console.log(assister);
-						console.log(saver);
-						
-						for(var g of goaler){
-							if(g.goals==0) break;
-							goalStr += "<tr>"
-									 +   "<td>" + g.userId + "</td>"
-									 +   "<td>" + g.goals + "</td>";
-						}
-						for(var a of assister){
-							if(a.assists==0) break;
-							assistStr += "<tr>"
-									 +   "<td>" + a.userId + "</td>"
-									 +   "<td>" + a.assists + "</td>";
-						}
-						for(var s of saver){
-							if(s.saves==0) break;
-							saveStr += "<tr>"
-								saveStr	 +   "<td>" + s.userId + "</td>"
-									 +   "<td>" + s.saves + "</td>";
-						}
-						
-						goalStr += "</table>" ;
-						assistStr += "</table>";
-						saveStr += "</table>";
-						
-						$("#goalList").html(goalStr);
-						$("#assistList").html(assistStr);
-						$("#saveList").html(saveStr);
-						
-						
-					}
+					console.log("modifyMR Result : " + result);
+					location.reload();
 				}
-			});
+			})
+		};
+		$(".lostBtn").on("click", function(e) {
+			var amount = $(e.target).data('amount');
+			console.log(amount);
+			mrObj.lostPoint += amount;
+			modifyMR(mrObj);
+		})
 
-		}
-		$("#addGoalMember").on("change",function(e){
-			console.log($(e.target).val());
-			for(var g of goaler){
-				if(g.userId== $(e.target).val()){
-					$("#addGoalAmount").val(g.goals);
-					break;
-				}
-			}
-		})
-		$("#addAssistMember").on("change",function(e){
-			console.log($(e.target).val());
-			for(var a of assister){
-				if(a.userId== $(e.target).val()){
-					$("#addAssistAmount").val(a.assists);
-					break;
-				}
-			}
-		})
-		$("#addSaveMember").on("change",function(e){
-			console.log($(e.target).val());
-			for(var s of saver){
-				if(s.userId== $(e.target).val()){
-					$("#addSaveAmount").val(s.saves);
-					break;
-				}
-			}
+		$("#saveCommentsBtn").on("click", function(e) {
+			console.log($("#comments").val())
+			mrObj.comments = $("#comments").val();
+			modifyMR(mrObj);
+
 		})
 		
-		window.onload = function() {
-			showScore('${matchVO.matchNo}');
-		}
-		
-		$("#doAddGoal").on("click", function(e) {
-			alert("doAddGoal clicked");
-		})
-		$("#doAddAssist").on("click", function(e) {
-			alert("doAddAssist clicked");
-		})
-		$("#doAddSave").on("click", function(e) {
-			alert("doAddSave clicked");
+		$("#endMatch").on("click", function(e) {
+			if(confirm("기록을 저장하고 경기를 종료합니다. 경기 종료 이후에는 경기 기록 수정이 불가합니다. 경기를 종료하시겠습니까?")){
+				location.href="/liveboard/endMatch?matchNo=${matchVO.matchNo}&clubCode=${matchVO.clubCode}";
+			}
 		})
 	</script>
 </body>

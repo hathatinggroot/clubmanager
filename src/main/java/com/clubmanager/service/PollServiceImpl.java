@@ -1,6 +1,8 @@
 package com.clubmanager.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,7 @@ public class PollServiceImpl implements PollService {
 			PersonalRecordDTO prDTO = new PersonalRecordDTO();
 			prDTO.setMatchNo(psDTO.getMatchNo());
 			prDTO.setUserId(psDTO.getUserId());
+			prDTO.setUserName(psDTO.getUserName());
 			if(psDTO.getStatus()==1) {//psDTO.getStatus == 1 => 참석자 명단 추가
 				log.warn("insertPR  FROM vote..... prDTO : " + prDTO);
 				recordMapper.insertPR(prDTO);
@@ -87,6 +90,44 @@ public class PollServiceImpl implements PollService {
 	public boolean modifyPM(PollMoMVO pmVO) {
 		int result = pollMapper.modifyPM(pmVO);
 		if(result == 1) return true;
+		return false;
+	}
+	
+	@Transactional
+	@Override
+	public boolean deletePM(String clubCode, int matchNo) {
+		//MoM 집계
+		List<PollStatusDTO> psDTOList = new ArrayList<>();
+		psDTOList = pollMapper.getPSList(matchNo, 2);
+		int maxPicked = psDTOList.stream().max((a,b)->{ 
+			return a.getPicked()-b.getPicked();
+		}).get().getPicked();
+		Iterator<PollStatusDTO> iterator = psDTOList.stream().filter(a -> a.getPicked() == maxPicked).iterator();
+		String MoM = "";
+		while(iterator.hasNext()) {
+			PollStatusDTO it = iterator.next();
+			
+			//personal record mom ++
+			PersonalRecordDTO prDTO = new PersonalRecordDTO();
+			prDTO.setMom(1);
+			prDTO.setMatchNo(it.getMatchNo());
+			prDTO.setUserId(it.getUserId());
+			recordMapper.picked(prDTO);
+			
+			//record to matchRecord as MoM
+			MoM += it.getUserName() + ", ";
+		}
+		recordMapper.writeMoM(MoM.substring(0, MoM.length()-2), matchNo);
+		
+		
+		//PS 삭제
+		pollMapper.deletePS(matchNo, 2);
+		
+		//PM 삭제
+		int result = pollMapper.deletePM(matchNo);
+		
+		if(result==1) return true;
+		
 		return false;
 	}
 }

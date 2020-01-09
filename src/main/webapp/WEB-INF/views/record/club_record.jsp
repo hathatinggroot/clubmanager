@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +40,7 @@
 						<span>경기</span>
 					</div>
 					<div>
-						<span class="large-font">153</span>
+						<span class="large-font">${csDTO.matchNums }</span>
 					</div>
 				</div>
 				<!-- total matches Nums end -->
@@ -45,9 +51,13 @@
 						<span>승률</span>
 					</div>
 					<div>
-						<span class="large-font">78.6</span>
+						<c:set var ="winRate" value="${csDTO.win/csDTO.matchNums*100 }"/>
+						<span class="large-font">
+							<fmt:formatNumber value="${winRate }" pattern=".0"/>
+						</span>
 					</div>
-					<div class="text-gray">75/15/54</div>
+					
+					<div class="text-gray">${csDTO.win }/${csDTO.draw }/${csDTO.lose }</div>
 				</div>
 				<!-- Winning rates end -->
 
@@ -57,9 +67,12 @@
 						<span>경기당 득점</span>
 					</div>
 					<div>
-						<span class="large-font">8.4</span>
+					<c:set var ="goalAvg" value="${csDTO.goalSum/csDTO.matchNums }"/>
+						<span class="large-font">
+							<fmt:formatNumber value="${goalAvg }" pattern=".0"/>
+						</span>
 					</div>
-					<div class="text-gray">942</div>
+					<div class="text-gray">${csDTO.goalSum }</div>
 				</div>
 				<!-- Goal Average end -->
 
@@ -69,9 +82,12 @@
 						<span>경기당 실점</span>
 					</div>
 					<div>
-						<span class="large-font">4.8</span>
+					<c:set var ="lostAvg" value="${csDTO.lostPointSum/csDTO.matchNums }"/>
+						<span class="large-font">
+							<fmt:formatNumber value="${lostAvg }" pattern=".0"/>
+						</span>
 					</div>
-					<div class="text-gray">642</div>
+					<div class="text-gray">${csDTO.lostPointSum }</div>
 				</div>
 				<!-- Lost Point Average end -->
 
@@ -92,7 +108,7 @@
 						</form>
 					</div>
 					<!-- Search condition end -->
-					<div class="table-responsive container-fluid">
+					<div class="table-responsive container-fluid" id="mrList">
 						<table
 							class="table table-condensed table-hover text-center text-white">
 							<tr>
