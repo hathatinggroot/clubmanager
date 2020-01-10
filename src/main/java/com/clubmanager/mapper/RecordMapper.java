@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.clubmanager.domain.Criteria;
 import com.clubmanager.domain.MatchRecordVO;
 import com.clubmanager.domain.PersonalRecordDTO;
 
@@ -27,5 +28,8 @@ public interface RecordMapper {
 	
 	public int writeMoM(@Param("userName") String userName, @Param("matchNo") int matchNo);
 	
-	public List<MatchRecordVO> getMRList(String clubCode);
+	public List<MatchRecordVO> getOverMRList(String clubCode);
+	
+	public List<PersonalRecordDTO> getAllPR(String userId);
+	
 }

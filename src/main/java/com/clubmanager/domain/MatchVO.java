@@ -20,5 +20,5 @@ public class MatchVO {
 	
 	private PollPartVO ppVO;
 	
-	
+	private MatchRecordVO mrVO;
 }

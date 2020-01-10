@@ -2,8 +2,7 @@ package com.clubmanager.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
+import com.clubmanager.domain.Criteria;
 import com.clubmanager.domain.MatchVO;
 
 public interface MatchMapper {
@@ -19,4 +18,6 @@ public interface MatchMapper {
 	public MatchVO get(int matchNo);
 	
 	public int chStat(MatchVO matchVO);
+	
+	public List<MatchVO> getListWithPaging(Criteria cri);
 }

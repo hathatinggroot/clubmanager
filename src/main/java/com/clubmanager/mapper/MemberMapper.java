@@ -16,4 +16,8 @@ public interface MemberMapper {
 	public int modifyAuth(MemberVO memberVO);
 	
 	public int dismiss(String userId);
+	
+	public int clubIn(String clubCode);
+	
+	public int clubOut();
 }

@@ -44,4 +44,15 @@
 		where userId = #{userId}
 	</update>
 	
+	<update id="clubIn">
+		update tbl_members set clubCode = #{clubCode}
+		where userId = 'admin'
+	</update>
+	
+	<update id="clubOut">
+		update tbl_members set clubCode = ''
+		where userId = 'admin'
+	</update>
+	
+	
 </mapper>

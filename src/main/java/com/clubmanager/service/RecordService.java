@@ -17,4 +17,6 @@ public interface RecordService {
 	public boolean modifyMR(MatchRecordVO mrVO);
 	
 	public boolean endMatch(int matchNo, String clubCode);
+	
+	
 }

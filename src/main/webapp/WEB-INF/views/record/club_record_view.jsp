@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +13,11 @@
 
 <!-- INCLUDE head.jsp -->
 <%@ include file="/WEB-INF/views/includes/head.jsp"%>
+<script>
+var goaler = [];
+var assister = [];
+var saver = [];
+</script>
 
 </head>
 <body>
@@ -31,15 +41,27 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
 					<div>
 						<div class="col-xs-6 col-sm-6 col-md-6">
-							<span>VS&nbsp;</span><span class="large-font">222FC</span>
+							<span>VS&nbsp;</span><span class="large-font">${matchVO.apposingTeam }</span>
 						</div>
 						<div class="col-xs-6 col-sm-6 col-md-6">
-							<span class="large-font">5:3</span>&nbsp;<span
-								class="badge badge-win large-font">승</span>
+							<span class="large-font">${matchVO.mrVO.goal + matchVO.mrVO.extraGoal }:${matchVO.mrVO.lostPoint }</span>&nbsp;
+							<c:choose>
+								<c:when test="${matchVO.mrVO.results == 1}">
+									<span class="badge badge-win large-font">승</span>
+								</c:when>
+								<c:when test="${matchVO.mrVO.results == 2}">
+									<span class="badge badge-draw large-font">무</span>
+								</c:when>
+								<c:when test="${matchVO.mrVO.results == 3}">
+									<span class="badge badge-lose large-font">패</span>
+								</c:when>
+							</c:choose>
 						</div>
 					</div>
 					<div>
-						<span>2019-12-11 19:00</span><span class="tab-space-1">백석구장</span>
+						<span> <fmt:formatDate value="${matchVO.matchDate }"
+								pattern="yyyy-MM-dd E  HH:mm" />
+						</span> <span class="tab-space-1">${matchVO.stadium}</span>
 					</div>
 				</div>
 				<!-- match info end -->
@@ -52,10 +74,14 @@
 					</h1>
 					<div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
-							<span class="large-font">홍길동</span>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<span class="large-font badge badge-unrecorded">투표중</span>
+							<c:choose>
+								<c:when test="${matchVO.mrVO.mom == '' }">
+									<span class="large-font badge badge-unrecorded">투표중</span>
+								</c:when>
+								<c:otherwise>
+									<span class="large-font">${matchVO.mrVO.mom }</span>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 				</div>
@@ -68,125 +94,33 @@
 						<dfn>공격 포인트</dfn>
 					</h1>
 					<div>
+						<c:forEach items="${matchVO.mrVO.prDTOList }" var="pr">
+							<c:if test="${pr.goals >0 }">
+								<script>
+							goaler.push({goals:"${pr.goals}", userName :"${pr.userName}" });
+						</script>
+							</c:if>
+							<c:if test="${pr.assists >0 }">
+								<script>
+							assister.push({assists:"${pr.assists}", userName :"${pr.userName}" });
+						</script>
+							</c:if>
+							<c:if test="${pr.saves >0 }">
+								<script>
+							saver.push({saves:"${pr.saves}", userName :"${pr.userName}" });
+						</script>
+							</c:if>
+						</c:forEach>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<div class="table-responsive container-fluid">
-								<table
-									class="table table-condensed table-hover text-center text-white">
-									<tr>
-										<td>No</td>
-										<td>이름</td>
-										<td>득점</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>홍길동</td>
-										<td>2</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>6</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>7</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-								</table>
+							<div class="table-responsive container-fluid" id="goalList">
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<div class="table-responsive container-fluid">
-								<table
-									class="table table-condensed table-hover text-center text-white">
-									<tr>
-										<td>No</td>
-										<td>이름</td>
-										<td>도움</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>홍길동</td>
-										<td>2</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-								</table>
+							<div class="table-responsive container-fluid" id="assistList">
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
-							<div class="table-responsive container-fluid">
-								<table
-									class="table table-condensed table-hover text-center text-white">
-									<tr>
-										<td>No</td>
-										<td>이름</td>
-										<td>선방</td>
-									</tr>
-									<tr>
-										<td>1</td>
-										<td>홍길동</td>
-										<td>2</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>홍길동</td>
-										<td>1</td>
-									</tr>
-								</table>
+							<div class="table-responsive container-fluid" id="saveList">
 							</div>
 						</div>
 					</div>
@@ -200,70 +134,13 @@
 						<dfn>코멘트</dfn>
 					</h1>
 					<div>
-						<p>하여도 가슴이 설레는 말이다 청춘! 너의 두손을 가슴에 대고 물방아 같은 심장의 고동을 들어 보라 청춘의
-
-							얼음 속에서 불러 내는 것이 따뜻한 봄바람이다 인생에 따뜻한 봄바람을 불어 보내는 것은 청춘의 끓는 피다 청춘의 피가
-							뜨거운지라 인간의 동산에는 사랑의 풀이 돋고 이상의 꽃이 피고 희망의 놀이 뜨고 열락의 새가 운다사랑의 풀이 없으면
-							인간은 사막이다 오아이스도 없는 사막이다 보이는 끝까지 아름답고 소담스러운 열매를 맺어 우리 인생을 풍부하게 하는
-							것이다 보라 청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고
-							있는가? 우리 눈이 그것을</p>
+						<p>${matchVO.mrVO.comments }</p>
 					</div>
 				</div>
 				<!-- match comment start -->
 
 
 
-				<!-- Tactics Short View  start -->
-				<div class="col-xs-12 col-sm-12 col-md-12 enter-row-1">
-					<hr class="divider">
-					<h1 class="text-white text-center">
-						<dfn>전술</dfn>
-					</h1>
-					<div role="tabpanel">
-						<!-- Nav tabs -->
-						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation" class="active"><a href="#A"
-								role="tab" data-toggle="tab">PLAN_A</a></li>
-							<li role="presentation"><a href="#B" role="tab"
-								data-toggle="tab">PLAN_B</a></li>
-							<li role="presentation"><a href="#C" role="tab"
-								data-toggle="pill">PLAN_C</a></li>
-						</ul>
-
-						<!-- Tab panes -->
-						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane fade in active" id="A">
-								<div class="col-xs-12 col-sm-6 col-md-6">
-									<img class="tactics-board" src="/resources/img/lineup.gif">
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
-									<h2>전술 중점</h2>
-									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
-								</div>
-							</div>
-							<div role="tabpanel" class="tab-pane fade" id="B">
-								<div class="col-xs-12 col-sm-6 col-md-6">
-									<img class="tactics-board" src="/resources/img/lineup.gif">
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
-									<h2>전술 중점</h2>
-									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
-								</div>
-							</div>
-							<div role="tabpanel" class="tab-pane fade" id="C">
-								<div class="col-xs-12 col-sm-6 col-md-6">
-									<img class="tactics-board" src="/resources/img/lineup.gif">
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-6 text-center text-white ">
-									<h2>전술 중점</h2>
-									<p>테스트테스트테스트테스트테스트 테스트테스트테스트테스트테스트테스트 테스트테스트테스트테스트</p>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-				<!-- Tactics Short View  end -->
 
 				<!-- Participate Members Table Start -->
 				<div class="col-xs-12 col-sm-12 col-md-12 ">
@@ -285,40 +162,25 @@
 								<td>No</td>
 								<td>이름</td>
 							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td>2</td>
-								<td>홍길동</td>
-								<td>3</td>
-								<td>홍길동</td>
-								<td>4</td>
-								<td>홍길동</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>홍길동</td>
-								<td>6</td>
-								<td>홍길동</td>
-								<td>7</td>
-								<td>홍길동</td>
-								<td>8</td>
-								<td>홍길동</td>
-							</tr>
+							<c:set var="rowNum"
+								value="${fn:length(matchVO.mrVO.prDTOList)/4 }" />
+							<c:forEach begin="1" end="${rowNum + (1-rowNum%1) }" var="i">
+								<tr>
+									<c:forEach begin="1" end="4" var="j">
+										<c:if test="${((i-1)*4 + j)<=(rowNum*4)}">
+											<td>${(i-1)*4 + j}</td>
+											<td>${matchVO.mrVO.prDTOList[(i-1)*4 + j-1].userId }</td>
+										</c:if>
+									</c:forEach>
+								</tr>
+							</c:forEach>
 						</table>
 					</div>
 				</div>
 				<!-- Participate Members Table end -->
 
 				<button type="button" class="btn btn-default pull-left"
-					onclick="location.href='/schedule/list'">목록</button>
-				<span class="pull-right">
-					<button type="button" class="btn btn-default pull-left"
-						data-toggle="modal" data-target="#modPlan">수정</button>
-					<button type="button" class="btn btn-default" data-toggle="modal"
-						data-target="#deletePlan">삭제</button>
-				</span>
-
+					onclick="history.back();">목록</button>
 			</div>
 			<!--   Match Detail View end-->
 
@@ -418,6 +280,68 @@
 
 
 	<script>
+	var token = '${_csrf.token }';
+	var header = '${_csrf.headerName }';
+	console.log("${matchVO.mrVO.prDTOList}");
+	
+	
+	window.onload = function(){
+		console.log(goaler);
+		showScore("${matchVO.matchNo}");
+	}
+	var showScore = function(matchNo) {
+		goaler.sort(function(a,b){
+			return b.goals - a.goals;
+		})
+		assister.sort(function(a,b){
+			return b.assists - a.assists;
+		})
+		saver.sort(function(a,b){
+			return b.saves - a.saves;
+		})
+
+		console.log("after sorted...........");
+		console.log(goaler);
+		console.log(assister);					
+		console.log(saver);					
+		
+		var str = "<table "
+			+ "class='table table-condensed table-hover text-center text-white'>"
+					+ "<tr><td>이름</td>";
+		var goalStr = str + "<td>득점</td></tr>";
+		var assistStr = str + "<td>도움</td></tr>";
+		var saveStr = str + "<td>선방</td></tr>";
+		
+		for (var g of goaler) {
+			goalStr += "<tr>" + "<td>"
+			+ g.userName + "</td>"
+			+ "<td>" + g.goals
+			+ "</td></tr>";					
+		}						
+		
+		for ( var a of assister) {
+			assistStr += "<tr>" + "<td>"
+					+ a.userName + "</td>"
+					+ "<td>" + a.assists
+					+ "</td></tr>";
+		}
+							
+		for (var s of saver) {
+			saveStr += "<tr>" + "<td>"
+					+ s.userName + "</td>"
+					+ "<td>" + s.saves + "</td></tr>";
+		}					
+
+		goalStr += "</table>";
+		assistStr += "</table>";
+		saveStr += "</table>";					
+
+		$("#goalList").html(goalStr);
+		$("#assistList").html(assistStr);
+		$("#saveList").html(saveStr);					
+
+		};
+	
 		$("#doDeletePlan").on("click", function(e) {
 			alert("doDeletePlan clicked");
 		})

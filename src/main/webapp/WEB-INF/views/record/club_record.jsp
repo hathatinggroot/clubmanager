@@ -147,7 +147,7 @@
 				<!-- Pagination start -->
 				<div class="text-center">
 					<nav>
-						<ul class="pagination">
+						<ul class="pagination" id="paginator">
 							<li class="disabled"><a href="#" aria-label="Previous"><span
 									aria-hidden="true">&laquo;</span></a></li>
 							<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
@@ -262,6 +262,133 @@
 
 
 	<script>
+	var token = '${_csrf.token }';
+	var header = '${_csrf.headerName }';
+	var cri = new Object();
+	
+	var showList = function(cri){
+		console.log("showList.........cri");
+		console.log(cri);
+		$.ajax({
+			type : "post",
+			url : "/record/getMatchList",
+			contentType : "application/json",
+			data : JSON.stringify(cri),
+			dataType : "json",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result){
+				console.log("showList...........result");				
+				console.log(result);	
+				var str = "<table class='table table-condensed table-hover text-center text-white'>"
+						+   "<tr><td>No</td><td>상대팀</td><td>경기 날짜</td><td>구장</td><td>경기 결과</td></tr>";
+						
+				var i = 1;
+				
+				for(var matchVO of result){
+					var scored = matchVO.mrVO.goal + matchVO.mrVO.extraGoal;
+					
+					var date = new Date(matchVO.matchDate);
+					dateStr = (date.getYear()+1900) + "-";
+					dateStr += (date.getMonth()+1)>10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
+					dateStr += date.getDate()>10? date.getDate()+"  ":"0"+date.getDate()+"  ";
+					dateStr += date.getHours()>10? date.getHours() + ":":"0"+date.getHours() + ":";
+					dateStr += date.getMinutes()>10 ? date.getMinutes():"0"+date.getMinutes();
+					
+					str += "<tr onclick=\"location.href='/record/club_record_view?matchNo="+matchVO.matchNo+"'\">"
+						+		"<td>" + (i++) + "</td>"
+						+		"<td>" + matchVO.apposingTeam + "</td>"
+						+		"<td>" + dateStr + "</td>"
+						+		"<td>" + matchVO.stadium + "</td>"
+						+	    "<td>"+scored+":"+matchVO.mrVO.lostPoint ;
+					if(matchVO.mrVO.results < 2){
+						if(matchVO.mrVO.results ==1){
+							str += "<span class='badge badge-win'>승</span></td>";	
+						}else{
+							str += "<span class='badge badge-draw'>무</span></td>";
+						}
+					}else{
+						str += "<span class='badge badge-lose'>패</span></td>";
+					}
+					
+					str += "</tr>";
+				}
+				str += "</table>";
+				
+				$("#mrList").html(str);
+				
+				getPaginator(cri);
+			}
+		});
+	}
+	
+	var getPaginator = function(cri){
+		$.ajax({
+			type : "post",
+			url : "/record/getPaginator",
+			contentType : "application/json",
+			data : JSON.stringify(cri),
+			dataType : "json",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result){
+				console.log("getPaginator...........result");				
+				console.log(result);	
+				var str = "";
+						
+				if(result.prev){
+					str += "<li>";
+				}else{
+					str += 	"<li class='disabled'>";
+				}		
+				str += "<a href='#' onclick='chPage("+(result.startPage-1)+");' aria-label='Previous'><span	aria-hidden='true'>&laquo;</span></a></li>";
+				
+				for(var i = result.startPage ; i<= result.endPage; i++){
+					if(i==cri.pageNum){
+						str += "<li class='active'>";
+					}else{
+						str += "<li>";
+					}
+					str += "<a href='#' onclick='chPage("+i+");'>" + i + "</a></li>";
+				}
+				if(result.next){
+					str += "<li>";
+				}else{
+					str += 	"<li class='disabled'>";
+				}		
+				str += "<a href='#' onclick='chPage("+(result.endPage+1)+");' aria-label='Previous'><span	aria-hidden='true'>&raquo;</span></a></li>";
+			
+				$("#paginator").html(str);
+			
+			}
+		});
+		
+	}
+	
+	var chPage = function(pageNum){
+		console.log("chPage........to pageNum : " + pageNum);
+		
+		cri.pageNum = pageNum;
+		showList(cri);
+	}
+	$("#keyword").on("keyup",function(e){
+		console.log($(e.target).val());
+		cri.keyword = $(e.target).val();
+		
+		showList(cri);
+	})
+	
+	
+	window.onload = function(){
+		cri.pageNum = "${cri.pageNum}";
+		cri.amount = "${cri.amount}";
+		cri.keyword = "${cri.keyword}";
+		cri.clubCode = "${cri.clubCode}";
+		showList(cri);
+	}
+	
 		$("#doDeletePlan").on("click", function(e) {
 			alert("doDeletePlan clicked");
 		})

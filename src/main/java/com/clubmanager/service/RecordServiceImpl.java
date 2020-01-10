@@ -81,7 +81,7 @@ public class RecordServiceImpl implements RecordService {
 		matchVO.setMatchRecordStatus(1);
 		matchVO.setMatchNo(mrVO.getMatchNo());
 		matchMapper.chStat(matchVO);
-		
+	
 		if(recordMapper.modifyMR(mrVO)==1) {
 			return true;
 		}
@@ -118,6 +118,19 @@ public class RecordServiceImpl implements RecordService {
 			pollMapper.insertPS(psDTO);
 		});
 		
+		//경기 결과 등록
+		MatchRecordVO mrVO = recordMapper.getMR(matchNo);
+		int scoreGap = mrVO.getGoal()+mrVO.getExtraGoal() - mrVO.getLostPoint();
+		if(scoreGap>=0) {
+			if(scoreGap !=0) {
+				mrVO.setResults(1); // 승리
+			}else {
+				mrVO.setResults(2); // 무
+			}
+		}else {
+			mrVO.setResults(3); // 패배
+		}
+		recordMapper.modifyMR(mrVO);
 		
 		//매치 진행상태 변경
 		MatchVO matchVO = new MatchVO();
@@ -131,4 +144,5 @@ public class RecordServiceImpl implements RecordService {
 		
 		return false;
 	}
+	
 }

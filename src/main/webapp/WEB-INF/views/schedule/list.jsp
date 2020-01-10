@@ -4,6 +4,7 @@
 	prefix="sec"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
 
@@ -36,6 +37,14 @@
 						<dfn>
 							<fmt:formatDate value="${matchList[i].matchDate }"
 								pattern="MM-dd E  HH:mm" />
+							<c:choose>
+								<c:when test="${matchList[i].matchStatus ==0 }">
+									<span class="badge badge-unplanned">미확정</span>
+								</c:when>
+								<c:when test="${matchList[i].matchStatus ==1 }">
+									<span class="badge badge-planned">확정</span>
+								</c:when>
+							</c:choose>
 						</dfn>
 					</h1>
 				</div>
@@ -51,12 +60,11 @@
 				<!-- Participate Members Table Start -->
 				<div class="col-xs-12 col-sm-12 col-md-12 ">
 					<div class="text-center text-white text-nowrap">
-						<hr class="divider">
 						<h1>
 							<dfn>참석 명단</dfn>
 						</h1>
 					</div>
-					<div class="table-responsive container-fluid">
+					<div class="table-responsive container-fluid ">
 						<table
 							class="table table-condensed table-hover text-center text-white">
 							<tr>
@@ -69,26 +77,17 @@
 								<td>No</td>
 								<td>이름</td>
 							</tr>
-							<tr>
-								<td>1</td>
-								<td>홍길동</td>
-								<td>2</td>
-								<td>홍길동</td>
-								<td>3</td>
-								<td>홍길동</td>
-								<td>4</td>
-								<td>홍길동</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>홍길동</td>
-								<td>6</td>
-								<td>홍길동</td>
-								<td>7</td>
-								<td>홍길동</td>
-								<td>8</td>
-								<td>홍길동</td>
-							</tr>
+							<c:set var="rowNum" value="${fn:length(prList)/4 }" />
+							<c:forEach begin="1" end="${rowNum + (1-rowNum%1) }" var="i">
+								<tr>
+									<c:forEach begin="1" end="4" var="j">
+										<c:if test="${((i-1)*4 + j)<=(rowNum*4)}">
+											<td>${(i-1)*4 + j}</td>
+											<td>${prList[(i-1)*4 + j-1].userId }</td>
+										</c:if>
+									</c:forEach>
+								</tr>
+							</c:forEach>
 						</table>
 					</div>
 				</div>
@@ -405,10 +404,9 @@
 					var matchD = new Date(matchYear, matchMonth - 1, matchDay,
 							matchHour, matchMin, 0, 0);
 					console.log(matchD);
-					
+
 					var matchStatus = $("#modMatchStatus").prop("checked") ? 1
 							: 0;
-					
 
 					matchObj.apposingTeam = $("#modApposingTeam").val();
 					matchObj.matchDate = matchD;
@@ -427,7 +425,7 @@
 						},
 						success : function(result) {
 							console.log(result);
-							if(result=="success"){
+							if (result == "success") {
 								alert("수정 완료");
 							}
 							location.reload();
@@ -436,27 +434,26 @@
 
 				})
 
-		$("#doDelete").on(
-				"click",
-				function(e) {
-					if(!confirm("정말 삭제하시겠습니까?")) return;
-					
-					$.ajax({
-						type : "delete",
-						url : "/schedule/delete/"+$("#modMatchNo").val(),
-						beforeSend : function(xhr) {
-							xhr.setRequestHeader(header, token);
-						},
-						success : function(result) {
-							console.log(result);
-							if(result=="success"){
-								alert("삭제 완료");
-							}
-							location.reload();
-						}
-					});
+		$("#doDelete").on("click", function(e) {
+			if (!confirm("정말 삭제하시겠습니까?"))
+				return;
 
-				})
+			$.ajax({
+				type : "delete",
+				url : "/schedule/delete/" + $("#modMatchNo").val(),
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(result) {
+					console.log(result);
+					if (result == "success") {
+						alert("삭제 완료");
+					}
+					location.reload();
+				}
+			});
+
+		})
 	</script>
 </body>
 </html>

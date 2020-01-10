@@ -49,4 +49,24 @@
 	where matchNo = #{matchNo}
 	</delete>
 	
+	<select id="getListWithPaging" resultType="com.clubmanager.domain.MatchVO">
+		<![CDATA[
+		select matchNo, apposingTeam, matchDate, stadium, clubCode
+		from (
+			select /*+ INDEX(tbl_matches idx_matches) */ rownum rn, matchNo, apposingTeam, matchDate, stadium, clubCode
+			from tbl_matches
+			where clubCode = #{clubCode}
+			and matchStatus = 2
+			and	(	
+				apposingTeam like '%'||#{keyword}||'%'
+				or	stadium like '%'||#{keyword}||'%'
+				)
+			and rownum <= #{pageNum}*#{amount}
+			)
+		where rn > (#{pageNum}-1)*#{amount}
+		]]>
+		
+	</select>
+	
+	
 </mapper>

@@ -32,4 +32,38 @@
 		where clubCode = #{clubCode}
 	</update> 
 	
+	<select id="getClubList" resultType="com.clubmanager.domain.ClubVO">
+	<![CDATA[
+		select clubName, clubCode, clubDate, ownerId  
+		from 
+			(
+			select rownum rn, clubName, clubCode, clubDate, ownerId
+			from tbl_clubs
+			where 
+			(	
+				clubName like '%'||#{keyword}||'%'
+				or	ownerId like '%'||#{keyword}||'%'
+			)
+			and
+			rownum <= #{pageNum} * #{amount}
+			order by clubDate desc			
+			) 
+		where rn > (#{pageNum}-1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="getTotalNum"  resultType="int">
+		select count(*) 
+		from tbl_clubs
+		where 
+			(	
+				clubName like '%'||#{keyword}||'%'
+				or	ownerId like '%'||#{keyword}||'%'
+			)
+	</select>
+	
+	<delete id="delClub">
+		delete from tbl_clubs
+		where clubCode = #{clubCode}
+	</delete>
 </mapper>

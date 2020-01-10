@@ -2,6 +2,7 @@ package com.clubmanager.service;
 
 import java.util.List;
 
+import com.clubmanager.domain.Criteria;
 import com.clubmanager.domain.MatchVO;
 
 public interface MatchService {
@@ -17,4 +18,6 @@ public interface MatchService {
 	public boolean delete(int matchNo);
 	
 	public MatchVO get(int matchNo);
+	
+	public List<MatchVO> getEndedList(Criteria cri);
 }

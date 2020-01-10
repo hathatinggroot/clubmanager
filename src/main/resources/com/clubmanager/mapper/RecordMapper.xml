@@ -22,17 +22,31 @@
 		where matchNo = #{matchNo}
 	</select>
 	
+	<select id="getAllPR" resultType="com.clubmanager.domain.PersonalRecordDTO">
+		select /*+ INDEX(tbl_personalRecord idx_pr) */ * 
+		from tbl_personalrecord
+		where userId = #{userId}
+	</select>
+	
 	<select id="getMR" resultType="com.clubmanager.domain.MatchRecordVO">
 		select /*+ INDEX(tbl_matchrecord idx_mr) */ *  
 		from tbl_matchrecord
 		where matchNo = #{matchNo}
 	</select>
 	
-	<select id="getMRList" resultType="com.clubmanager.domain.MatchRecordVO">
+	<select id="getOverMRList" resultType="com.clubmanager.domain.MatchRecordVO">
 		select /*+ INDEX(tbl_matchrecord idx_mr) */ * 
 		from tbl_matchrecord
 		where clubCode = #{clubCode}
+			and results > 0
+		
 	</select>
+	
+	
+	
+	
+	
+	
 	
 	<insert id="insertMR">
 		insert into tbl_matchrecord(matchNo)

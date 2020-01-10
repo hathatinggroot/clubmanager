@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.clubmanager.domain.Criteria;
 import com.clubmanager.domain.MatchVO;
 import com.clubmanager.domain.PollPartVO;
 import com.clubmanager.domain.PollStatusDTO;
@@ -73,7 +74,6 @@ public class MatchServiceImpl implements MatchService {
 
 		matchList = matchMapper.getList(clubCode).stream().filter(attach -> attach.getMatchStatus() < 2)
 				.collect(Collectors.toList());
-
 		return matchList;
 	}
 	
@@ -120,5 +120,16 @@ public class MatchServiceImpl implements MatchService {
 	@Override
 	public MatchVO get(int matchNo) {
 		return matchMapper.get(matchNo);
+	}
+	
+	@Override
+	public List<MatchVO> getEndedList(Criteria cri) {
+		
+		List<MatchVO> matchList = matchMapper.getListWithPaging(cri);
+		matchList.forEach(matchVO -> {
+			matchVO.setMrVO(recordMapper.getMR(matchVO.getMatchNo()));
+		});
+		
+		return matchList;
 	}
 }

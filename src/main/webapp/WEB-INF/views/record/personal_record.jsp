@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,11 @@
 
 <!-- INCLUDE head.jsp -->
 <%@ include file="/WEB-INF/views/includes/head.jsp"%>
+
+<script>
+	var prList = [];
+	var myIdx = '';
+</script>
 
 </head>
 <body>
@@ -56,31 +62,13 @@
 											<td>이름</td>
 											<td>포인트</td>
 										</tr>
-										<tr>
-											<td>1</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
+										<c:forEach begin="0" end="4" var="idx">
+											<tr>
+												<td>${rankerMap.total[idx].rankTotal }</td>
+												<td>${rankerMap.total[idx].userName }</td>
+												<td>${rankerMap.total[idx].amountTotal }</td>
+											</tr>
+										</c:forEach>
 									</table>
 								</div>
 							</div>
@@ -93,31 +81,13 @@
 											<td>이름</td>
 											<td>MoM</td>
 										</tr>
-										<tr>
-											<td>1</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
+										<c:forEach begin="0" end="4" var="idx">
+											<tr>
+												<td>${rankerMap.mom[idx].rankMoM }</td>
+												<td>${rankerMap.mom[idx].userName }</td>
+												<td>${rankerMap.mom[idx].amountMoM }</td>
+											</tr>
+										</c:forEach>
 									</table>
 								</div>
 							</div>
@@ -130,31 +100,13 @@
 											<td>이름</td>
 											<td>득점</td>
 										</tr>
-										<tr>
-											<td>1</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
+										<c:forEach begin="0" end="4" var="idx">
+											<tr>
+												<td>${rankerMap.goal[idx].rankGoal }</td>
+												<td>${rankerMap.goal[idx].userName }</td>
+												<td>${rankerMap.goal[idx].amountGoal }</td>
+											</tr>
+										</c:forEach>
 									</table>
 								</div>
 							</div>
@@ -167,31 +119,13 @@
 											<td>이름</td>
 											<td>도움</td>
 										</tr>
-										<tr>
-											<td>1</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
+										<c:forEach begin="0" end="4" var="idx">
+											<tr>
+												<td>${rankerMap.assist[idx].rankAssist }</td>
+												<td>${rankerMap.assist[idx].userName }</td>
+												<td>${rankerMap.assist[idx].amountAssist }</td>
+											</tr>
+										</c:forEach>
 									</table>
 								</div>
 							</div>
@@ -204,31 +138,13 @@
 											<td>이름</td>
 											<td>선방</td>
 										</tr>
-										<tr>
-											<td>1</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>홍길동</td>
-											<td>42</td>
-										</tr>
+										<c:forEach begin="0" end="4" var="idx">
+											<tr>
+												<td>${rankerMap.save[idx].rankSave }</td>
+												<td>${rankerMap.save[idx].userName }</td>
+												<td>${rankerMap.save[idx].amountSave }</td>
+											</tr>
+										</c:forEach>
 									</table>
 								</div>
 							</div>
@@ -254,77 +170,38 @@
 				<!-- All Members table start -->
 				<div class="col-xs-12 col-sm-4 col-md-4 text-white text-center">
 					<div>
-						<div class="table-responsive container-fluid scroll-box-personal-record">
+						<div
+							class="table-responsive container-fluid scroll-box-personal-record">
 							<table
 								class="table table-condensed table-hover text-center text-white">
 								<tr>
 									<td>No</td>
 									<td>이름</td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>홍길동</td>
-								</tr>
+								<c:forEach items="${rankerMap.total }" var="member" varStatus="stat">
+									<script>
+										prList.push({userName:"${member.userName}"
+											,rTotal:"${member.rankTotal}"
+											,rMoM:"${member.rankMoM}"
+											,rGoal:"${member.rankGoal}"
+											,rAssist:"${member.rankAssist}"
+											,rSave:"${member.rankSave}"
+											,aAttend:"${member.amountAttend}"
+											,aTotal:"${member.amountTotal}"
+											,aMoM:"${member.amountMoM}"
+											,aGoal:"${member.amountGoal}"
+											,aAssist:"${member.amountAssist}"
+											,aSave:"${member.amountSave}" });
+										if("${principal.member.userId}" == "${member.userId}"){
+											myIdx = '${stat.count}'-1;
+										}
+									</script>
+									<tr onclick="showDetail('${stat.count-1 }')">
+										<td>${stat.count }</td>
+										<td>${member.userName }</td>
+									</tr>
+								</c:forEach>
+
 							</table>
 						</div>
 					</div>
@@ -334,9 +211,11 @@
 
 
 				<!-- Personal Record View start -->
+				
+				
 				<div class="col-xs-12 col-sm-8 col-md-8 text-white text-center">
 					<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
-						<span class="large-font">홍길동</span>
+						<span class="large-font detailUserName">${memberInfo.userId }</span>
 					</div>
 					<!-- Rank start -->
 					<div class="col-xs-12 col-sm-12 col-md-12 text-white text-center">
@@ -347,7 +226,7 @@
 							<table
 								class="table table-condensed table-hover text-center text-white">
 								<tr>
-									<td>홍길동</td>
+									<td class="detailUserName">${memberInfo.userId }</td>
 									<td>종합</td>
 									<td>MoM</td>
 									<td>득점</td>
@@ -356,11 +235,11 @@
 								</tr>
 								<tr>
 									<td>순위</td>
-									<td>2</td>
-									<td>4</td>
-									<td>2</td>
-									<td>1</td>
-									<td>8</td>
+									<td id="detailRTotal">${memberInfo.rankTotal }</td>
+									<td id="detailRMoM">${memberInfo.rankMoM }</td>
+									<td id="detailRGoal">${memberInfo.rankGoal }</td>
+									<td id="detailRAssist">${memberInfo.rankAssist }</td>
+									<td id="detailRSave">${memberInfo.rankSave }</td>
 								</tr>
 							</table>
 						</div>
@@ -373,62 +252,74 @@
 							<span>출전 경기수</span>
 						</div>
 						<div>
-							<span class="large-font">45</span>
+							<span class="large-font" id="detailAAttend">${memberInfo.amountAttend }</span>
 						</div>
 					</div>
 					<!-- Participate Record end -->
-					
+
 					<!-- Mileage Point start -->
 					<div class="col-xs-6 col-sm-6 col-md-6 text-white text-center">
 						<div>
 							<span>종합 점수</span>
 						</div>
 						<div>
-							<span class="large-font">45</span>
+							<span class="large-font" id="detailATotal">${memberInfo.amountTotal }</span>
 						</div>
 					</div>
 					<!-- Mileage Point end -->
-					
+
 					<!-- MoM start -->
 					<div class="col-xs-6 col-sm-6 col-md-6 text-white text-center">
 						<div>
 							<span>MoM</span>
 						</div>
 						<div>
-							<span class="large-font">3</span>
+							<span class="large-font" id="detailAMoM">${memberInfo.amountMoM }</span>
 						</div>
 					</div>
 					<!-- MoM end -->
-					
+
 					<!-- Goal Average start -->
 					<div class="col-xs-6 col-sm-6 col-md-6 text-white text-center">
 						<div>
 							<span>평균 득점</span>
 						</div>
 						<div>
-							<span class="large-font">2.3</span>&nbsp;<span class="text-gray">97</span>
+							<span class="large-font" id="detailAvgGoal">
+							</span>
+							<span class="text-gray"  id="detailAGoal">
+								${memberInfo.amountGoal }
+							</span>
 						</div>
 					</div>
 					<!-- Goal Average end -->
-					
+
 					<!-- Assist Average start -->
 					<div class="col-xs-6 col-sm-6 col-md-6 text-white text-center">
 						<div>
 							<span>평균 도움</span>
 						</div>
 						<div>
-							<span class="large-font">2.3</span>&nbsp;<span class="text-gray">97</span>
+							<span class="large-font" id="detailAvgAssist">
+							</span>
+							<span class="text-gray" id="detailAAssist">
+								${memberInfo.amountAssist }
+							</span>
 						</div>
 					</div>
 					<!-- Assist Average end -->
-					
+
 					<!-- Save Average start -->
 					<div class="col-xs-6 col-sm-6 col-md-6 text-white text-center">
 						<div>
 							<span>평균 선방</span>
 						</div>
 						<div>
-							<span class="large-font">2.3</span>&nbsp;<span class="text-gray">97</span>
+							<span class="large-font" id="detailAvgSave">
+							</span>
+							<span class="text-gray"  id="detailASave">
+								${memberInfo.amountSave }
+							</span>
 						</div>
 					</div>
 					<!-- Save Average end -->
@@ -534,6 +425,38 @@
 
 
 	<script>
+		console.log(prList);
+		var showDetail = function(i){
+			$(".detailUserName").html(prList[i].userName);
+			
+			$("#detailRTotal").html(prList[i].rTotal);
+			$("#detailRMoM").html(prList[i].rMoM);
+			$("#detailRGoal").html(prList[i].rGoal);
+			$("#detailRAssist").html(prList[i].rAssist);
+			$("#detailRSave").html(prList[i].rSave);
+			
+			$("#detailAAttend").html(prList[i].aAttend);
+			$("#detailATotal").html(prList[i].aTotal);
+			$("#detailAMoM").html(prList[i].aMoM);
+			$("#detailAGoal").html(prList[i].aGoal);
+			$("#detailAAssist").html(prList[i].aAssist);
+			$("#detailASave").html(prList[i].aSave);
+			
+			if(prList[i].aAttend !=0){
+				$("#detailAvgGoal").html((prList[i].aGoal/prList[i].aAttend).toFixed(1));
+				$("#detailAvgAssist").html((prList[i].aAssist/prList[i].aAttend).toFixed(1));
+				$("#detailAvgSave").html((prList[i].aSave/prList[i].aAttend).toFixed(1));
+			}else{
+				$("#detailAvgGoal").html(0);
+				$("#detailAvgAssist").html(0);
+				$("#detailAvgSave").html(0);
+			}
+		}
+		
+		window.onload=function(){
+			showDetail(myIdx);
+		}
+	
 		$("#doDeletePlan").on("click", function(e) {
 			alert("doDeletePlan clicked");
 		})

@@ -51,11 +51,12 @@ create table tbl_matchRecord(
     goal number default 0,
     extraGoal number default 0, -- ¿ëº´ µæÁ¡ or »ó´ë ÀÚÃ¥°ñ
     lostPoint number default 0,
-    results number(1), -- 1:½Â¸®, 0:¹«, -1:ÆÐ
-    mom varchar2(20),
+    results number(1) default -2, -- 1:½Â¸®, 0:¹«, -1:ÆÐ
+    mom varchar2(20) default '',
     comments varchar2(2048) default '',
     matchNo number);
-alter table tbl_matchRecord add constraint ck_matcheRecord_results check (results in (-1,0,1));
+alter table tbl_matchRecord modify ( mom varchar2(20) default '');
+alter table tbl_matchRecord add constraint ck_matcheRecord_results check (results in (-2,-1,0,1));
 alter table tbl_matchRecord add constraint fk_mRecord_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
 
 

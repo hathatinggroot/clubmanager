@@ -11,23 +11,12 @@ public class MatchRecordVO {
 	private int goal;
 	private int extraGoal;
 	private int lostPoint;
-	private int results; //-- 1:승리, 0:무, -1:패
+	private int results; //-- -2:시작 전  1:승리, 2:무, 3:패
 	private String mom;
 	private String comments;
 	private int matchNo;
 	private String clubCode;
 	
 	private List<PersonalRecordDTO> prDTOList;
-	
-	public int getResults() {
-		int total = this.goal + this.extraGoal - this.lostPoint;
-		if(total>0) {
-			return 1;
-		}else if(total<0) {
-			return -1;
-		}else {
-			return 0;
-		}
-	}
 	
 }

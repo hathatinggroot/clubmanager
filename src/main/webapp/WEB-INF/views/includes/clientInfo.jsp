@@ -350,7 +350,8 @@
 <sec:authorize access="isAuthenticated()">
 	<script>
 		//MODIFY PINFO MODULE
-		$.ajax({
+	var clubExistCheck = function(){	
+			$.ajax({
 			method : "post",
 			url : "/club_exist_check",
 			contentType : "application/json",
@@ -375,7 +376,12 @@
 				}
 			}
 		});
-
+		}
+		$("#pInfoMod").on("show.bs.modal",function(e){
+			clubExistCheck();
+		})
+		
+		
 		$("#doPInfoMod").on("click", function(e) {
 			// 	alert("doPInfoMod clicked");
 			var modUserId = "${principal.member.userId }";

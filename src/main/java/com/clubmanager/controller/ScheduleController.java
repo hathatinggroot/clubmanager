@@ -1,5 +1,6 @@
 package com.clubmanager.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.clubmanager.domain.MatchVO;
+import com.clubmanager.domain.PersonalRecordDTO;
 import com.clubmanager.service.MatchService;
+import com.clubmanager.service.RecordService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -29,6 +32,10 @@ public class ScheduleController {
 	@Setter(onMethod_=@Autowired)
 	private MatchService matchService;
 	
+	@Setter(onMethod_=@Autowired)
+	private RecordService recordService;
+	
+	
 	@GetMapping("/list")
 	public void getMatchList(@Param("clubCode") String clubCode, Model model) {
 		log.info("list.jsp clubCode : " + clubCode);
@@ -37,12 +44,19 @@ public class ScheduleController {
 			
 		}
 		
-		List<MatchVO> matchList = 
-		matchService.getPlannedList(clubCode);
+		List<MatchVO> matchList = new ArrayList<>();
+		List<PersonalRecordDTO> prList = new ArrayList<>();
+		
+		
+		matchList = matchService.getPlannedList(clubCode);
+		if(matchList.size()>0) {
+			prList= recordService.getPRList(matchList.get(0).getMatchNo());
+		}
 		
 		log.info(matchList);
 		
 		model.addAttribute("matchList", matchList);
+		model.addAttribute("prList", prList);
 	}
 	
 	@PostMapping(value = "/register", consumes="application/json", produces = {MediaType.TEXT_PLAIN_VALUE} )
