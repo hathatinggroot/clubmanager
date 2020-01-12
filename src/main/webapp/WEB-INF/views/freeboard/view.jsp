@@ -54,7 +54,7 @@
 								<span class="glyphicon glyphicon-comment">${boardVO.replyCnt }</span>
 							</div>
 							<div class="col-xs-2 col-sm-2 col-md-2">
-								<span class="glyphicon glyphicon-thumbs-up">${boardVO.boardLike }</span>
+								<span class="glyphicon glyphicon-thumbs-up" id="likeBtn">${boardVO.boardLike }</span>
 							</div>
 							<div class="col-xs-2 col-sm-2 col-md-2">
 								<span class="glyphicon glyphicon-eye-open">${boardVO.boardHit }</span>
@@ -66,7 +66,11 @@
 							<div class="col-xs-12 col-sm-12 col-md-12">
 							<ul class="list-inline" id="attachListLink">
 								<c:forEach items="${boardVO.attachList }" var="attach">
-									<li>${attach.fileName }</li>
+									<li>
+									<button data-fileName="${attach.fileName }" data-filePath="${attach.filePath }" class="download">
+									${attach.fileName }
+									</button>
+									</li>
 								</c:forEach>
 							</ul>
 							</div>
@@ -136,6 +140,29 @@
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
 console.log("${boardVO.attachList[0].fileName}");
+var isLike = '';
+
+$(".download").on("click",function(e){
+	console.log($(e.target).data());
+	var downloadFile = new Object();
+	downloadFile.fileName = $(e.target).data('filename');
+	downloadFile.filePath = $(e.target).data('filepath');
+	console.log(downloadFile);
+	$.ajax({
+		url:"/freeboard/download",
+		type:"post",
+		contentType: "application/json",
+		data: JSON.stringify(downloadFile),
+		dataType : "application/octet-stream",
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success:function(result){
+			console.log(result);
+		}
+	})
+})
+
 
 var chDateFormat = function(inputDate){
 	var date = new Date(inputDate);
@@ -162,7 +189,7 @@ var chDateFormat = function(inputDate){
 		replyVO.replyWriterName =  "${principal.member.userName}";
 		replyVO.replyContent = $("#addReply").val();
 		replyVO.boardNo = '${boardVO.boardNo }';
-		
+		replyVO.isLike = 0;
 		console.log(replyVO);
 		
 		$.ajax({
@@ -197,11 +224,15 @@ var showReplyList = function(){
 						+"<col width=15% />"
 						+"</colgroup>";
 				for(var reply of result){
+					if(reply.isLike == 0){
 					str+= "<tr>"
 							+"<td>"+reply.replyWriterName+"</td>"
 							+"<td>"+reply.replyContent+"</td>"
 							+"<td>"+chDateFormat(reply.replyDate)+"</td>"
 							+"</tr>";
+					}else{
+						isLike = true;
+					}
 					}
 					str+= "</table>";	
 					$("#replyListDP").html(str);
@@ -209,6 +240,54 @@ var showReplyList = function(){
 			}
 		});
 	};
+	
+	$("#likeBtn").on("click", function(e){
+		if(isLike){
+			alert("좋아요를 취소합니다");
+			var replyVO = new Object();
+			replyVO.replyWriter = "${principal.member.userId}";
+			replyVO.boardNo = '${boardVO.boardNo }';
+			replyVO.isLike = 1;
+			console.log(replyVO);
+			
+			$.ajax({
+				type:"delete",
+				url:"/freeboard/deleteReply",
+				data: JSON.stringify(replyVO),
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(result){
+					console.log(result);
+					location.reload();
+				}
+			});
+		}else{
+			alert("이 글을 좋아합니다");
+			var replyVO = new Object();
+			replyVO.replyWriter = "${principal.member.userId}";
+			replyVO.replyWriterName =  "${principal.member.userName}";
+			replyVO.replyContent = '';
+			replyVO.boardNo = '${boardVO.boardNo }';
+			replyVO.isLike = 1;
+			console.log(replyVO);
+			
+			$.ajax({
+				type:"post",
+				url:"/freeboard/writeReply",
+				data: JSON.stringify(replyVO),
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(result){
+					console.log(result);
+					location.reload();
+				}
+			});
+		}
+	})
 	
 		window.onload=function(){
 			showReplyList();

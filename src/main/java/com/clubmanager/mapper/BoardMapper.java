@@ -23,6 +23,10 @@ public interface BoardMapper {
 	public int delete(BoardVO boardVO);
 	
 	public int replyAdded(int boardNo);
+
+	public int likeAdded(int boardNo);
+
+	public int likeDelete(int boardNo);
 	
 	public int insertAttach(AttachVO attachVO);
 	

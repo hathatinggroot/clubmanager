@@ -81,6 +81,18 @@
 		where boardNo = #{boardNo}
 	</update>
 	
+	<update id="likeAdded">
+		update tbl_freeboard 
+		set boardLike = boardLike + 1
+		where boardNo = #{boardNo}
+	</update>
+	
+	<update id="likeDelete">
+		update tbl_freeboard 
+		set boardLike = boardLike - 1
+		where boardNo = #{boardNo}
+	</update>
+	
 	
 	<update id="modify">
 		update tbl_freeboard 

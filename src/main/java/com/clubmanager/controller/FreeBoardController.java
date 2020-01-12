@@ -2,10 +2,13 @@ package com.clubmanager.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -75,6 +78,27 @@ public class FreeBoardController {
 		log.info("pageDTO : " + pdto);
 		
 		return pdto;
+	}
+	
+	@PostMapping(value = "/download", consumes="application/json", produces={ MediaType.APPLICATION_OCTET_STREAM_VALUE })
+	@ResponseBody
+	public ResponseEntity<Resource> download(@RequestBody AttachVO attachVO) {
+		log.info("download attachVO : " + attachVO);
+		Resource resource = new FileSystemResource(attachVO.getFilePath()+attachVO.getFileName());
+		log.info("resource : " + resource);
+		
+		if(resource.exists()) {
+			HttpHeaders header = new HttpHeaders();
+			try {
+				String download = new String(resource.getFilename().getBytes("UTF-8"),"ISO-8859-1");
+				header.add("Content-Disposition", "attachment; filename="+download);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return new ResponseEntity<Resource>(resource, header,HttpStatus.OK);
+		}
+		return null;
 	}
 	
 	
@@ -200,6 +224,19 @@ public class FreeBoardController {
 		
 		return "writeReply failed";
 	}
+	
+	@DeleteMapping(value= "/deleteReply", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String deleteReply(@RequestBody ReplyVO replyVO) {
+		log.info("deleteReply replyVO : " + replyVO);
+		int result = replyService.delete(replyVO);
+		if(result==1) {
+			return "writeReply success";
+		}
+		
+		return "writeReply failed";
+	}
+	
 	
 	@GetMapping(value = "/replyList/{boardNo}", produces={ MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody

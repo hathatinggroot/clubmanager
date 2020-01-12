@@ -13,7 +13,14 @@
 	</select>
 	
 	<insert id="insert">
-		insert into tbl_reply(replyWriter, replyWriterName, replyContent, boardNo) 
-		values(#{replyWriter},#{replyWriterName},#{replyContent},#{boardNo})
+		insert into tbl_reply(replyWriter, replyWriterName, replyContent, boardNo, isLike) 
+		values(#{replyWriter},#{replyWriterName},#{replyContent},#{boardNo},#{isLike})
 	</insert>
+	
+	<delete id="delete">
+		delete from tbl_reply
+		where replyWriter = #{replyWriter}
+		and boardNo = #{boardNo}
+		and isLike = #{isLike}
+	</delete>
 </mapper>

@@ -25,7 +25,13 @@ public class ReplyServiceImpl implements ReplyService {
 	@Transactional
 	@Override
 	public int insert(ReplyVO replyVO) {
-		boardMapper.replyAdded(replyVO.getBoardNo());
+		if(replyVO.getIsLike()==1) {
+			boardMapper.likeAdded(replyVO.getBoardNo());
+		}else {
+			boardMapper.replyAdded(replyVO.getBoardNo());
+		}
+		
+		
 		int result = replyMapper.insert(replyVO);
 		return result ;
 	}
@@ -36,6 +42,18 @@ public class ReplyServiceImpl implements ReplyService {
 		List<ReplyVO> replyList = replyMapper.getList(boardNo);
 		
 		return replyList;
+	}
+	
+	@Transactional
+	@Override
+	public int delete(ReplyVO replyVO) {
+		if(replyVO.getIsLike()==1) {
+			boardMapper.likeDelete(replyVO.getBoardNo());
+		}
+		
+		
+		int result = replyMapper.delete(replyVO);
+		return result ;
 	}
 
 }

@@ -11,4 +11,6 @@ public interface ReplyService {
 	public int insert(ReplyVO replyVO);
 	
 	public List<ReplyVO> getList(int boardNo);
+	
+	public int delete(ReplyVO replyVO);
 }

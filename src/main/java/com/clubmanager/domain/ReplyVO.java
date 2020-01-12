@@ -12,4 +12,5 @@ public class ReplyVO {
 	private String replyContent;
 	private Date replyDate;
 	private int boardNo;
+	private int isLike;   // 0:¥Ò±€, 1:¡¡æ∆ø‰
 }
