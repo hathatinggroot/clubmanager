@@ -7,11 +7,11 @@
 
 	<select id="getBoardList" resultType="com.clubmanager.domain.BoardVO">
 	<![CDATA[
-		select boardNo, boardTitle, boardWriter, boardDate, replyCnt, boardLike, boardHit, boardTop  
+		select boardNo, boardTitle, boardWriter, boardWriterName, boardDate, replyCnt, boardLike, boardHit, boardTop  
 		from 
 			(
 			select /*+ INDEX_DESC(tbl_freeboard pk_freeboard) */
-			rownum rn, boardNo, boardTitle, boardWriter, boardDate, replyCnt, boardLike, boardHit, boardTop
+			rownum rn, boardNo, boardTitle, boardWriter, boardWriterName, boardDate, replyCnt, boardLike, boardHit, boardTop
 			from tbl_freeboard
 			where clubCode = #{clubCode}
 			and
@@ -32,8 +32,8 @@
 		<selectKey keyProperty="boardNo" order="BEFORE" resultType="int">
 			select seq_freeBoard.nextval from dual
 		</selectKey>
-		insert into tbl_freeboard(boardNo, boardTitle, boardContent, boardWriter, clubCode, boardTop) 
-		values(#{boardNo},#{boardTitle},#{boardContent},#{boardWriter},#{clubCode},#{boardTop})
+		insert into tbl_freeboard(boardNo, boardTitle, boardContent, boardWriter, boardWriterName, clubCode, boardTop) 
+		values(#{boardNo},#{boardTitle},#{boardContent},#{boardWriter},#{boardWriterName},#{clubCode},#{boardTop})
 	</insert>
 	
 	<insert id="insertAttach">

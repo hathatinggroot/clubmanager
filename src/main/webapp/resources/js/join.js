@@ -3,7 +3,7 @@
 	//id duplication & RegEx check on keyup
 	var idDuplChk = false;
 	var idRegChk = false;
-	var idRegEx =  /^[a-z]+[a-z0-9]{5,19}$/g;
+	var idRegEx =  /^[a-z]+[a-z0-9]{5,19}$/;
 	$("#joinUserId").on("keyup",function(e) {
 					var inputId = $(this).val();
 					
@@ -43,7 +43,7 @@
 	var pwReChk = false;
 	//pw RegEx check
 	var pwRegChk = false;
-	var pwRegEx =  /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,15}$/; // 6~20 영문 대소문자, 최소 1개의 숫자 혹은 특수문자를 포함
+	var pwRegEx =  /^(?=.*[a-zA-Z])(?=.*\W)(?=.*\d).{6,15}$/; // 6~20 영문 대소문자, 최소 1개의 숫자 혹은 특수문자를 포함
 	$("#joinUserPw").on("keyup",function(e) {
 		var inputPw = $(this).val();
 		pwReChk = false;
@@ -118,12 +118,8 @@
 			var inputClubCode = $(this).val();
 			if(!isOwnerMember){
 			$.ajax({
-				method : "post",
-				url : "/club_exist_check",
-				contentType : "application/json",
-				data : JSON.stringify({
-					clubCode : inputClubCode
-				}),
+				method : "get",
+				url : "/club_exist_check/"+inputClubCode,
 				dataType : "json",
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader(header, token);
@@ -223,7 +219,10 @@
 			joinMemberInfo.auth = "ROLE_MEMBER";
 			
 		}
+		
+		
 		console.log("joinMemberInfo : ", joinMemberInfo);
+		
 		$.ajax({
 			method : "post",
 			url : "/join",

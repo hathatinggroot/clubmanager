@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 
 <!DOCTYPE html>
@@ -40,7 +41,7 @@
 					<h1>
 						<dfn>
 							<ruby>${clubVO.clubName }<rt class="text-gray">since
-									${clubVO.clubDate }</rt>
+							<fmt:formatDate value="${clubVO.clubDate }" pattern="yyyy-MM-dd" /></rt>
 							</ruby>
 						</dfn>
 					</h1>
@@ -63,7 +64,7 @@
 								<tr>
 									<td>${status.count }</td>
 									<td>${member.userName }</td>
-									<td>${member.joinDate }</td>
+									<td><fmt:formatDate value="${member.joinDate }" pattern="yyyy-MM-dd" /></td>
 									<c:choose>
 										<c:when test="${member.auth == 'ROLE_MEMBER' }">
 											<td><span class="badge badge-user">일반</span></td>

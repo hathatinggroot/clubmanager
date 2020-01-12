@@ -51,12 +51,20 @@
 						<span>승률</span>
 					</div>
 					<div>
-						<c:set var ="winRate" value="${csDTO.win/csDTO.matchNums*100 }"/>
-						<span class="large-font">
+					<c:choose>
+						<c:when test="${csDTO.matchNums != 0 }">
+							<c:set var ="winRate" value="${csDTO.win/csDTO.matchNums*100 }"/>
+							<span class="large-font">
 							<fmt:formatNumber value="${winRate }" pattern=".0"/>
-						</span>
+							</span>
+						</c:when>
+						<c:otherwise>
+							<span class="large-font">
+								0
+							</span>
+						</c:otherwise>
+					</c:choose>
 					</div>
-					
 					<div class="text-gray">${csDTO.win }/${csDTO.draw }/${csDTO.lose }</div>
 				</div>
 				<!-- Winning rates end -->
@@ -67,10 +75,19 @@
 						<span>경기당 득점</span>
 					</div>
 					<div>
-					<c:set var ="goalAvg" value="${csDTO.goalSum/csDTO.matchNums }"/>
-						<span class="large-font">
+					<c:choose>
+						<c:when test="${csDTO.matchNums != 0 }">
+							<c:set var ="goalAvg" value="${csDTO.goalSum/csDTO.matchNums }"/>
+							<span class="large-font">
 							<fmt:formatNumber value="${goalAvg }" pattern=".0"/>
-						</span>
+							</span>
+						</c:when>
+						<c:otherwise>
+							<span class="large-font">
+								0
+							</span>
+						</c:otherwise>
+					</c:choose>
 					</div>
 					<div class="text-gray">${csDTO.goalSum }</div>
 				</div>
@@ -82,10 +99,20 @@
 						<span>경기당 실점</span>
 					</div>
 					<div>
-					<c:set var ="lostAvg" value="${csDTO.lostPointSum/csDTO.matchNums }"/>
-						<span class="large-font">
+					<c:choose>
+						<c:when test="${csDTO.matchNums != 0 }">
+							<c:set var ="lostAvg" value="${csDTO.lostPointSum/csDTO.matchNums }"/>
+							<span class="large-font">
 							<fmt:formatNumber value="${lostAvg }" pattern=".0"/>
-						</span>
+							</span>
+						</c:when>
+						<c:otherwise>
+							<span class="large-font">
+								0
+							</span>
+						</c:otherwise>
+					</c:choose>
+					
 					</div>
 					<div class="text-gray">${csDTO.lostPointSum }</div>
 				</div>
@@ -291,10 +318,10 @@
 					
 					var date = new Date(matchVO.matchDate);
 					dateStr = (date.getYear()+1900) + "-";
-					dateStr += (date.getMonth()+1)>10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
-					dateStr += date.getDate()>10? date.getDate()+"  ":"0"+date.getDate()+"  ";
-					dateStr += date.getHours()>10? date.getHours() + ":":"0"+date.getHours() + ":";
-					dateStr += date.getMinutes()>10 ? date.getMinutes():"0"+date.getMinutes();
+					dateStr += (date.getMonth()+1)>=10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
+					dateStr += date.getDate()>=10? date.getDate()+"  ":"0"+date.getDate()+"  ";
+					dateStr += date.getHours()>=10? date.getHours() + ":":"0"+date.getHours() + ":";
+					dateStr += date.getMinutes()>=10 ? date.getMinutes():"0"+date.getMinutes();
 					
 					str += "<tr onclick=\"location.href='/record/club_record_view?matchNo="+matchVO.matchNo+"'\">"
 						+		"<td>" + (i++) + "</td>"

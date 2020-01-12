@@ -83,7 +83,7 @@
 									<c:forEach begin="1" end="4" var="j">
 										<c:if test="${((i-1)*4 + j)<=(rowNum*4)}">
 											<td>${(i-1)*4 + j}</td>
-											<td>${prList[(i-1)*4 + j-1].userId }</td>
+											<td>${prList[(i-1)*4 + j-1].userName }</td>
 										</c:if>
 									</c:forEach>
 								</tr>
@@ -147,10 +147,12 @@
 								</tr>
 							</c:forEach>
 						</table>
+						<c:if test="${principal.member.auth == 'ROLE_OWNER' || principal.member.auth == 'ROLE_MANAGER'   }">
 						<button type="button" class="btn btn-default btn-block pull-right"
 							data-toggle="modal" data-target="#register">
 							<h4>일정 등록</h4>
 						</button>
+						</c:if>
 					</div>
 				</div>
 				<!-- All Schedule list Table end -->
@@ -413,6 +415,7 @@
 					matchObj.stadium = $("#modStadium").val();
 					matchObj.matchNo = $("#modMatchNo").val();
 					matchObj.matchStatus = matchStatus;
+					matchObj.clubCode = "${principal.member.clubCode}";
 					console.log(matchObj);
 
 					$.ajax({

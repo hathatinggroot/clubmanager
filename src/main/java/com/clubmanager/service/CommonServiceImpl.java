@@ -44,15 +44,24 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public int join(MemberVO memberVO) {
 		memberVO.setUserPw(passwordEncoder.encode(memberVO.getUserPw()));
-		int result = memberMapper.insert(memberVO);
+		int result = -1;
+		try{
+			result = memberMapper.insert(memberVO);
+		}catch (Exception e) {
+			return -1;
+		}
 		
 		return result;
 	}
 	
 	@Override
 	public int regClub(ClubVO clubVO) {
-		int result = clubMapper.insert(clubVO);
 		
+		int result = -1;
+		try{result = clubMapper.insert(clubVO);}
+		catch(Exception e) {
+			return -1;
+		}
 		return result;
 	}
 	

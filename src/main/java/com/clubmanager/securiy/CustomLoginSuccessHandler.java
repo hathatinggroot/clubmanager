@@ -46,17 +46,12 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		// 구단주,매니져,멤버 : 구단 경기 일정 페이지로 이동
 		if (authNames.contains("ROLE_MEMBER") || authNames.contains("ROLE_OWNER") || authNames.contains("ROLE_MANAGER")) {
 			
-			log.warn(authentication.getName());
-			log.warn(authentication.getPrincipal());
-			log.warn(authentication.getDetails());
-			String clubCode = memberMapper.get(authentication.getName()).getClubCode();
-	
-			response.sendRedirect("/schedule/list?clubCode="+clubCode);
+			response.sendRedirect("/");
 			return;
 		}
 
 		// 소속구단이 없는 일반 사용자 : 서비스 소개 페이지로 이동
-			response.sendRedirect("/intro");
+			response.sendRedirect("/");
 	}
 
 }

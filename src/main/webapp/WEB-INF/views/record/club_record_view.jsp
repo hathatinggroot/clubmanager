@@ -75,7 +75,7 @@ var saver = [];
 					<div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
 							<c:choose>
-								<c:when test="${matchVO.mrVO.mom == '' }">
+								<c:when test="${matchVO.mrVO.mom == ' ' }">
 									<span class="large-font badge badge-unrecorded">투표중</span>
 								</c:when>
 								<c:otherwise>
@@ -169,7 +169,7 @@ var saver = [];
 									<c:forEach begin="1" end="4" var="j">
 										<c:if test="${((i-1)*4 + j)<=(rowNum*4)}">
 											<td>${(i-1)*4 + j}</td>
-											<td>${matchVO.mrVO.prDTOList[(i-1)*4 + j-1].userId }</td>
+											<td>${matchVO.mrVO.prDTOList[(i-1)*4 + j-1].userName }</td>
 										</c:if>
 									</c:forEach>
 								</tr>

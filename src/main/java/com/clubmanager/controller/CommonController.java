@@ -1,10 +1,7 @@
 package com.clubmanager.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.clubmanager.domain.AnnVO;
@@ -55,12 +51,12 @@ public class CommonController {
 		}
 	}
 
-	@PostMapping(value = "/club_exist_check", consumes = "application/json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/club_exist_check/{clubCode}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ClubVO clubExistCheck(@RequestBody ClubVO clubVo) {
-
-		log.info("club exit Check vo : " + clubVo);
-		ClubVO vo = commonService.getClub(clubVo.getClubCode());
+	public ClubVO clubExistCheck(@PathVariable("clubCode") String clubCode) {
+		log.info("club exit Check clubCode : " + clubCode);
+		
+		ClubVO vo = commonService.getClub(clubCode);
 		
 		if(vo==null) {
 			vo =new ClubVO();
@@ -87,7 +83,7 @@ public class CommonController {
 	@PostMapping(value = "/reg_club", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
 	public String regClub(@RequestBody ClubVO clubVo) {
-
+		log.info("regClub");
 		log.info("REG CLUB vo : " + clubVo);
 		int result = commonService.regClub(clubVo);
 		
@@ -124,18 +120,8 @@ public class CommonController {
 	
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/customlogin")
-	public String loginInput(String error, String logout, Model model) {
-		log.info("error : " + error);
-		log.info("logout : " + logout);
-
-//		if(error!=null) {
-//			model.addAttribute("error", "Login Error Check Your Account");
-//		}
-//		if(logout!=null) {
-//			model.addAttribute("logout", "Logout........!");
-//		}
+	public String loginInput(Model model) {
 		model.addAttribute("loginModal", "true");
-
 		return "intro";
 	}
 	
@@ -143,7 +129,6 @@ public class CommonController {
 	@GetMapping("/club_members")
 	public void clubMembers(@Param("clubCode") String clubCode, Model model) {
 		log.info("clubCode : " + clubCode);
-//		
 		List<MemberVO> memberList = memberService.getClubMembers(clubCode);
 		log.info("memberList ......." + memberList);
 		ClubVO clubVO = commonService.getClub(clubCode);
@@ -226,11 +211,6 @@ public class CommonController {
 		return "intro";
 	}
 	
-//	@GetMapping("/club_members")
-//	public void goToClubMembers() {
-//		log.info("club_members.jsp");
-//	}
-
 	@GetMapping("/loginFailure")
 	public void loginFailure() {
 		log.info("loginfailure.jsp");
@@ -245,15 +225,6 @@ public class CommonController {
 	@GetMapping("/test")
 	public void test() {
 		log.info("test.jsp");
-	}
-	
-	@RequestMapping("/testWrite")
-	public String testResult(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
-		request.setCharacterEncoding("UTF-8");
-		String test1= request.getParameter("test1");
-		log.info("testWrite test1 : " + test1);
-		model.addAttribute("test1", test1);
-		return "testResult";
 	}
 	
 }

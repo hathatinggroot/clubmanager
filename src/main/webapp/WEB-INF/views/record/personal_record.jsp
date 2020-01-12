@@ -179,6 +179,7 @@
 									<td>이름</td>
 								</tr>
 								<c:forEach items="${rankerMap.total }" var="member" varStatus="stat">
+									<c:if test="${member.amountAttend > 0 }">
 									<script>
 										prList.push({userName:"${member.userName}"
 											,rTotal:"${member.rankTotal}"
@@ -200,6 +201,7 @@
 										<td>${stat.count }</td>
 										<td>${member.userName }</td>
 									</tr>
+									</c:if>
 								</c:forEach>
 
 							</table>

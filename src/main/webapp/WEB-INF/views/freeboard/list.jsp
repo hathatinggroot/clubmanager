@@ -71,6 +71,24 @@
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
 var cri = new Object();
+
+var chDateFormat = function(inputDate){
+	var date = new Date(inputDate);
+	var dateStr = '';
+	console.log((new Date()-date));
+	if((new Date()-date) >= (1000*60*60*24)){
+		dateStr += (date.getYear()+1900) + "-";
+		dateStr += (date.getMonth()+1)>=10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
+		dateStr += date.getDate()>=10? date.getDate()+"  ":"0"+date.getDate()+"  ";
+	}else{
+		dateStr += date.getHours()>=10? date.getHours() + ":":"0"+date.getHours() + ":";
+		dateStr += date.getMinutes()>=10 ? date.getMinutes():"0"+date.getMinutes();
+	}
+	
+	
+	return dateStr;
+};
+
 var showList = function(cri){
 	$.ajax({
 		method : "post",
@@ -105,8 +123,8 @@ var showList = function(cri){
 							  +  "<td><a href='/freeboard/view?boardNo="+board.boardNo+"'>"
 							  +board.boardTitle+
 							  "</a></td>"
-							  +  "<td>"+board.boardWriter+"</td>"
-							  +  "<td>"+board.boardDate+"</td>"
+							  +  "<td>"+board.boardWriterName+"</td>"
+							  +  "<td>"+chDateFormat(board.boardDate)+"</td>"
 							  +  "<td>"+board.replyCnt+"</td>"
 							  +  "<td>"+board.boardLike+"</td>"
 							  +  "<td>"+board.boardHit+"</td>"
@@ -118,8 +136,8 @@ var showList = function(cri){
 						  +  "<td><a href='/freeboard/view?boardNo="+board.boardNo+"'>"
 						  +board.boardTitle+
 						  "</a></td>"
-						  +  "<td>"+board.boardWriter+"</td>"
-						  +  "<td>"+board.boardDate+"</td>"
+						  +  "<td>"+board.boardWriterName+"</td>"
+						  +  "<td>"+chDateFormat(board.boardDate)+"</td>"
 						  +  "<td>"+board.replyCnt+"</td>"
 						  +  "<td>"+board.boardLike+"</td>"
 						  +  "<td>"+board.boardHit+"</td>"

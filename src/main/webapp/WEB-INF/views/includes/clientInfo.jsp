@@ -293,22 +293,25 @@
 <!-- announcement popup Modal end -->
 
 <script>
-	if('${popupList}' != '' && '${popupList}' != '[]'  ){
-		if(document.cookie.indexOf('noPop') == -1){
+	if ('${popupList}' != '' && '${popupList}' != '[]') {
+		if (document.cookie.indexOf('noPop') == -1) {
 			$("#annPopup").modal();
 			console.log('${popupList}');
-			
+
 			console.log(document.cookie.indexOf('noPop'));
 		}
 	}
-	
-	$("#noPop").on("click", function(e){
-		var expire = new Date();
-		expire.setDate(expire.getDate()+1);
-		console.log(expire);
-		document.cookie = "noPop=true;path=/;expires="+expire.toGMTString() +";";
-		$("#annPopup").hide();
-	})
+
+	$("#noPop").on(
+			"click",
+			function(e) {
+				var expire = new Date();
+				expire.setDate(expire.getDate() + 1);
+				console.log(expire);
+				document.cookie = "noPop=true;path=/;expires="
+						+ expire.toGMTString() + ";";
+				$("#annPopup").hide();
+			})
 </script>
 
 
@@ -332,11 +335,6 @@
 		$("form[action='/loginprocess']").submit();
 	})
 
-	$("#doLogout").on("click", function(e) {
-		// 		alert("doLogout clicked");
-		$("form[action='/customLogout']").submit();
-	})
-
 	//로그인 필요시 로그인 모달 팝업
 	var loginModal = "${loginModal}";
 	window.onload = function() {
@@ -349,41 +347,42 @@
 
 <sec:authorize access="isAuthenticated()">
 	<script>
+	$("#doLogout").on("click", function(e) {
+		// 		alert("doLogout clicked");
+		$("form[action='/customLogout']").submit();
+	})
+
+	
 		//MODIFY PINFO MODULE
-	var clubExistCheck = function(){	
+		var clubExistCheck = function() {
 			$.ajax({
-			method : "post",
-			url : "/club_exist_check",
-			contentType : "application/json",
-			data : JSON.stringify({
-				clubCode : "${principal.member.clubCode }"
-			}),
-			dataType : "json",
-			beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			success : function(result) {
-				$("#modUserName").val("${principal.member.userName }");
-				console.log(result);
-				console.log(result.ownerId);
-				if (result.clubName != "") {
-					if ("${principal.member.userId }" == result.ownerId) {
-						$("#modClubName").attr("readonly", false);
+				method : "get",
+				url : "/club_exist_check/"+"${principal.member.clubCode }",
+				contentType : "application/json",
+				dataType : "json",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(result) {
+					$("#modUserName").val("${principal.member.userName }");
+					console.log(result);
+					console.log(result.ownerId);
+					if (result.clubName != "") {
+						if ("${principal.member.userId }" == result.ownerId) {
+							$("#modClubName").attr("readonly", false);
+						}
+						$("#modClubName").val(result.clubName);
+					} else {
+						$("#modClubName").val("소속된 구단이 없습니다");
 					}
-					$("#modClubName").val(result.clubName);
-				} else {
-					$("#modClubName").val("소속된 구단이 없습니다");
 				}
-			}
-		});
+			});
 		}
-		$("#pInfoMod").on("show.bs.modal",function(e){
+		$("#pInfoMod").on("show.bs.modal", function(e) {
 			clubExistCheck();
 		})
-		
-		
+
 		$("#doPInfoMod").on("click", function(e) {
-			// 	alert("doPInfoMod clicked");
 			var modUserId = "${principal.member.userId }";
 			var modName = $("#modUserName").val();
 			var modClubName = $("#modClubName").val();

@@ -34,40 +34,40 @@
 
 				<!-- Free Board List Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12">
-					<form id="boardFrm" action="/freeboard/writeAction" method="post" enctype="text/plain;charset=utf-8" >
-						<input type="hidden" name="boardWriter" value="${principal.member.userId}">
-						<input type="hidden" name="clubCode" value="${principal.member.clubCode}">
+					<form id="boardFrm">
+						<input type="hidden" id="boardWriter"
+							value="${principal.member.userId}"> <input type="hidden"
+							id="clubCode" value="${principal.member.clubCode}">
 						<div class="form-group">
-							<input type="text" class="form-control input-lg" name="boardTitle"
-								autofocus placeholder="제목을 입력하세요">
+							<input type="text" class="form-control input-lg"
+								id="boardTitle" autofocus placeholder="제목을 입력하세요">
 						</div>
 						<div class="form-group text-white" id="boardTop">
 							<label class="checkbox-inline"> <input type="checkbox"
-								 value="1" name="boardTop" >
-								상단 고정
+								value="1" id="boardTop"> 상단 고정
 							</label>
 						</div>
 						<div class="form-group">
-							<input type="file" class="form-control" id="inputAttachList" multiple>
+							<input type="file" class="form-control" id="inputAttachList"
+								multiple>
 						</div>
 						<div class="form-group text-white">
 							<fieldset>
 								<legend class="text-white">첨부파일 목록</legend>
 								<div class="scroll-box-attach">
-								<ul class="list-inline" id="attachUL">
-								</ul>
+									<ul class="list-inline" id="attachUL">
+									</ul>
 								</div>
 							</fieldset>
 						</div>
 						<div class="form-group text-center">
 							<div id="preview"></div>
-							<textarea class="form-control input-lg" name="boardContent" rows="20"
-								placeholder="내용을 입력하세요">
+							<textarea class="form-control input-lg" id="boardContent"
+								rows="20" placeholder="내용을 입력하세요">
 								</textarea>
 						</div>
-						<input type="hidden" name="${_csrf.parameterName }"
-							value="${_csrf.token }">
-						<button type="button" class="btn btn-default btn-block" id="writeActionBtn">
+						<button type="button" class="btn btn-default btn-block"
+							id="writeActionBtn">
 							<h2>등록</h2>
 						</button>
 					</form>
@@ -80,7 +80,7 @@
 	</div>
 	<!-- container-fluid end -->
 
-<script>
+	<script>
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
 	var uploadForm = new FormData();
@@ -130,7 +130,6 @@ var header = '${_csrf.headerName }';
 	});
 	
 	$("#writeActionBtn").on("click", function(e){
-		var str = '';
 		var boardFrmObj = $("#boardFrm");
 		
 		$.ajax({
@@ -143,31 +142,55 @@ var header = '${_csrf.headerName }';
 				xhr.setRequestHeader(header, token);
 			},
 			success: function(result){
-				console.log("upload result : "+result);
+				console.log("upload result : ");
+				console.log(result);
 				if(result != null){
 						var str = '';
 						var i=0;
+					var attachList = [];
 					for(var attach of result){
-						
-						str += "<input type='hidden' name='attachList["+i+"].fileName' value='"+attach.fileName+"'>";
-						str += "<input type='hidden' name='attachList["+i+"].filePath' value='"+attach.filePath+"'>";
-						str += "<input type='hidden' name='attachList["+i+"].isImg' value='"+attach.isImg+"'>";
-					
+						console.log(attach);
+						attachList.push(attach);
 						i++;
 					}
 					
-					boardFrmObj.append(str).submit();
-					
-				}else{
-					alert("오류!!");
-					location.reload();
+					boardFrmObj.append(str);
+					writeAction(attachList);
 				}
-				
 			}
-		})
-		
-		
+		});
 	})
+	
+	var writeAction = function(attachList){
+		
+		var boardVO = new Object();
+		boardVO.boardTitle = $("#boardTitle").val();
+		boardVO.boardContent = $("#boardContent").val();
+		boardVO.boardWriter = $("#boardWriter").val();
+		boardVO.boardWriterName = "${principal.member.userName}";
+		boardVO.clubCode = $("#clubCode").val();
+		boardVO.boardTop = $("#boardTop").prop("checked")?1:0;
+		boardVO.attachList = attachList;
+		
+		console.log(JSON.stringify(boardVO));
+		$.ajax({
+			url:'/freeboard/writeAction',
+			contentType: "application/json",
+			type: "post",
+			data: JSON.stringify(boardVO),
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success: function(result){
+				console.log(result);
+				if(result=="success"){
+					console.log("성공");
+					location.replace("/freeboard/list?clubCode="+boardVO.clubCode);
+				}
+			}
+		});
+		
+	}
 	
 </script>
 

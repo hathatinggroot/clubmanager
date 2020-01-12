@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.clubmanager.domain.ReplyVO;
 import com.clubmanager.mapper.BoardMapper;
@@ -21,7 +22,7 @@ public class ReplyServiceImpl implements ReplyService {
 	private BoardMapper boardMapper;
 	
 	
-	
+	@Transactional
 	@Override
 	public int insert(ReplyVO replyVO) {
 		boardMapper.replyAdded(replyVO.getBoardNo());

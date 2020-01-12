@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.clubmanager.domain.Criteria;
 import com.clubmanager.domain.MatchRecordVO;
+import com.clubmanager.domain.MatchVO;
 import com.clubmanager.domain.PersonalRecordDTO;
 
 public interface RecordMapper {
@@ -18,7 +18,7 @@ public interface RecordMapper {
 	
 	public MatchRecordVO getMR(int matchNo );
 	
-	public int insertMR(int matchNo);
+	public int insertMR(MatchVO matchVO);
 
 	public int modifyPR(PersonalRecordDTO prDTO);
 	

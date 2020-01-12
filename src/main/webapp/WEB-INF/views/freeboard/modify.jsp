@@ -42,15 +42,15 @@
 				<!-- Free Board List Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<form action="/freeboard/modifyAction" method="post" id="boardModFrm">
-						<input type="hidden" name="boardNo" value="${boardVO.boardNo}">
-						<input type="hidden" name="clubCode" value="${principal.member.clubCode}">
+						<input type="hidden" id="boardNo" value="${boardVO.boardNo}">
+						<input type="hidden" id="clubCode" value="${principal.member.clubCode}">
 						<div class="form-group">
-							<input type="text" class="form-control input-lg" name="boardTitle"
+							<input type="text" class="form-control input-lg" id="boardTitle"
 								autofocus value = "${boardVO.boardTitle }">
 						</div>
 						<div class="form-group text-white" id="boardTop">
 							<label class="checkbox-inline"> <input type="checkbox"
-								id="inlineCheckbox1" value="1" name="boardTop" >
+								value="1" id="boardTop" >
 								상단 고정
 							</label>
 						</div>
@@ -81,7 +81,7 @@
 						<div id="imgDisplayAdded">
 						</div>
 						<div class="form-group text-center">
-							<textarea class="form-control input-lg" name="boardContent" rows="20"
+							<textarea class="form-control input-lg" id="boardContent" rows="20"
 								>${boardVO.boardContent }</textarea>
 						</div>
 						<input type="hidden" name="${_csrf.parameterName }"
@@ -222,16 +222,15 @@ var showImg = function(){
 				if(result != null){
 						var str = '';
 						var i=0;
+						var attachList = [];
 					for(var attach of result){
-						
-						str += "<input type='hidden' name='attachList["+i+"].fileName' value='"+attach.fileName+"'>";
-						str += "<input type='hidden' name='attachList["+i+"].filePath' value='"+attach.filePath+"'>";
-						str += "<input type='hidden' name='attachList["+i+"].isImg' value='"+attach.isImg+"'>";
-					
+						console.log(attach);
+						attachList.push(attach);
 						i++;
 					}
 					
-					boardModFrmObj.append(str).submit();
+					boardModFrmObj.append(str);
+					modifyAction(attachList);
 					
 				}else{
 					alert("오류!!");
@@ -241,6 +240,36 @@ var showImg = function(){
 			}
 		})
 	})
+	
+	var modifyAction = function(attachList){
+		
+		var boardVO = new Object();
+		boardVO.boardTitle = $("#boardTitle").val();
+		boardVO.boardContent = $("#boardContent").val();
+		boardVO.boardTop = $("#boardTop").prop("checked")?1:0;
+		boardVO.boardNo = "${boardVO.boardNo}";
+		boardVO.attachList = attachList;
+		
+		console.log(JSON.stringify(boardVO));
+		$.ajax({
+			url:'/freeboard/modifyAction',
+			contentType: "application/json",
+			type: "post",
+			data: JSON.stringify(boardVO),
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success: function(result){
+				console.log(result);
+				if(result=="success"){
+					console.log("성공");
+					location.replace("/freeboard/list?clubCode="+"${principal.member.clubCode}");
+				}
+			}
+		});
+		
+	}
+	
 </script>
 
 

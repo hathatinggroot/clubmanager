@@ -134,7 +134,7 @@
 									<c:forEach begin="1" end="4" var="j">
 										<c:if test="${((i-1)*4 + j)<=(rowNum*4)}">
 											<td>${(i-1)*4 + j}</td>
-											<td>${prList[(i-1)*4 + j-1].userId }</td>
+											<td>${prList[(i-1)*4 + j-1].userName }</td>
 										</c:if>
 									</c:forEach>
 								</tr>
@@ -236,7 +236,7 @@
 							console.log("get............");
 							console.log(result);
 							if (result != null && result != '') {
-
+								console.log(result);
 								mrObj = result;
 								console.log("mrObj 초기화");
 								console.log(mrObj);
@@ -279,8 +279,9 @@
 								console.log(saver);
 
 								for ( var g in goaler) {
-									if (goaler[g].goals == 0)
-										break;
+									if (goaler[g].goals == 0){
+										continue;
+									}
 									goalStr += "<tr>" + "<td>"
 											+ goaler[g].userName + "</td>"
 											+ "<td>" + goaler[g].goals

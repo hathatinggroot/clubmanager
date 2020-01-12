@@ -42,7 +42,7 @@ public class AdminController {
 		model.addAttribute("cri", cri);
 	}
 
-	@PostMapping(value = "/annListByAjax", consumes = "application/json", produces = { MediaType.APPLICATION_XML_VALUE,
+	@PostMapping(value = "/annList", consumes = "application/json", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseBody
 	public List<AnnVO> getBoardListByAjax(@RequestBody Criteria cri) {
@@ -78,18 +78,16 @@ public class AdminController {
 		return "redirect:/admin/announcements_list";
 	}
 
-	@PostMapping(value = "/modify")
-	public String modify(AnnVO annVO, RedirectAttributes rttr) {
-		log.info("modify annVO : " + annVO);
+	@PutMapping(value = "/ann",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String modifyAnn(@RequestBody AnnVO annVO) {
+		log.info("modifyAnn annVO : " + annVO);
 
 		if (adminService.modify(annVO) == 1) {
-			rttr.addFlashAttribute("modifyResult", "공지사항 수정 완료");
+			return "success";
 		} else {
-			rttr.addFlashAttribute("modifyResult", "공지사항 수정 실패");
+			return "fail";
 		}
-		;
-
-		return "redirect:/admin/announcements_list";
 	}
 
 	@PostMapping(value = "/deleteAnn")

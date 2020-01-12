@@ -4,7 +4,7 @@
 	prefix="sec"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="cc"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -37,13 +37,18 @@
 
 
 
+
+
 				<!-- Free Board Content Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12 enter-row-4">
 					<div class="panel panel-default">
 						<!-- Default panel contents -->
 						<div class="panel-heading input-lg">
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								${boardVO.boardWriter } <small>${boardVO.boardDate }</small>
+								${boardVO.boardWriterName } 
+								<small>
+									<fmt:formatDate value="${boardVO.boardDate }" pattern="yyyy-MM-dd E  HH:mm" />
+								</small>
 							</div>
 							<div class="col-xs-2 col-sm-2 col-md-2">
 								<span class="glyphicon glyphicon-comment">${boardVO.replyCnt }</span>
@@ -91,7 +96,7 @@
 										<button type="button" class="btn btn-default pull-left"
 											onclick="location.href='/freeboard/modify?boardNo=${boardVO.boardNo }'">수정</button>
 										<button type="button" class="btn btn-default"
-											onclick="$('#deleteFrm').submit()">삭제</button>
+											onclick="confirm('정말 삭제하시겠습니까?')?$('#deleteFrm').submit():''">삭제</button>
 									</span>
 									<form id="deleteFrm" action="/freeboard/delete" method="post">
 										<input type="hidden" name="boardNo"
@@ -131,9 +136,30 @@
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
 console.log("${boardVO.attachList[0].fileName}");
+
+var chDateFormat = function(inputDate){
+	var date = new Date(inputDate);
+	var dateStr = '';
+	console.log((new Date()-date));
+	if((new Date()-date) >= (1000*60*60*24)){
+		dateStr += (date.getYear()+1900) + "-";
+		dateStr += (date.getMonth()+1)>=10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
+		dateStr += date.getDate()>=10? date.getDate()+"  ":"0"+date.getDate()+"  ";
+	}else{
+		dateStr += date.getHours()>=10? date.getHours() + ":":"0"+date.getHours() + ":";
+		dateStr += date.getMinutes()>=10 ? date.getMinutes():"0"+date.getMinutes();
+	}
+	
+	
+	return dateStr;
+};
+
+
+
 	$("#addReplyBtn").on("click",function(e){
 		var replyVO = new Object();
 		replyVO.replyWriter = "${principal.member.userId}";
+		replyVO.replyWriterName =  "${principal.member.userName}";
 		replyVO.replyContent = $("#addReply").val();
 		replyVO.boardNo = '${boardVO.boardNo }';
 		
@@ -167,14 +193,14 @@ var showReplyList = function(){
 					str = "<table class='table table-condensed text-center'>"
 						+"<colgroup>"
 						+"<col width=10% />"
-						+"<col width=80% />"
-						+"<col width=10% />"
+						+"<col width=75% />"
+						+"<col width=15% />"
 						+"</colgroup>";
 				for(var reply of result){
 					str+= "<tr>"
-							+"<td>"+reply.replyWriter+"</td>"
+							+"<td>"+reply.replyWriterName+"</td>"
 							+"<td>"+reply.replyContent+"</td>"
-							+"<td>"+reply.replyDate+"</td>"
+							+"<td>"+chDateFormat(reply.replyDate)+"</td>"
 							+"</tr>";
 					}
 					str+= "</table>";	

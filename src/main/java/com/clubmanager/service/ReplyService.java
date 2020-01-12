@@ -8,7 +8,6 @@ import com.clubmanager.domain.ReplyVO;
 
 public interface ReplyService {
 	
-	@Transactional(rollbackFor = Exception.class)
 	public int insert(ReplyVO replyVO);
 	
 	public List<ReplyVO> getList(int boardNo);

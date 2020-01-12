@@ -92,13 +92,8 @@ var cri = new Object();
 						+	"<td>" + (i++) + "</td>"
 						+	"<td>" + clubVO.clubName + "</td>"
 						+	"<td>" + clubVO.ownerId + "</td>"
-						+	"<td>" + clubVO.clubDate + "</td>";
-					if(clubVO.clubCode == "${principal.member.clubCode}"){
-						str +="<td><button type='button' class='btn btn-danger col-xs-6 col-sm-6 col-md-6' onclick='clubOut();'>퇴장</button>";
-					}	else{
-						str +="<td><button type='button' class='btn btn-primary col-xs-6 col-sm-6 col-md-6' onclick='clubIn(\""+clubVO.clubCode+"\");'>입장</button>"; 
-					}
-					str += 	"<button type='button' class='btn btn-default col-xs-6 col-sm-6 col-md-6' onclick='delClub(\""+clubVO.clubCode+"\");' >삭제</button></td>"
+						+	"<td>" + clubVO.clubDate + "</td>"
+					    +   "<td><button type='button' class='btn btn-default' onclick='delClub(\""+clubVO.clubCode+"\");' >삭제</button></td>"
 						+ "</tr>";
 				}
 				str += "</table>";
@@ -167,36 +162,6 @@ var cri = new Object();
 		
 		showClubList(cri);
 	})
-	
-	var clubIn = function(clubCode){
-		$.ajax({
-			type : "put",
-			url : "/admin/clubIn/"+clubCode,
-			beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			success : function(result){
-				console.log("clubIn...........clubCode : " + clubCode);
-				console.log(result);
-				if(result =="success") location.href="/schedule/list?clubCode="+clubCode;
-			}
-		});
-	}
-	
-	var clubOut = function(){
-		$.ajax({
-			type : "put",
-			url : "/admin/clubOut",
-			beforeSend : function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
-			success : function(result){
-				console.log("clubOut...........");
-				console.log(result);
-				if(result =="success") location.reload();
-			}
-		});
-	}
 	
 	var delClub = function(clubCode){
 		if(confirm("정말 삭제하시겠습니까?")){

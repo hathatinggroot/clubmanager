@@ -258,3 +258,13 @@ body{
 	color: red;
 }
 
+a {
+  color: white;
+}
+a:hover,
+a:focus {
+  color: white;
+  text-decoration: underline;
+  font-weight: bold;
+}
+

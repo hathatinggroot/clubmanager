@@ -49,8 +49,8 @@
 	
 	
 	<insert id="insertMR">
-		insert into tbl_matchrecord(matchNo)
-		values(#{matchNo})
+		insert into tbl_matchrecord(matchNo, clubCode)
+		values(#{matchNo},#{clubCode} )
 	</insert>
 	
 	<update id="modifyPR">

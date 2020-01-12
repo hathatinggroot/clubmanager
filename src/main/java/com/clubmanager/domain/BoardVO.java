@@ -11,6 +11,7 @@ public class BoardVO {
 	private String boardTitle;
 	private String boardContent;
 	private String boardWriter;
+	private String boardWriterName;
 	private Date boardDate;
 	private int boardLike;
 	private int boardHit;

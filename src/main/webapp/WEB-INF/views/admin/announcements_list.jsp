@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,8 +152,8 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" id="doModify" onclick="$('#modFrm').submit();">수정</button>
-					<button type="button" class="btn btn-warning" id="doDelete" onclick="$('#delFrm').submit();">삭제</button>
+					<button type="button" class="btn btn-primary" id="doModify" >수정</button>
+					<button type="button" class="btn btn-warning" id="doDelete" onclick="confirm('정말 삭제하시겠습니까?')?$('#delFrm').submit():''">삭제</button>
 					<form id="delFrm" action="/admin/deleteAnn" method="post">
 						<input type="hidden" name="${_csrf.parameterName }"
 							value="${_csrf.token }">
@@ -174,11 +175,55 @@
 <script>
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
+
+$("#doModify").on("click", function(e){
+	console.log($("#modFrm"));
+	var annVO = new Object();
+	annVO.annNo = $("#modAnnNo").val();
+	annVO.annTitle = $("#modAnnTitle").val();
+	annVO.annContent = $("#modAnnContent").val();
+	annVO.annPopup = $("#modAnnPopup").prop("checked")?1:0;
+	console.log(annVO);
+	$.ajax({
+		method : "put",
+		url : "/admin/ann",
+		contentType : "application/json",
+		data : JSON.stringify(annVO),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success : function(result) {
+			console.log("modify.....");
+			console.log(result);
+			if(result =="success"){
+				alert("수정이 완료되었습니다");
+			}else{
+				alert("수정에 실패했습니다");
+			}
+			location.reload();
+		}
+	})
+})
+
+
+
 var cri = new Object();
+
+var chDateFormat = function(inputDate){
+	var date = new Date(inputDate);
+	dateStr = (date.getYear()+1900) + "-";
+	dateStr += (date.getMonth()+1)>=10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
+	dateStr += date.getDate()>=10? date.getDate()+"  ":"0"+date.getDate()+"  ";
+	dateStr += date.getHours()>=10? date.getHours() + ":":"0"+date.getHours() + ":";
+	dateStr += date.getMinutes()>=10 ? date.getMinutes():"0"+date.getMinutes();
+	
+	return dateStr;
+};
+
 var showList = function(cri){
 	$.ajax({
 		method : "post",
-		url : "/admin/annListByAjax",
+		url : "/admin/annList",
 		contentType : "application/json",
 		data : JSON.stringify(cri),
 		dataType : "json",
@@ -208,7 +253,7 @@ var showList = function(cri){
 							  +	 "' data-annTitle='"+ann.annTitle
 							  +  "' data-annContent='"+ann.annContent
 							  +  "' data-annPopup=true>"+ann.annTitle+"</a></td>"
-							  +  "<td>"+ann.annDate+"</td>"
+							  +  "<td>"+chDateFormat(ann.annDate)+"</td>"
 							  +"</tr>";
 					} else{
 						str3 +="<tr>"
@@ -218,13 +263,14 @@ var showList = function(cri){
 							  +	 "' data-annTitle='"+ann.annTitle
 							  +  "' data-annContent='"+ann.annContent
 							  +  "' data-annPopup=false>"+ann.annTitle+"</a></td>"
-							  +  "<td>"+ann.annDate+"</td>"
+							  +  "<td>"+chDateFormat(ann.annDate)+"</td>"
 							  +"</tr>";
 					}
 				}
 				str = str1+str2+str3+"</table>";
 				
 				$("#annList").html(str);
+				getPaginator(cri);
 			} else {
 				alert("error");
 			}
@@ -295,17 +341,6 @@ var getPaginator = function(cri){
 		
 		console.log(cri);
 		showList(cri);
-		getPaginator(cri);
-		
-		if('${writeResult}' != ''){
-			alert('${writeResult}');
-		}
-		if('${modifyResult}' != ''){
-			alert('${modifyResult}');
-		}
-		if('${deleteResult}' != ''){
-			alert('${deleteResult}');
-		}
 		
 	}
 	

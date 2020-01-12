@@ -13,44 +13,7 @@
 	</select>
 	
 	<insert id="insert">
-		insert into tbl_reply(replyWriter, replyContent, boardNo) 
-		values(#{replyWriter},#{replyContent},#{boardNo})
+		insert into tbl_reply(replyWriter, replyWriterName, replyContent, boardNo) 
+		values(#{replyWriter},#{replyWriterName},#{replyContent},#{boardNo})
 	</insert>
-	
-<!-- 	<select id="getTotalNum"  resultType="int"> -->
-<!-- 		select count(*)  -->
-<!-- 		from tbl_freeboard -->
-<!-- 		where clubCode = #{clubCode} -->
-<!-- 			and -->
-<!-- 			(	 -->
-<!-- 				boardTitle like '%'||#{keyword}||'%' -->
-<!-- 				or	boardWriter like '%'||#{keyword}||'%' -->
-<!-- 				or  boardContent like '%'||#{keyword}||'%' -->
-<!-- 			) -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="getBoard" resultType="com.clubmanager.domain.BoardVO"> -->
-<!-- 		select * from tbl_freeboard -->
-<!-- 		where boardNo = #{boardNo } -->
-<!-- 	</select> -->
-	
-<!-- 	<update id="hit"> -->
-<!-- 		update tbl_freeboard  -->
-<!-- 		set boardHit = boardHit + 1 -->
-<!-- 		where boardNo = #{boardNo} -->
-<!-- 	</update> -->
-	
-<!-- 	<update id="modify"> -->
-<!-- 		update tbl_freeboard  -->
-<!-- 		set boardTitle = #{boardTitle} -->
-<!-- 		, boardTop = #{boardTop} -->
-<!-- 		, boardContent = #{boardContent} -->
-<!-- 		, boardDate = sysdate -->
-<!-- 		where boardNo = #{boardNo} -->
-<!-- 	</update> -->
-	
-<!-- 	<delete id="delete"> -->
-<!-- 		delete from tbl_freeboard -->
-<!-- 		where boardNo = #{boardNo} -->
-<!-- 	</delete> -->
 </mapper>

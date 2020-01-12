@@ -39,6 +39,7 @@
 				</sec:authorize>
 
 				<sec:authorize access="isAuthenticated()">
+					<c:if test="${principal.member.clubCode != '' && principal.member.clubCode != null  }">
 					<!-- if login start-->
 					<li><a href="/schedule/list?clubCode=${principal.member.clubCode }">경기 일정</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -51,8 +52,9 @@
 									class="badge badge-notification pull-right">&nbsp;</span></a></li>
 							<li><a href="/record/personal_record?clubCode=${principal.member.clubCode }">개인 기록</a></li>
 						</ul></li>
-						
+					<sec:authorize access="hasAnyRole({'ROLE_OWNER', 'ROLE_MANAGER'})">	
 					<li><a href="/liveboard/list?clubCode=${principal.member.clubCode }">라이브 보드</a></li>
+					</sec:authorize>
 					<li><a href="/freeboard/list?clubCode=${principal.member.clubCode }">자유게시판</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-expanded="false">투표<span
@@ -63,6 +65,7 @@
 							<li><a href="/poll/mom?clubCode=${principal.member.clubCode }">MoM</a></li>
 						</ul></li>
 					<li><a href="/club_members?clubCode=${principal.member.clubCode }">선수단</a></li>
+					</c:if>
 				</sec:authorize>
 
 

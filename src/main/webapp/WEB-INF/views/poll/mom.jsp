@@ -222,7 +222,7 @@
 							console.log("myStatus : " +myStatus);
 						}
 					}
-					
+					console.log(myStatus);
 					if(myStatus == '1'){
 						if("${principal.member.auth}" != 'ROLE_OWNER' && "${principal.member.auth}" != 'ROLE_MANAGER'){
 							alert("투표를 완료했습니다. 홈으로 이동합니다")	;
@@ -230,6 +230,9 @@
 						}else{
 							alert("이미 투표를 완료했습니다.")	;
 						}
+					}else if(myStatus != 0 && myStatus ==''){
+						alert("경기에 참석하지 않았으므로 투표가 불가합니다. 홈으로 이동합니다.");
+						location.href="/";
 					}
 						for(var pr of result.prList){
 							str += 		"<tr>"

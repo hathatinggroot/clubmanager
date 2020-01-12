@@ -84,15 +84,16 @@ public class FreeBoardController {
 	}
 	
 	
-	@PostMapping(value= "/writeAction", produces= "text/plain;charset=UTF-8")
-	public String writeAction(BoardVO boardVO, RedirectAttributes rttr) {
+	@PostMapping(value= "/writeAction",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String writeAction(@RequestBody BoardVO boardVO) {
 		log.info("writeAction boardVO : " + boardVO);
 		int result = boardService.insert(boardVO);
 		if(result==1) {
-			rttr.addFlashAttribute("writeResult", true);
+			return "success";
 		}
+		return "fail";
 		
-		return "redirect:/freeboard/list?clubCode="+boardVO.getClubCode();
 	}
 	
 	@PostMapping(value= "/uploadAttach", produces={ MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -153,14 +154,15 @@ public class FreeBoardController {
 	}
 	
 	@PostMapping("/modifyAction")
-	public String modifyAction(BoardVO boardVO, RedirectAttributes rttr) {
+	@ResponseBody
+	public String modifyAction(@RequestBody BoardVO boardVO) {
 		log.info("modifyAction boardVO : " + boardVO);
 		int result = boardService.modify(boardVO);
 		if(result==1) {
-			rttr.addFlashAttribute("modifyResult", true);
+			return "success";
 		}
 		
-		return "redirect:/freeboard/list?clubCode="+boardVO.getClubCode();
+		return "fail";
 	}
 	
 	@PostMapping("/delete")

@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +17,13 @@
 
 </head>
 <body>
+<c:if test="${fn:length(ppList) == 0 }">
+	<script>
+		alert("진행중인 투표가 없습니다 홈으로 이동합니다");
+		location.href="/";
+	</script>
+</c:if>
+
 	<div class="bg-image-main"></div>
 
 	<!-- container-fluid start -->
@@ -301,9 +309,9 @@
 		}else{
 			var remainTimeStr = '';
 			remainTimeStr += rDate>0 ? rDate + "일 ":"" ;
-			remainTimeStr += rHour>10 ? rHour + ":": rHour>0 ? "0"+rHour+":" : "00:";
-			remainTimeStr += rMin>10 ? rMin + ":": rMin>0 ? "0"+rMin+":" : "00:";
-			remainTimeStr += rSec>10 ? rSec : "0"+rSec;
+			remainTimeStr += rHour>=10 ? rHour + ":": rHour>0 ? "0"+rHour+":" : "00:";
+			remainTimeStr += rMin>=10 ? rMin + ":": rMin>0 ? "0"+rMin+":" : "00:";
+			remainTimeStr += rSec>=10 ? rSec : "0"+rSec;
 			
 			$("#remainTime").html(remainTimeStr).css("color","white");
 		}
@@ -333,10 +341,10 @@
 					
 					var date = new Date(result.matchVO.matchDate);
 					dateStr = (date.getYear()+1900) + "-";
-					dateStr += (date.getMonth()+1)>10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
-					dateStr += date.getDate()>10? date.getDate()+"  ":"0"+date.getDate()+"  ";
-					dateStr += date.getHours()>10? date.getHours() + ":":"0"+date.getHours() + ":";
-					dateStr += date.getMinutes()>10 ? date.getMinutes():"0"+date.getMinutes();
+					dateStr += (date.getMonth()+1)>=10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
+					dateStr += date.getDate()>=10? date.getDate()+"  ":"0"+date.getDate()+"  ";
+					dateStr += date.getHours()>=10? date.getHours() + ":":"0"+date.getHours() + ":";
+					dateStr += date.getMinutes()>=10 ? date.getMinutes():"0"+date.getMinutes();
 					$("#matchDate").html(dateStr);
 					
 					$("#stadium").html(result.matchVO.stadium);
@@ -399,7 +407,7 @@
 	})
 	
 				window.onload=function(){
-					showDetail('${ppList[0].clubCode}','${ppList[0].matchNo}' );
+					showDetail('${principal.member.clubCode}','${ppList[0].matchNo}' );
 				}
 				
 	$("#endTimeModBtn").on("click",function(e){

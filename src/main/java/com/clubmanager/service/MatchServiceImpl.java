@@ -94,7 +94,7 @@ public class MatchServiceImpl implements MatchService {
 		
 		if(matchVO.getMatchStatus()==1) {
 			
-			recordMapper.insertMR(matchVO.getMatchNo());
+			recordMapper.insertMR(matchVO);
 		}
 		
 		

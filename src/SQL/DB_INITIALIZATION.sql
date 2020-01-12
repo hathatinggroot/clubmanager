@@ -51,12 +51,13 @@ create table tbl_matchRecord(
     goal number default 0,
     extraGoal number default 0, -- ¿ëº´ µæÁ¡ or »ó´ë ÀÚÃ¥°ñ
     lostPoint number default 0,
-    results number(1) default -2, -- 1:½Â¸®, 0:¹«, -1:ÆÐ
+    results number(1) default -2, -- 1:½Â¸®, 2:¹«, 3:ÆÐ
     mom varchar2(20) default '',
     comments varchar2(2048) default '',
     matchNo number);
-alter table tbl_matchRecord modify ( mom varchar2(20) default '');
-alter table tbl_matchRecord add constraint ck_matcheRecord_results check (results in (-2,-1,0,1));
+alter table tbl_matchRecord modify (  comments varchar2(2048) default ' ');
+
+alter table tbl_matchRecord add constraint ck_matcheRecord_results check (results in (-2,1,2,3));
 alter table tbl_matchRecord add constraint fk_mRecord_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
 
 
@@ -68,6 +69,7 @@ create table tbl_personalRecord(  -- total = 1(Âü¼®) + mom(3) + goals(2) + assis
     userId varchar2(20),
     userName varchar2(20),
     matchNo number);
+    
 alter table tbl_personalRecord add constraint ck_personalRecord_mom check (mom in (0,1));
 alter table tbl_personalRecord add constraint fk_pRecord_userId_cascade foreign key(userId) references tbl_members(userId) on delete cascade;
 alter table tbl_personalRecord add constraint fk_pRecord_matchNo_null foreign key(matchNo) references tbl_matches(matchNo) on delete set null;
@@ -111,6 +113,7 @@ create table tbl_freeBoard(
     boardTitle varchar2(100),
     boardContent varchar2(2048),
     boardWriter varchar2(20),
+    boardWriterName varchar2(20),
     relplyCnt number default 0,
     boardDate date default sysdate,
     boardLike number default 0,
@@ -122,8 +125,10 @@ alter table tbl_freeBoard add constraint fk_freeboard_clubCode_cascade foreign k
 alter table tbl_freeBoard add constraint ck_freeboard_boardTop check (boardTop in (0,1));
 create sequence seq_freeBoard;
 
+
 create table tbl_reply(
     replyWriter varchar2(20),
+    replyWriterName varchar2(20),
     replyContent varchar2(2048),
     replyDate date default sysdate,
     boardNo number);

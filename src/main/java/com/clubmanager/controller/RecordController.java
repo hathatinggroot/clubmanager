@@ -55,6 +55,8 @@ public class RecordController {
 		
 		model.addAttribute("csDTO", csDTO);
 		model.addAttribute("cri", cri);
+		
+		log.info("csDTO : " + csDTO);
 	}
 	
 	@PostMapping(value = "/getMatchList", consumes="application/json", produces= {MediaType.APPLICATION_JSON_VALUE})
