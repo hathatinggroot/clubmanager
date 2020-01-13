@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -80,25 +81,25 @@ public class FreeBoardController {
 		return pdto;
 	}
 	
-	@PostMapping(value = "/download", consumes="application/json", produces={ MediaType.APPLICATION_OCTET_STREAM_VALUE })
-	@ResponseBody
-	public ResponseEntity<Resource> download(@RequestBody AttachVO attachVO) {
-		log.info("download attachVO : " + attachVO);
-		Resource resource = new FileSystemResource(attachVO.getFilePath()+attachVO.getFileName());
+	@PostMapping(value = "/download", produces={ MediaType.APPLICATION_OCTET_STREAM_VALUE })
+	public ResponseEntity<Resource> download(@Param("filePath") String filePath, @Param("fileName") String fileName,  @Param("boardNo") int boardNo, RedirectAttributes rttr) {
+		log.info("download attachVO : " + filePath + fileName);
+		Resource resource = new FileSystemResource(filePath+fileName);
 		log.info("resource : " + resource);
-		
 		if(resource.exists()) {
 			HttpHeaders header = new HttpHeaders();
 			try {
 				String download = new String(resource.getFilename().getBytes("UTF-8"),"ISO-8859-1");
-				header.add("Content-Disposition", "attachment; filename="+download);
+				header.add("Content-Disposition", "attachment; filename=\""+download+"\"");
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return new ResponseEntity<Resource>(resource, header,HttpStatus.OK);
+		}else {
+			rttr.addAttribute("downloadResult", "해당 파일이 존재하지 않습니다");
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
 		}
-		return null;
 	}
 	
 	

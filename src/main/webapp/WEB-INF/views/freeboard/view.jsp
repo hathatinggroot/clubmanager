@@ -136,6 +136,13 @@
 		<!-- Container Main end-->
 	</div>
 	<!-- container-fluid end -->
+	<form id="downloadFrm" method="post" action="/freeboard/download">
+		<input type="hidden" name="fileName" id="fileName">
+		<input type="hidden" name="filePath" id="filePath">
+		<input type="hidden" name="boardNo" value="${boardVO.boardNo }">
+	    <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+	</form>
+	
 	<script>
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
@@ -144,23 +151,10 @@ var isLike = '';
 
 $(".download").on("click",function(e){
 	console.log($(e.target).data());
-	var downloadFile = new Object();
-	downloadFile.fileName = $(e.target).data('filename');
-	downloadFile.filePath = $(e.target).data('filepath');
-	console.log(downloadFile);
-	$.ajax({
-		url:"/freeboard/download",
-		type:"post",
-		contentType: "application/json",
-		data: JSON.stringify(downloadFile),
-		dataType : "application/octet-stream",
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		},
-		success:function(result){
-			console.log(result);
-		}
-	})
+	$("#fileName").val($(e.target).data('filename'));
+	$("#filePath").val($(e.target).data('filepath'));
+	console.log($("#downloadFrm"));
+	$("#downloadFrm").submit();
 })
 
 

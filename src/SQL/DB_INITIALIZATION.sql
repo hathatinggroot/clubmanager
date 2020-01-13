@@ -131,9 +131,10 @@ create table tbl_reply(
     replyWriterName varchar2(20),
     replyContent varchar2(2048),
     replyDate date default sysdate,
-    boardNo number);
+    boardNo number,
+    isLike number default 0);  -- 0: ´ñ±Û , 1: ÁÁ¾Æ¿ä
 alter table tbl_reply add constraint fk_reply_boardNo_cascade foreign key(boardNo) references tbl_freeboard(boardNo) on delete cascade;
-
+alter table tbl_reply add (isLike number default 0);
 create index idx_reply on tbl_reply(boardNo, replyDate asc);
 
 create table tbl_attach(
