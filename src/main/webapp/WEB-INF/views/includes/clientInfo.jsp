@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <sec:authentication property="principal" var="principal" />
 
@@ -270,7 +271,7 @@
 					<c:if test="${popupList !=null }">
 						<c:forEach items="${popupList}" var="pop">
 							<div>
-								<h3>${pop.annTitle }<sup>${pop.annDate }</sup>
+								<h3>${pop.annTitle }<sup> <fmt:formatDate value="${pop.annDate }" pattern="yyyy-MM-dd" /></sup>
 								</h3>
 								<p>${pop.annContent }</p>
 								<hr class="divider">

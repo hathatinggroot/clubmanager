@@ -22,7 +22,7 @@ public class jdbcTest {
 	public void testConn() {
 		try {Connection con =
 			DriverManager.getConnection(
-					"jdbc:oracle:thin:@localhost:1521:XE",
+					"jdbc:mysql://localhost:3306/clubmanagerdb?userSSL=false",
 					"clubmanager",
 					"clubmanager"
 					);

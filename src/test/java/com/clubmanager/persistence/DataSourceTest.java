@@ -32,7 +32,7 @@ public class DataSourceTest {
 	private SqlSessionFactory sqlSessionFactory;
 	
 	
-//	@Test
+	@Test
 	public void testConn() {
 		try {
 			Connection conn = dataSource.getConnection();
@@ -46,7 +46,7 @@ public class DataSourceTest {
 	}
 	
 	
-	@Test
+//	@Test
 	public void testMyBatis() {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {

@@ -9,7 +9,7 @@ create table tbl_members(
 alter table tbl_members add constraint pk_members primary key(userId);
 alter table tbl_members add constraint ck_members_auth check (auth in ('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGER', 'ROLE_MEMBER'));
 --alter table tbl_members add constraint fk_members_clubCode_null foreign key(clubCode) references tbl_clubs(clubCode) on delete set null;
-alter table tbl_members modify (auth varchar2(20));
+
 --alter table tbl_members drop constraint fk_members_clubCode_null;
 
 create table tbl_clubs(
@@ -52,10 +52,10 @@ create table tbl_matchRecord(
     extraGoal number default 0, -- ¿ëº´ µæÁ¡ or »ó´ë ÀÚÃ¥°ñ
     lostPoint number default 0,
     results number(1) default -2, -- 1:½Â¸®, 2:¹«, 3:ÆÐ
-    mom varchar2(20) default '',
-    comments varchar2(2048) default '',
+    mom varchar2(20) default ' ',
+    comments varchar2(2048) default ' ',
     matchNo number);
-alter table tbl_matchRecord modify (  comments varchar2(2048) default ' ');
+
 
 alter table tbl_matchRecord add constraint ck_matcheRecord_results check (results in (-2,1,2,3));
 alter table tbl_matchRecord add constraint fk_mRecord_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;

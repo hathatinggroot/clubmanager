@@ -38,13 +38,13 @@
 			<!-- Club Members List start-->
 			<div class="row">
 				<div class="text-center text-white text-nowrap">
-					<h1>
 						<dfn>
-							<ruby>${clubVO.clubName }<rt class="text-gray">since
+							<ruby class="large-font">${clubVO.clubName }<rt class="text-gray">since
 							<fmt:formatDate value="${clubVO.clubDate }" pattern="yyyy-MM-dd" /></rt>
 							</ruby>
+							<br>
+							<small class="text-gray">클럽 코드 : ${clubVO.clubCode }</small>
 						</dfn>
-					</h1>
 				</div>
 				<!-- Club Members List Table start -->
 				<div class="col-xs-12 col-sm-12 col-md-12">

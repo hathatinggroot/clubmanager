@@ -42,7 +42,7 @@
 							<input type="text" class="form-control input-lg"
 								id="boardTitle" autofocus placeholder="제목을 입력하세요">
 						</div>
-						<div class="form-group text-white" id="boardTop">
+						<div class="form-group text-white" id="boardTopDiv">
 							<label class="checkbox-inline"> <input type="checkbox"
 								value="1" id="boardTop"> 상단 고정
 							</label>
@@ -87,9 +87,9 @@ var header = '${_csrf.headerName }';
 	window.onload=function(){
 		var userAuth = "${principal.member.auth}";
 		if(userAuth == "ROLE_OWNER" | userAuth == "ROLE_ADMIN"){
-			$("#boardTop").show();
+			$("#boardTopDiv").show();
 		}else{
-			$("#boardTop").hide();
+			$("#boardTopDiv").hide();
 		}
 		
 	}
@@ -131,7 +131,6 @@ var header = '${_csrf.headerName }';
 	
 	$("#writeActionBtn").on("click", function(e){
 		var boardFrmObj = $("#boardFrm");
-		
 		$.ajax({
 			url:'/freeboard/uploadAttach',
 			processData: false,

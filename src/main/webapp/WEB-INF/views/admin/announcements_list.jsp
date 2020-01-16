@@ -81,9 +81,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
-						<form id="writeActionFrm" action = "/admin/writeAction" method="post">
-							<input type="hidden" name="${_csrf.parameterName }"
-							value="${_csrf.token }">
+						<form id="writeActionFrm">
 							<div class="form-group">
 								<label for="annTitle">제목</label> <input type="text"
 									class="form-control" id="annTitle" name="annTitle">
@@ -95,8 +93,8 @@
 							<div class="checkbox">
 								<span>팝업</span>
 								<div class="text-center center-block">
-									<input type="checkbox" class="on-off-ckbox" id="checkbox" name="annPopup" value="1"
-										checked> <label for="checkbox" class="on-off-label"><span></span></label>
+									<input type="checkbox" class="on-off-ckbox" id="regAnnPopup" value="1"
+										checked> <label for="regAnnPopup" class="on-off-label"><span></span></label>
 								</div>
 							</div>
 						</form>
@@ -104,7 +102,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" id="doWrite" onclick="$('#writeActionFrm').submit();">등록</button>
+					<button type="button" class="btn btn-primary" id="doWrite">등록</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -175,6 +173,37 @@
 <script>
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
+
+$("#doWrite").on("click", function(e){
+	var annVO = new Object();
+	annVO.annTitle = $("#annTitle").val();
+	annVO.annContent = $("#annContent").val();
+	annVO.annPopup = $("#regAnnPopup").prop("checked")?1:0;
+	console.log(annVO);
+	
+	$.ajax({
+		method : "post",
+		url : "/admin/writeAction",
+		contentType : "application/json",
+		data : JSON.stringify(annVO),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success : function(result) {
+			console.log("writeAction.....");
+			console.log(result);
+			if(result =="success"){
+				alert("공지사항이 등록되었습니다");
+			}else{
+				alert("공지사항 등록에 실패했습니다");
+			}
+			location.reload();
+		}
+	})
+	
+	
+	
+})
 
 $("#doModify").on("click", function(e){
 	console.log($("#modFrm"));

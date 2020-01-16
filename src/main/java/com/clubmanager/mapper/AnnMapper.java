@@ -18,5 +18,7 @@ public interface AnnMapper {
 	public int delete(AnnVO annVO);
 	
 	public List<AnnVO> getAnnPopupList();
+	
+	public int addSeqNo();
 }
 

@@ -22,7 +22,7 @@
 	
 	<insert id="insert" >
 		insert into tbl_members(userId, userPw, userName, joinDate, auth, clubCode)
-		values(#{userId}, #{userPw}, #{userName}, sysdate, #{auth}, #{clubCode})
+		values(#{userId}, #{userPw}, #{userName}, now(), #{auth}, #{clubCode})
 	</insert>
 	
 	<update id="modify">

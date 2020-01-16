@@ -6,31 +6,35 @@
 
 
 	<select id="getBoardList" resultType="com.clubmanager.domain.BoardVO">
-	<![CDATA[
-		select boardNo, boardTitle, boardWriter, boardWriterName, boardDate, replyCnt, boardLike, boardHit, boardTop  
+		select sq.*  
 		from 
 			(
 			select /*+ INDEX_DESC(tbl_freeboard pk_freeboard) */
-			rownum rn, boardNo, boardTitle, boardWriter, boardWriterName, boardDate, replyCnt, boardLike, boardHit, boardTop
+			*
 			from tbl_freeboard
 			where clubCode = #{clubCode}
 			and
 			(	
-				boardTitle like '%'||#{keyword}||'%'
-				or	boardWriter like '%'||#{keyword}||'%'
-				or  boardContent like '%'||#{keyword}||'%'
+				boardTitle like concat('%',#{keyword},'%')
+				or	boardWriter like concat('%',#{keyword},'%')
+				or  boardContent like concat('%',#{keyword},'%')
 			)
-			and
-			rownum <= #{pageNum} * #{amount}
-			) 
-		where rn > (#{pageNum}-1) * #{amount}
+			)  sq
+		limit #{offset} ,  #{amount}
 		
-		]]>
 	</select>
+	
+	
+	
+	<update id="addSeqNo">
+		update tbl_seq 
+		set val = val + 1
+		where type = 'seq_freeboard'
+	</update>
 	
 	<insert id="insert">
 		<selectKey keyProperty="boardNo" order="BEFORE" resultType="int">
-			select seq_freeBoard.nextval from dual
+			select val from tbl_seq where type = 'seq_freeboard'
 		</selectKey>
 		insert into tbl_freeboard(boardNo, boardTitle, boardContent, boardWriter, boardWriterName, clubCode, boardTop) 
 		values(#{boardNo},#{boardTitle},#{boardContent},#{boardWriter},#{boardWriterName},#{clubCode},#{boardTop})
@@ -47,9 +51,9 @@
 		where clubCode = #{clubCode}
 			and
 			(	
-				boardTitle like '%'||#{keyword}||'%'
-				or	boardWriter like '%'||#{keyword}||'%'
-				or  boardContent like '%'||#{keyword}||'%'
+				boardTitle like concat('%',#{keyword},'%')
+				or	boardWriter like concat('%',#{keyword},'%')
+				or  boardContent like concat('%',#{keyword},'%')
 			)
 	</select>
 	
@@ -99,7 +103,7 @@
 		set boardTitle = #{boardTitle}
 		, boardTop = #{boardTop}
 		, boardContent = #{boardContent}
-		, boardDate = sysdate
+		, boardDate = now()
 		where boardNo = #{boardNo}
 	</update>
 	

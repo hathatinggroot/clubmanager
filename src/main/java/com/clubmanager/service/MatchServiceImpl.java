@@ -40,6 +40,8 @@ public class MatchServiceImpl implements MatchService {
 	@Transactional
 	@Override
 	public boolean register(MatchVO matchVO) {
+		
+		matchMapper.addSeqNo();
 		int result1 = matchMapper.insert(matchVO);
 
 		PollPartVO ppVO = new PollPartVO();

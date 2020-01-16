@@ -40,6 +40,9 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public int insert(BoardVO boardVO) {
+		
+		boardMapper.addSeqNo();
+		
 		int result1 = 0;
 		int result2 = 1;
 		result1 = boardMapper.insert(boardVO);
@@ -114,7 +117,8 @@ public class BoardServiceImpl implements BoardService {
 
 		List<AttachVO> uploadList = new ArrayList<AttachVO>();
 		
-		String uploadFolder = "C:\\ClubManager\\upload";
+//		String uploadFolder = "C:\\ClubManager\\upload";
+		String uploadFolder = "/usr/local/clubmanager/upload";
 		
 		String uploadFolderPath = getFolder();
 		

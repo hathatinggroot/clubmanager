@@ -6,23 +6,17 @@
 
 
 	<select id="getAnnList" resultType="com.clubmanager.domain.AnnVO">
-	<![CDATA[
-		select annNo, annTitle, annContent, annPopup, annDate  
+		select sq.* 
 		from 
 			(
 			select /*+ INDEX_DESC(tbl_announcements pk_announcements) */
-			rownum rn, annNo, annTitle, annContent, annPopup, annDate
+			*
 			from tbl_announcements
 			where
-			(	
-				annTitle like '%'||#{keyword}||'%'
-				or	annContent like '%'||#{keyword}||'%'
-			)
-			and
-			rownum <= #{pageNum} * #{amount}
-			) 
-		where rn > (#{pageNum}-1) * #{amount}
-		]]>
+				annTitle like concat('%',#{keyword},'%')
+				or	annContent like concat('%',#{keyword},'%')
+			) sq
+		limit #{offset} ,  #{amount}
 	</select>
 	
 	<select id="getAnnTotalNum"  resultType="int">
@@ -30,18 +24,27 @@
 		from tbl_announcements
 		where 
 			(	
-				annTitle like '%'||#{keyword}||'%'
-				or	annContent like '%'||#{keyword}||'%'
+				annTitle like concat('%',#{keyword},'%')
+				or	annContent like concat('%',#{keyword},'%')
 			)
 	</select>
 	
+	<update id="addSeqNo">
+		update tbl_seq 
+		set val = val + 1
+		where type = 'seq_ann'
+	</update>
+	
 	<insert id="insert">
+		<selectKey keyProperty="annNo" order="BEFORE" resultType="int">
+			select val from tbl_seq where type = 'seq_ann'
+		</selectKey>
 		insert into tbl_announcements (annNo, annTitle, annContent, annPopup)
-		values (seq_ann.nextval, #{annTitle}, #{annContent}, #{annPopup})
+		values (#{annNo}, #{annTitle}, #{annContent}, #{annPopup})
 	</insert>
 	
 	<delete id="delete">
-		delete tbl_announcements 
+		delete from tbl_announcements 
 		where annNo =  #{annNo}
 	</delete>
 	
@@ -50,7 +53,7 @@
 		set annTitle = #{annTitle},
 			annContent = #{annContent},
 			annPopup = #{annPopup},
-			annDate = sysdate
+			annDate = now()
 		where annNo = #{annNo}
 	</update>
 	

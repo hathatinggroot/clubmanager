@@ -13,6 +13,8 @@ public class Criteria {
 	private int pageNum;
 	private int amount;
 	
+	private int offset;
+	
 	private String keyword;
 	
 	private String clubCode;
@@ -40,4 +42,8 @@ public class Criteria {
 		return builder.toUriString();
 	}
 	
+	public int getOffset() {
+		int result = (this.pageNum-1) * this.amount;
+		return result;
+	}
 }

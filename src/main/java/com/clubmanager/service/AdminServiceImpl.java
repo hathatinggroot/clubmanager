@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.clubmanager.domain.AnnVO;
 import com.clubmanager.domain.ClubVO;
@@ -42,8 +43,10 @@ public class AdminServiceImpl implements AdminService {
 		return annMapper.getAnnTotalNum(cri);
 	}
 
+	@Transactional
 	@Override
 	public int insert(AnnVO annVO) {
+		annMapper.addSeqNo();
 		return annMapper.insert(annVO);
 	}
 

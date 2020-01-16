@@ -27,9 +27,11 @@ public class RootConfig {
 	public HikariConfig hikariConfig() {
 		HikariConfig hikariConfig = new HikariConfig();
 		hikariConfig.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
-		hikariConfig.setJdbcUrl("jdbc:log4jdbc:oracle:thin:@localhost:1521:XE");
+//		hikariConfig.setJdbcUrl("jdbc:log4jdbc:oracle:thin:@localhost:1521:XE");
+//		hikariConfig.setJdbcUrl("jdbc:log4jdbc:mysql://localhost:3306/clubmanagerdb?useSSL=false&amp;serverTimeZone=Asia/Seoul&characterEncoding=utf8");
+		hikariConfig.setJdbcUrl("jdbc:log4jdbc:mysql://database-1.caubwqy6j7zx.ap-northeast-2.rds.amazonaws.com:3306/clubmanagerDB?useSSL=false&amp;serverTimeZone=Asia/Seoul&characterEncoding=utf8");
 		hikariConfig.setUsername("clubmanager");
-		hikariConfig.setPassword("clubmanager");
+		hikariConfig.setPassword("dbqmfkejtm1!");
 		
 		return hikariConfig;
 	}

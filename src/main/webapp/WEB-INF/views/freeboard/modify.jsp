@@ -48,7 +48,7 @@
 							<input type="text" class="form-control input-lg" id="boardTitle"
 								autofocus value = "${boardVO.boardTitle }">
 						</div>
-						<div class="form-group text-white" id="boardTop">
+						<div class="form-group text-white" id="boardTopDiv">
 							<label class="checkbox-inline"> <input type="checkbox"
 								value="1" id="boardTop" >
 								상단 고정
@@ -191,14 +191,14 @@ var showImg = function(){
 	window.onload=function(){
 		var userAuth = "${principal.member.auth}";
 		if(userAuth == "ROLE_OWNER" | userAuth == "ROLE_ADMIN"){
-			$("#boardTop").show();
+			$("#boardTopDiv").show();
 			if('${boardVO.boardTop }' == '1'){
 				$("input[type='checkbox']").attr("checked",true);
 			}else{
 				$("input[type='checkbox']").attr("checked",false);
 			}
 		}else{
-			$("#boardTop").hide();
+			$("#boardTopDiv").hide();
 		}
 		
 		showImg();

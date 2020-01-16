@@ -1,0 +1,176 @@
+mysql -h database-1.caubwqy6j7zx.ap-northeast-2.rds.amazonaws.com -P 3306 -u clubmanager -p
+
+
+create database clubmanagerDB;
+
+create table tbl_announcements (
+    annNo int,
+    annTitle varchar(200),
+    annContent varchar(2048),
+    annDate datetime default current_timestamp,
+    annPopup int); 
+alter table tbl_announcements add constraint pk_announcements primary key(annNo);
+alter table tbl_announcements add constraint ck_announcements_annPopup  check (annPopup  in (0,1));
+
+create table tbl_attach(
+    fileName varchar(200),
+    isImg int default 0, 
+    filePath varchar(200),
+    boardNo int);
+alter table tbl_attach add constraint fk_attach_boardNo_cascade foreign key(boardNo) references tbl_freeboard(boardNo) on delete cascade;
+
+
+create table tbl_clubs(
+	clubName varchar(50),
+	clubCode varchar(50),
+ 	clubDate datetime default current_timestamp,
+   	ownerId varchar(50));
+
+alter table tbl_clubs add constraint pk_clubs primary key(clubCode);
+
+
+create table tbl_freeboard(
+    boardNo int,
+    boardTitle varchar(200),
+    boardContent varchar(2048),
+    boardWriter varchar(50),
+    boardWriterName varchar(50),
+    relplyCnt int default 0,
+    boardDate datetime default current_timestamp,
+    boardLike int default 0,
+    boardHit int default 0,
+    boardTop int default 0,
+    clubCode varchar(50));    
+
+alter table tbl_freeboard add constraint pk_freeboard primary key(boardNo);
+alter table tbl_freeboard add constraint fk_freeboard_clubCode_cascade foreign key(clubCode) references tbl_clubs(clubCode) on delete cascade;
+alter table tbl_freeboard add constraint ck_freeboard_boardTop check (boardTop in (0,1));
+
+
+create table tbl_matches(
+    matchNo int,
+    apposingTeam varchar(50),
+    matchDate datetime,
+    stadium varchar(50),
+    matchStatus int default 0,
+    matchRecordStatus int default 0, 
+    clubCode varchar(50));
+
+alter table tbl_matches add constraint pk_matches primary key(matchNo);
+alter table tbl_matches add constraint ck_matches_matchStatus check (matchStatus in (0,1,2));
+alter table tbl_matches add constraint ck_matches_matchRecordStatus check (matchRecordStatus in (0,1,2));   
+alter table tbl_matches add constraint fk_matches_clubCode_cascade foreign key(clubCode) references tbl_clubs(clubCode) on delete cascade;
+
+create table tbl_matchRecord(
+    goal int default 0,
+    extraGoal int default 0,
+    lostPoint int default 0,
+    results int default -2, 
+    mom varchar(50) default ' ',
+    comments varchar(2048) default ' ',
+    matchNo int);
+alter table tbl_matchRecord add constraint ck_matcheRecord_results check (results in (-2,1,2,3));
+alter table tbl_matchRecord add constraint fk_mRecord_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
+
+create table tbl_members(
+    	userId varchar(50),
+    	userPw varchar(120),
+    	userName varchar(50),
+   	joinDate datetime default current_timestamp,
+   	auth varchar(50),
+    	social varchar(50),
+   	clubCode varchar(50));
+
+alter table tbl_members add constraint pk_members primary key(userId);
+alter table tbl_members add constraint ck_members_auth check (auth in ('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_MANAGER', 'ROLE_MEMBER'));
+
+
+create table tbl_personalRecord(  
+    mom int default 0,
+    goals int default 0,
+    assists int default 0,
+    saves int default 0,
+    userId varchar(50),
+    userName varchar(50),
+    matchNo int);
+
+create table tbl_pollParticipate(
+    endDate datetime,
+    matchNo int,
+    clubCode varchar(50));
+alter table tbl_pollParticipate add constraint fk_pollP_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
+
+create table tbl_pollMoM(
+    endDate datetime,
+    matchNo int,
+    clubCode varchar(50));
+alter table tbl_pollMoM add constraint fk_pollM_matchNo_cascade foreign key(matchNo) references tbl_matches(matchNo) on delete cascade;
+
+create table tbl_pollStatus(
+    matchNo int,
+    userId varchar(50),
+    userName varchar(50),
+    pollType int, 
+    status int default 0,
+    picked int default 0 
+);
+
+create table tbl_reply(
+    replyWriter varchar(50),
+    replyWriterName varchar(50),
+    replyContent varchar(2048),
+    replyDate datetime default current_timestamp,
+    boardNo int,
+    isLike int default 0);
+
+alter table tbl_reply add constraint fk_reply_boardNo_cascade foreign key(boardNo) references tbl_freeboard(boardNo) on delete cascade;
+
+
+create table tbl_seq(
+    	type varchar(50),
+   	val int default 0);
+
+insert into tbl_seq (type) values('seq_ann');
+insert into tbl_seq (type) values('seq_freeboard');
+insert into tbl_seq (type) values('seq_matches');
+
+
+
+create index idx_matches on tbl_matches(clubCode, matchDate asc);
+
+
+
+
+
+
+
+
+
+
+
+create index idx_mr on tbl_matchRecord(clubCode, matchNo );
+
+
+create index idx_pr on tbl_personalRecord(matchNo );
+
+
+
+create index idx_pp on tbl_pollParticipate(clubCode, endDate asc);
+
+create index idx_pm on tbl_pollMoM(clubCode, endDate asc);
+
+
+
+
+
+
+
+
+
+
+create index idx_reply on tbl_reply(boardNo, replyDate asc);
+
+
+
+
+

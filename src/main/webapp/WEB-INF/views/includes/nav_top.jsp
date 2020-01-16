@@ -18,7 +18,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/main"><img class="main-logo"
+			<a class="navbar-brand" href="/"><img class="main-logo"
 				src="/resources/img/logo.png"></a>
 		</div>
 
@@ -69,7 +69,7 @@
 				</sec:authorize>
 
 
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
+				<li class="dropdown  pull-right"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown" role="button" aria-expanded="false"><img
 						class="main-logo" src="/resources/img/profile.png"> </a>
 					<ul class="dropdown-menu" role="menu">

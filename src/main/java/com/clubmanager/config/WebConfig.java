@@ -32,7 +32,8 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 		registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
 		
 		MultipartConfigElement multipartConfig = 
-				new MultipartConfigElement("C:\\ClubManager\\upload\\temp");
+//				new MultipartConfigElement("C:\\ClubManager\\upload\\temp");
+		new MultipartConfigElement("/usr/local/clubmanager/upload/temp");
 		registration.setMultipartConfig(multipartConfig);
 	
 	}

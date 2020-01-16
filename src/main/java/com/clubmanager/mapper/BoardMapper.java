@@ -10,6 +10,8 @@ public interface BoardMapper {
 	
 	public List<BoardVO> getBoardList(Criteria cri);
 	
+	public int addSeqNo();
+	
 	public int insert(BoardVO boardVO);
 	
 	public int getTotalNum(Criteria cri);
@@ -35,4 +37,5 @@ public interface BoardMapper {
 	public AttachVO getAttach(AttachVO attachVO);
 	
 	public int deleteAttach(AttachVO attachVO);
+	
 }

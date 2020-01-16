@@ -9,6 +9,8 @@ public interface MatchMapper {
 	
 	public int insert(MatchVO matchVO);
 	
+	public int addSeqNo();
+	
 	public List<MatchVO> getList(String clubCode);
 	
 	public int modify(MatchVO matchVO);

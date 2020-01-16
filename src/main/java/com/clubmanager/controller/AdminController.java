@@ -64,18 +64,16 @@ public class AdminController {
 		return pdto;
 	}
 
-	@PostMapping(value = "/writeAction")
-	public String writeAction(AnnVO annVO, RedirectAttributes rttr) {
+	@PostMapping(value = "/writeAction", consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String writeAction(@RequestBody AnnVO annVO) {
 		log.info("writeAction annVO : " + annVO);
 
 		if (adminService.insert(annVO) == 1) {
-			rttr.addFlashAttribute("writeResult", "공지사항 등록 완료");
+			return "success";
 		} else {
-			rttr.addFlashAttribute("writeResult", "공지사항 등록 실패");
+			return "fail";
 		}
-		;
-
-		return "redirect:/admin/announcements_list";
 	}
 
 	@PutMapping(value = "/ann",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
