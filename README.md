@@ -6,7 +6,7 @@
 테스트 계정[관리자 / 구단주 계정은 비공개]   
 id:  test002 ~ test017   
 pw : !Q2w3e   
-   
+
 
 ## 기술 스택
 * Client
@@ -48,4 +48,11 @@ pw : !Q2w3e
 [시연 영상 보기](https://youtu.be/WD2y9MGiw4w)
 
 ## 성과
-* [배포](/docs/deployment.md)
+* [Spring 아키텍쳐 설계에 대한 연구](/docs/architecture.md)
+* [DB 설계와 도메인 오브젝트간의 관계](/docs/DBDesign.md)
+* [서비스 계층에서의 트랜잭션 관리](/docs/transaction.md)
+* [Spring Security를 활용한 인증 및 인가](/docs/auth.md)
+* [AJax + RESTful 구현](/docs/RESTful.md)
+* [게시판 기능 구현](/docs/board.md)
+* [쿠키를 통한 기능 구현](/docs/cookie.md)
+* [AWS EC2를 활용한 배포](/docs/deployment.md)
