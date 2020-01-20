@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.RememberMeAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,16 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public void configure(HttpSecurity http) throws Exception {
 		System.out.println("configure http...............");
 		log.info("configure http...............");
-		http.authorizeRequests()
-			.antMatchers("/").permitAll()
-			.antMatchers("/sample/admin").access("hasRole('ROLE_ADMIN')")
-			.antMatchers("/sample/member").access("hasRole('ROLE_MEMBER')");
 		
 		//로그인 로직
 		http.formLogin().loginPage("/customlogin").loginProcessingUrl("/loginprocess")
 					    .successHandler(loginSuccessHandler())//로그인 성공시
 					    .failureHandler(loginFailureHandler());//로그인 실패시
-		
 		
 		http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());//권한 없을 시
 		
