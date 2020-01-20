@@ -163,7 +163,7 @@ create index idx_pm on tbl_pollMoM(clubCode, endDate asc);
 
 
 
-
+show
 
 
 

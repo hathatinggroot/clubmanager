@@ -24,7 +24,7 @@
 		<div class="row">
 			<div class="text-center text-white text-nowrap">
 				<h1>
-					<dfn>안녕하세요. 큽럽매니져 입니다</dfn>
+					<dfn>안녕하세요. 클럽매니져 입니다</dfn>
 				</h1>
 			</div>
 			<div>

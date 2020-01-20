@@ -17,7 +17,7 @@ public class PersonalRecordDTO {
 	public int getTotal() {//-- total = 1(Âü¼®) + mom(3) + goals(2) + assists(1) + savess(1) )
 		int total = 0;
 		
-		total = 1+ this.mom*3 + this.goals*2 + this.assists*1 + this.saves*1 ;
+		total = 3+ this.mom*3 + this.goals*1 + this.assists*1 + this.saves*1 ;
 		
 		return total;
 	}

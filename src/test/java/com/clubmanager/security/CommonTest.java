@@ -29,7 +29,7 @@ public class CommonTest {
 	@Setter(onMethod_ = { @Autowired })
 	private DataSource dataSource;
 	
-	@Test
+//	@Test
 	public void initAdmin() {
 		String sql = "insert into tbl_members(userId, userPw, userName, auth) values(?,?,?,?)";
 			Connection conn = null;
@@ -112,10 +112,10 @@ public class CommonTest {
 	}
 
 	
-//	@Test
+	@Test
 	public void initTestData() {
 		// 1. 구단 A, B, C 생성   2. 각 구단의 구단주 ID ownerA, ownerB, ownerC 3. 구단별 memberA1~25, managerA26~30
-		String sql1 = "insert into tbl_clubs(clubName, clubCode, ownerId) values(?,?,?)";
+//		String sql1 = "insert into tbl_clubs(clubName, clubCode, ownerId) values(?,?,?)";
 		String sql2 = "insert into tbl_members(userId, userPw, userName, auth, clubCode) values(?,?,?,?,?)";
 //		for (int i = 1; i <= 31; i++) {
 			Connection conn = null;
@@ -123,14 +123,18 @@ public class CommonTest {
 
 			try {
 				conn = dataSource.getConnection();
-				pstmt = conn.prepareStatement(sql1);
+				pstmt = conn.prepareStatement(sql2);
 
 //				pstmt.setString(2, passwordEncoder.encode("pw" + i));
 				
 //				if (i <= 25) {
-//					pstmt.setString(1, "memberC" + i);
-//					pstmt.setString(3, "memNameC" + i);
-//					pstmt.setString(4, "ROLE_MEMBER");
+					pstmt.setString(1, "neuru094");
+					pstmt.setString(3, "이종관");
+					
+					
+					pstmt.setString(2, passwordEncoder.encode("smfn1!"));
+					pstmt.setString(4, "ROLE_MEMBER");
+					pstmt.setString(5, "RGTJUHQIOJAJHAS");
 //				} else if (i <= 30) {
 //					pstmt.setString(1, "managerC" + i);
 //					pstmt.setString(3, "manNameC" + i);
@@ -141,9 +145,9 @@ public class CommonTest {
 //					pstmt.setString(4, "ROLE_OWNER");
 //					
 //				}
-				pstmt.setString(1, "clubA");
-				pstmt.setString(2, "A");
-				pstmt.setString(3, "ownerA");
+//				pstmt.setString(1, "clubA");
+//				pstmt.setString(2, "A");
+//				pstmt.setString(3, "ownerA");
 				
 				pstmt.executeUpdate();
 				
