@@ -45,6 +45,5 @@ pw : !Q2w3e
   11. 선수 권한 조정 및 방출
 
 ## 시연 영상
-'''markdown
-<iframe width="640" height="360" src="https://youtu.be/WD2y9MGiw4w" frameborder="0" gesture="media" allowfullscreen=""></iframe>  
-''' 
+[시연 영상 보기](https://youtu.be/WD2y9MGiw4w)
+
