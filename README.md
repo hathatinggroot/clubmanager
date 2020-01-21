@@ -11,7 +11,8 @@ pw : !Q2w3e
 ## 기술 스택
 * Client
   1. HTML / CSS / BootStrap
-  2.
+  2. javascript 
+  3. jQuery
 * Server
   1. Java
   2. JSP / JSTL
