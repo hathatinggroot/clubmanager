@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,10 +59,10 @@ public class FreeBoardController {
 		model.addAttribute("cri", cri);
 	}
 	
-	@PostMapping(value = "/listByAjax", consumes="application/json", produces={ MediaType.APPLICATION_XML_VALUE,
+	@GetMapping(value = "/board/list", produces={ MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseBody
-	public List<BoardVO> getBoardListByAjax(@RequestBody Criteria cri) {
+	public List<BoardVO> getBoardListByAjax(Criteria cri) {
 		log.info("listByAjax : " + cri);
 		List<BoardVO> boardList = boardService.getBoardList(cri);
 		log.info("boardList ......." + boardList);
@@ -69,10 +70,10 @@ public class FreeBoardController {
 	}
 	
 	
-	@PostMapping(value = "/getPaginator", consumes="application/json", produces={ MediaType.APPLICATION_XML_VALUE,
+	@GetMapping(value = "/paginator/board", produces={ MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseBody
-	public pageDTO getPaginator(@RequestBody Criteria cri) {
+	public pageDTO getPaginator(Criteria cri) {
 		log.info("getPaginator cri : " + cri);
 		int total = boardService.getTotalNum(cri);
 		pageDTO pdto = new pageDTO(total, cri);
@@ -109,7 +110,7 @@ public class FreeBoardController {
 	}
 	
 	
-	@PostMapping(value= "/writeAction",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@PostMapping(value= "/board",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String writeAction(@RequestBody BoardVO boardVO) {
 		log.info("writeAction boardVO : " + boardVO);
@@ -121,7 +122,7 @@ public class FreeBoardController {
 		
 	}
 	
-	@PostMapping(value= "/uploadAttach", produces={ MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@PostMapping(value= "/attach", produces={ MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
 	public List<AttachVO> upload(MultipartFile[] upload) {
 		log.info("uploadAttach upload : " + upload);
@@ -161,7 +162,7 @@ public class FreeBoardController {
 		}
 	}
 	
-	@GetMapping(value= "/getAttachListByJson/{boardNo}",produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value= "/attach/list/{boardNo}",produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
 	public List<AttachVO> getAttachListByJson(@PathVariable("boardNo") int boardNo) {
 		log.info("getAttachListByJson boardNo : " + boardNo );
@@ -178,7 +179,7 @@ public class FreeBoardController {
 		model.addAttribute("boardVO", bvo);
 	}
 	
-	@PostMapping("/modifyAction")
+	@PutMapping("/board")
 	@ResponseBody
 	public String modifyAction(@RequestBody BoardVO boardVO) {
 		log.info("modifyAction boardVO : " + boardVO);
@@ -190,18 +191,21 @@ public class FreeBoardController {
 		return "fail";
 	}
 	
-	@PostMapping("/delete")
-	public String delete(BoardVO boardVO, RedirectAttributes rttr) {
-		log.info("delete boardVO : " + boardVO);
+	@DeleteMapping("/board/{boardNo}")
+	@ResponseBody
+	public String delete(@PathVariable("boardNo") int boardNo) {
+		log.info("delete boardNo : " + boardNo);
+		BoardVO boardVO = new BoardVO();
+		boardVO.setBoardNo(boardNo);
 		int result = boardService.delete(boardVO);
 		if(result==1) {
-			rttr.addFlashAttribute("deleteResult", true);
+			return "success";
 		}
 		
-		return "redirect:/freeboard/list?clubCode="+boardVO.getClubCode();
+		return "fail";
 	}
 	
-	@DeleteMapping(value="/deleteAttach", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
+	@DeleteMapping(value="/attach", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String deleteAttach(@RequestBody AttachVO attachVO) {
 		log.info("deleteAttach attachVO : " + attachVO);
@@ -214,7 +218,7 @@ public class FreeBoardController {
 	}
 	
 	
-	@PostMapping(value= "/writeReply", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
+	@PostMapping(value= "/reply", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String writeReply(@RequestBody ReplyVO replyVO) {
 		log.info("writeReply replyVO : " + replyVO);
@@ -226,7 +230,7 @@ public class FreeBoardController {
 		return "writeReply failed";
 	}
 	
-	@DeleteMapping(value= "/deleteReply", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
+	@DeleteMapping(value= "/reply", consumes="application/json", produces={ MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String deleteReply(@RequestBody ReplyVO replyVO) {
 		log.info("deleteReply replyVO : " + replyVO);
@@ -239,7 +243,7 @@ public class FreeBoardController {
 	}
 	
 	
-	@GetMapping(value = "/replyList/{boardNo}", produces={ MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value = "/reply/list/{boardNo}", produces={ MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
 	public List<ReplyVO> getReplyList(@PathVariable("boardNo") int boardNo) {
 		log.info("replyList.jsp boardNo : " + boardNo);

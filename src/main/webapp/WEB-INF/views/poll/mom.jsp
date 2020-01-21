@@ -181,7 +181,7 @@
 	var showDetail = function(clubCode){
 		$.ajax({
 			type : "get",
-			url : "/poll/getPM/"+clubCode,
+			url : "/poll/pollmom/"+clubCode,
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
@@ -300,7 +300,7 @@
 		
 		$.ajax({
 			type:"put",
-			url:"/poll/modifyPM/",
+			url:"/poll/pollmom/",
 			data : JSON.stringify(pmVO),
 			contentType : "application/json",
 			beforeSend : function(xhr) {
@@ -325,7 +325,7 @@
 		
 		$.ajax({
 			type:"put",
-			url:"/poll/modifyPM/",
+			url:"/poll/pollmom/",
 			data : JSON.stringify(pmVO),
 			contentType : "application/json",
 			beforeSend : function(xhr) {
@@ -355,7 +355,7 @@
 				
 				$.ajax({
 					type:"put",
-					url:"/poll/vote/",
+					url:"/poll/pollstatus/",
 					data : JSON.stringify(psDTO),
 					contentType : "application/json",
 					beforeSend : function(xhr) {
@@ -367,7 +367,7 @@
 						showDetail("${principal.member.clubCode}");
 					}
 				})	
-			}
+			};
 		}	
 		
 	var endVote = function(){

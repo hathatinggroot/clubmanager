@@ -42,20 +42,20 @@ public class AdminController {
 		model.addAttribute("cri", cri);
 	}
 
-	@PostMapping(value = "/annList", consumes = "application/json", produces = { MediaType.APPLICATION_XML_VALUE,
+	@GetMapping(value = "/ann/list", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseBody
-	public List<AnnVO> getBoardListByAjax(@RequestBody Criteria cri) {
+	public List<AnnVO> getBoardListByAjax(Criteria cri) {
 		log.info("listByAjax : " + cri);
 		List<AnnVO> annList = adminService.getAnnList(cri);
 		log.info("annList ......." + annList);
 		return annList;
 	}
 
-	@PostMapping(value = "/getPaginator", consumes = "application/json", produces = { MediaType.APPLICATION_XML_VALUE,
+	@GetMapping(value = "/paginator/ann", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseBody
-	public pageDTO getPaginator(@RequestBody Criteria cri) {
+	public pageDTO getPaginator(Criteria cri) {
 		log.info("getPaginator cri : " + cri);
 		int total = adminService.getAnnTotalNum(cri);
 		pageDTO pdto = new pageDTO(total, cri);
@@ -64,7 +64,7 @@ public class AdminController {
 		return pdto;
 	}
 
-	@PostMapping(value = "/writeAction", consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@PostMapping(value = "/ann", consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String writeAction(@RequestBody AnnVO annVO) {
 		log.info("writeAction annVO : " + annVO);
@@ -88,18 +88,17 @@ public class AdminController {
 		}
 	}
 
-	@PostMapping(value = "/deleteAnn")
-	public String deleteAnn(AnnVO annVO, RedirectAttributes rttr) {
-		log.info("delete annVO : " + annVO);
-
+	@DeleteMapping(value = "/ann/{annNo}", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public String deleteAnn(@PathVariable("annNo") int annNo) {
+		log.info("delete annVO : " + annNo);
+		AnnVO annVO = new AnnVO();
+		annVO.setAnnNo(annNo);
 		if (adminService.delete(annVO) == 1) {
-			rttr.addFlashAttribute("deleteResult", "공지사항 삭제 완료");
+			return "success";
 		} else {
-			rttr.addFlashAttribute("deleteResult", "공지사항 삭제 실패");
+			return "fail";
 		}
-		;
-
-		return "redirect:/admin/announcements_list";
 	}
 
 	@GetMapping("/clubs_list")
@@ -109,9 +108,9 @@ public class AdminController {
 		model.addAttribute("cri", cri);
 	}
 	
-	@PostMapping(value = "/getClubList", consumes = "application/json", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@GetMapping(value = "/club/list", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseBody
-	public List<ClubVO> getClubList(@RequestBody Criteria cri) {
+	public List<ClubVO> getClubList(Criteria cri) {
 		log.info("getClubList : " + cri);
 		
 		List<ClubVO> clubList = adminService.getClubList(cri);
@@ -121,10 +120,10 @@ public class AdminController {
 		return clubList;
 	}
 	
-	@PostMapping(value = "/getClubPaginator", consumes = "application/json", produces = { MediaType.APPLICATION_XML_VALUE,
+	@GetMapping(value = "/paginator/club", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	@ResponseBody
-	public pageDTO getClubPaginator(@RequestBody Criteria cri) {
+	public pageDTO getClubPaginator(Criteria cri) {
 		log.info("getClubPaginator cri : " + cri);
 		
 		pageDTO pdto = adminService.getClubPaginator(cri);
@@ -133,27 +132,27 @@ public class AdminController {
 		return pdto;
 	}
 	
-	@PutMapping(value = "/clubIn/{clubCode}", produces = {MediaType.TEXT_PLAIN_VALUE })
-	@ResponseBody
-	public String clubIn(@PathVariable("clubCode") String clubCode) {
-		log.info("clubIn clubCode : " + clubCode);
-		
-		if(adminService.clubIn(clubCode)) return "success";
-
-		return "fail";
-	}
+//	@PutMapping(value = "/clubIn/{clubCode}", produces = {MediaType.TEXT_PLAIN_VALUE })
+//	@ResponseBody
+//	public String clubIn(@PathVariable("clubCode") String clubCode) {
+//		log.info("clubIn clubCode : " + clubCode);
+//		
+//		if(adminService.clubIn(clubCode)) return "success";
+//
+//		return "fail";
+//	}
+//	
+//	@PutMapping(value = "/clubOut", produces = {MediaType.TEXT_PLAIN_VALUE })
+//	@ResponseBody
+//	public String clubOut() {
+//		log.info("clubOut " );
+//		
+//		if(adminService.clubOut()) return "success";
+//
+//		return "fail";
+//	}
 	
-	@PutMapping(value = "/clubOut", produces = {MediaType.TEXT_PLAIN_VALUE })
-	@ResponseBody
-	public String clubOut() {
-		log.info("clubOut " );
-		
-		if(adminService.clubOut()) return "success";
-
-		return "fail";
-	}
-	
-	@DeleteMapping(value = "/delClub/{clubCode}", produces = {MediaType.TEXT_PLAIN_VALUE })
+	@DeleteMapping(value = "/club/{clubCode}", produces = {MediaType.TEXT_PLAIN_VALUE })
 	@ResponseBody
 	public String delClub(@PathVariable("clubCode") String clubCode) {
 		log.info("delClub clubCode : " + clubCode);

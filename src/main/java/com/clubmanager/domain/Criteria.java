@@ -1,7 +1,5 @@
 package com.clubmanager.domain;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,8 +18,6 @@ public class Criteria {
 	private String clubCode;
 	
 	private int annPopup;
-//	private String sortBy;
-//	private boolean sortDirection;
 	
 	public Criteria() {
 		this(1,10, "");
@@ -31,15 +27,6 @@ public class Criteria {
 		this.pageNum = pageNum;
 		this.amount = amount;
 		this.keyword = keyword;
-	}
-	
-	public String getListLink() {
-		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
-										.queryParam("pageNum", this.pageNum)
-										.queryParam("amount", this.amount)
-										.queryParam("clubCode", this.clubCode)
-										.queryParam("keyword", this.keyword);
-		return builder.toUriString();
 	}
 	
 	public int getOffset() {

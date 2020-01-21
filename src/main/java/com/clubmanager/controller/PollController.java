@@ -54,7 +54,7 @@ public class PollController {
 		model.addAttribute("ppList", ppList);
 	}
 	
-	@GetMapping(value="/getPP/{clubCode}/{matchNo}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value="/pollparticipate/{clubCode}/{matchNo}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
 	public PollPartVO getPP(@PathVariable("clubCode") String clubCode, @PathVariable("matchNo") Integer matchNo) {
 		log.info("getPP clubCode : " + clubCode);
@@ -68,7 +68,7 @@ public class PollController {
 		return ppVO;
 	}
 	
-	@PutMapping(value="/vote",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@PutMapping(value="/pollstatus",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String vote(@RequestBody PollStatusDTO psDTO) {
 		log.info("vote psDTO : " + psDTO);
@@ -78,7 +78,7 @@ public class PollController {
 		return "fail";
 	}
 	
-	@PutMapping(value="/modifyPP",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@PutMapping(value="/pollparticipate",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String modifyPP(@RequestBody PollPartVO ppVO) {
 		log.info("modifyPP ppVO : " + ppVO);
@@ -93,7 +93,7 @@ public class PollController {
 		log.info("mom.jsp");
 	}
 	
-	@GetMapping(value="/getPM/{clubCode}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value="/pollmom/{clubCode}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
 	public PollMoMVO getPM(@PathVariable("clubCode") String clubCode) {
 		log.info("getPM clubCode : " + clubCode);
@@ -111,7 +111,7 @@ public class PollController {
 		return pmVO;
 	}
 	
-	@PutMapping(value="/modifyPM",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@PutMapping(value="/pollmom",consumes="application/json", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String modifyPM(@RequestBody PollMoMVO pmVO) {
 		log.info("modifyPM pmVO : " + pmVO);

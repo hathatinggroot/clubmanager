@@ -208,8 +208,8 @@
 				if(!confirm("구단주 자격을 정말 위임하시겠습니까?")) return;
 			}
 			$.ajax({
-				method : "post",
-				url : "/modify_auth",
+				method : "put",
+				url : "/auth",
 				contentType : "application/json",
 				data : JSON.stringify({
 					userId : userId,

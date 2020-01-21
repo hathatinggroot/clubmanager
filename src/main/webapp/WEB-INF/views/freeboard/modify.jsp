@@ -110,7 +110,7 @@ $(".delAttachBtn").on("click", function(e){
 	console.log("fileName : " + fileName + "  boardNo : " +boardNo);
 	$.ajax({
 		type:"delete",
-		url:"/freeboard/deleteAttach",
+		url:"/freeboard/attach",
 		contentType : "application/json",
 		data : JSON.stringify({
 			fileName : fileName,
@@ -167,7 +167,7 @@ var showImg = function(){
 	str = "";
 	$.ajax({
 		type:"get",
-		url:"/freeboard/getAttachListByJson/"+"${boardVO.boardNo}",
+		url:"/freeboard/attach/list/"+"${boardVO.boardNo}",
 		beforeSend : function(xhr) {
 			xhr.setRequestHeader(header, token);
 		},
@@ -209,7 +209,7 @@ var showImg = function(){
 		var boardModFrmObj = $("#boardModFrm");
 		
 		$.ajax({
-			url:'/freeboard/uploadAttach',
+			url:'/freeboard/attach',
 			processData: false,
 			contentType: false,
 			type: "post",
@@ -252,9 +252,9 @@ var showImg = function(){
 		
 		console.log(JSON.stringify(boardVO));
 		$.ajax({
-			url:'/freeboard/modifyAction',
+			url:'/freeboard/board',
 			contentType: "application/json",
-			type: "post",
+			type: "put",
 			data: JSON.stringify(boardVO),
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);

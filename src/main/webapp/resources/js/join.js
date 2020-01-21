@@ -183,7 +183,7 @@
 			
 			$.ajax({
 						method : "post",
-						url : "/reg_club",
+						url : "/club",
 						contentType : "application/json",
 						data : JSON.stringify(joinClubInfo),
 						dataType : "text",
@@ -225,7 +225,7 @@
 		
 		$.ajax({
 			method : "post",
-			url : "/join",
+			url : "/member",
 			contentType : "application/json",
 			data : JSON.stringify(joinMemberInfo),
 			dataType : "text",

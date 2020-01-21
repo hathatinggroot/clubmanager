@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -68,7 +69,7 @@ public class CommonController {
 	}
 	
 	
-	@PostMapping(value = "/join", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
+	@PostMapping(value = "/member", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
 	public String join(@RequestBody MemberVO memberVo) {
 		log.info("JOIN vo : " + memberVo);
@@ -80,7 +81,7 @@ public class CommonController {
 		}
 	}
 	
-	@PostMapping(value = "/reg_club", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
+	@PostMapping(value = "/club", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
 	public String regClub(@RequestBody ClubVO clubVo) {
 		log.info("regClub");
@@ -95,7 +96,7 @@ public class CommonController {
 	}
 	
 	@PreAuthorize("isAuthenticated()")
-	@PostMapping(value = "/modifyPInfo", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
+	@PutMapping(value = "/member", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
 	public String modifyPInfo(@RequestBody Map<String, Object> params) {
 		MemberVO memberVo = new MemberVO();
@@ -139,7 +140,7 @@ public class CommonController {
 	
 	
 	@PreAuthorize("hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN')")
-	@PostMapping(value = "/modify_auth", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
+	@PutMapping(value = "/auth", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
 	public String modifyAuth(@RequestBody Map<String, Object> params) {
 		MemberVO memberVo = new MemberVO();

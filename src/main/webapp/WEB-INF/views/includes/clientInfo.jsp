@@ -96,7 +96,7 @@
 							<div class="tab-content">
 								<div role="tabpanel" class="tab-pane fade in active"
 									id="general">
-									<form action="/join" method="post">
+									<form action="/member" method="post">
 										<div class="form-group">
 											<label for="joinUserId">아이디</label><span id="idChk"></span> <input
 												type="text" class="form-control" id="joinUserId"
@@ -389,8 +389,8 @@
 			var modClubName = $("#modClubName").val();
 
 			$.ajax({
-				method : "post",
-				url : "/modifyPInfo",
+				method : "put",
+				url : "/member",
 				contentType : "application/json",
 				data : JSON.stringify({
 					userId : "${principal.member.userId }",

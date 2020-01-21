@@ -297,10 +297,9 @@
 		console.log("showList.........cri");
 		console.log(cri);
 		$.ajax({
-			type : "post",
-			url : "/record/getMatchList",
-			contentType : "application/json",
-			data : JSON.stringify(cri),
+			type : "get",
+			url : "/record/match/list",
+			data : cri,
 			dataType : "json",
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
@@ -352,10 +351,9 @@
 	
 	var getPaginator = function(cri){
 		$.ajax({
-			type : "post",
-			url : "/record/getPaginator",
-			contentType : "application/json",
-			data : JSON.stringify(cri),
+			type : "get",
+			url : "/record/paginator/record",
+			data : cri,
 			dataType : "json",
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);

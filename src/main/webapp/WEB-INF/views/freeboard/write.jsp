@@ -132,7 +132,7 @@ var header = '${_csrf.headerName }';
 	$("#writeActionBtn").on("click", function(e){
 		var boardFrmObj = $("#boardFrm");
 		$.ajax({
-			url:'/freeboard/uploadAttach',
+			url:'/freeboard/attach',
 			processData: false,
 			contentType: false,
 			type: "post",
@@ -173,7 +173,7 @@ var header = '${_csrf.headerName }';
 		
 		console.log(JSON.stringify(boardVO));
 		$.ajax({
-			url:'/freeboard/writeAction',
+			url:'/freeboard/board',
 			contentType: "application/json",
 			type: "post",
 			data: JSON.stringify(boardVO),

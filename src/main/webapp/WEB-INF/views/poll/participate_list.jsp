@@ -268,7 +268,7 @@
 		
 		$.ajax({
 			type:"put",
-			url:"/poll/vote/",
+			url:"/poll/pollstatus/",
 			data : JSON.stringify(psDTO),
 			contentType : "application/json",
 			beforeSend : function(xhr) {
@@ -323,7 +323,7 @@
 	var showDetail = function(clubCode, matchNo){
 		$.ajax({
 			type : "get",
-			url : "/poll/getPP/"+clubCode+"/"+matchNo,
+			url : "/poll/pollparticipate/"+clubCode+"/"+matchNo,
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
@@ -446,7 +446,7 @@
 		
 		$.ajax({
 			type:"put",
-			url:"/poll/modifyPP/",
+			url:"/poll/pollparticipate/",
 			data : JSON.stringify(ppVO),
 			contentType : "application/json",
 			beforeSend : function(xhr) {
@@ -470,7 +470,7 @@
 		
 		$.ajax({
 			type:"put",
-			url:"/poll/modifyPP/",
+			url:"/poll/pollparticipate/",
 			data : JSON.stringify(ppVO),
 			contentType : "application/json",
 			beforeSend : function(xhr) {

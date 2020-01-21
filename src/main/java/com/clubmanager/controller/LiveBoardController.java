@@ -61,7 +61,7 @@ public class LiveBoardController {
 		log.info("write...... prList : " + prList);
 	}
 	
-	@GetMapping(value="/get/{matchNo}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value="/matchrecord/{matchNo}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
 	public MatchRecordVO get(@PathVariable("matchNo") Integer matchNo) {
 		log.info("get  matchNo : "+matchNo);
@@ -74,7 +74,7 @@ public class LiveBoardController {
 		return mrVO;
 	}
 	
-	@PutMapping(value="/writeScore", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@PutMapping(value="/personalrecord", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String writeScore(@RequestBody PersonalRecordDTO prDTO) {
 		log.info("writeScore  prDTO : "+prDTO);
@@ -86,7 +86,7 @@ public class LiveBoardController {
 		return "fail";
 	}
 	
-	@PutMapping(value="/modifyMR", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@PutMapping(value="/matchrecord", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String modifyMR(@RequestBody MatchRecordVO mrVO) {
 		log.info("modifyMR  mrVO : "+mrVO);

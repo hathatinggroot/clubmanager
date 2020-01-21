@@ -152,11 +152,6 @@
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 					<button type="button" class="btn btn-primary" id="doModify" >수정</button>
 					<button type="button" class="btn btn-warning" id="doDelete" onclick="confirm('정말 삭제하시겠습니까?')?$('#delFrm').submit():''">삭제</button>
-					<form id="delFrm" action="/admin/deleteAnn" method="post">
-						<input type="hidden" name="${_csrf.parameterName }"
-							value="${_csrf.token }">
-							<input type="hidden" name="annNo" id="delAnnNo">
-					</form>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -173,7 +168,28 @@
 <script>
 var token = '${_csrf.token }';
 var header = '${_csrf.headerName }';
-
+$("#doDelete").on("click", function(e){
+	$.ajax({
+		method : "delete",
+		url : "/admin/ann/"+$("#modAnnNo").val(),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success : function(result) {
+			console.log("put .....");
+			console.log(result);
+			if(result =="success"){
+				alert("공지사항이 삭제되었습니다");
+			}else{
+				alert("공지사항 삭제에 실패했습니다");
+			}
+			location.reload();
+		}
+	})
+	
+	
+	
+})
 $("#doWrite").on("click", function(e){
 	var annVO = new Object();
 	annVO.annTitle = $("#annTitle").val();
@@ -183,14 +199,14 @@ $("#doWrite").on("click", function(e){
 	
 	$.ajax({
 		method : "post",
-		url : "/admin/writeAction",
+		url : "/admin/ann",
 		contentType : "application/json",
 		data : JSON.stringify(annVO),
 		beforeSend : function(xhr) {
 			xhr.setRequestHeader(header, token);
 		},
 		success : function(result) {
-			console.log("writeAction.....");
+			console.log("put .....");
 			console.log(result);
 			if(result =="success"){
 				alert("공지사항이 등록되었습니다");
@@ -251,10 +267,10 @@ var chDateFormat = function(inputDate){
 
 var showList = function(cri){
 	$.ajax({
-		method : "post",
-		url : "/admin/annList",
+		method : "get",
+		url : "/admin/ann/list",
 		contentType : "application/json",
-		data : JSON.stringify(cri),
+		data : cri,
 		dataType : "json",
 		beforeSend : function(xhr) {
 			xhr.setRequestHeader(header, token);
@@ -310,10 +326,10 @@ var showList = function(cri){
 
 var getPaginator = function(cri){
 	$.ajax({
-		method : "post",
-		url : "/admin/getPaginator",
-		contentType : "application/json",
-		data : JSON.stringify(cri),
+		method : "get",
+		url : "/admin/paginator/ann",
+		contentType : false,
+		data : cri,
 		dataType : "json",
 		beforeSend : function(xhr) {
 			xhr.setRequestHeader(header, token);

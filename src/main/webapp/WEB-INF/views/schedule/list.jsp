@@ -347,7 +347,7 @@
 
 					$.ajax({
 						type : "post",
-						url : "/schedule/register",
+						url : "/schedule/match",
 						data : JSON.stringify(matchObj),
 						contentType : "application/json",
 						beforeSend : function(xhr) {
@@ -419,8 +419,8 @@
 					console.log(matchObj);
 
 					$.ajax({
-						type : "post",
-						url : "/schedule/modify",
+						type : "put",
+						url : "/schedule/match",
 						data : JSON.stringify(matchObj),
 						contentType : "application/json",
 						beforeSend : function(xhr) {
@@ -443,7 +443,7 @@
 
 			$.ajax({
 				type : "delete",
-				url : "/schedule/delete/" + $("#modMatchNo").val(),
+				url : "/schedule/match/" + $("#modMatchNo").val(),
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader(header, token);
 				},

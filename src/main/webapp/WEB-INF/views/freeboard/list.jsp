@@ -91,10 +91,9 @@ var chDateFormat = function(inputDate){
 
 var showList = function(cri){
 	$.ajax({
-		method : "post",
-		url : "/freeboard/listByAjax",
-		contentType : "application/json",
-		data : JSON.stringify(cri),
+		method : "get",
+		url : "/freeboard/board/list",
+		data : cri,
 		dataType : "json",
 		beforeSend : function(xhr) {
 			xhr.setRequestHeader(header, token);
@@ -156,10 +155,9 @@ var showList = function(cri){
 
 var getPaginator = function(cri){
 	$.ajax({
-		method : "post",
-		url : "/freeboard/getPaginator",
-		contentType : "application/json",
-		data : JSON.stringify(cri),
+		method : "get",
+		url : "/freeboard/paginator/board",
+		data : cri,
 		dataType : "json",
 		beforeSend : function(xhr) {
 			xhr.setRequestHeader(header, token);

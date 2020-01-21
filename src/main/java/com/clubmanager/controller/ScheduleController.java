@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,7 +60,7 @@ public class ScheduleController {
 		model.addAttribute("prList", prList);
 	}
 	
-	@PostMapping(value = "/register", consumes="application/json", produces = {MediaType.TEXT_PLAIN_VALUE} )
+	@PostMapping(value = "/match", consumes="application/json", produces = {MediaType.TEXT_PLAIN_VALUE} )
 	@ResponseBody
 	public String register(@RequestBody MatchVO matchVO) {
 		log.info("register.........matchVO : " + matchVO);
@@ -72,7 +73,7 @@ public class ScheduleController {
 		return "fail";
 	}
 	
-	@PostMapping(value = "/modify", consumes="application/json", produces = {MediaType.TEXT_PLAIN_VALUE} )
+	@PutMapping(value = "/match", consumes="application/json", produces = {MediaType.TEXT_PLAIN_VALUE} )
 	@ResponseBody
 	public String modify(@RequestBody MatchVO matchVO) {
 		log.info("modify.........matchVO : " + matchVO);
@@ -84,7 +85,7 @@ public class ScheduleController {
 		return "fail";
 	}
 	
-	@DeleteMapping(value="/delete/{matchNo}", produces= {MediaType.TEXT_PLAIN_VALUE})
+	@DeleteMapping(value="/match/{matchNo}", produces= {MediaType.TEXT_PLAIN_VALUE})
 	@ResponseBody
 	public String delete(@PathVariable("matchNo") int matchNo) {
 		log.info("delete.........matchNo : " + matchNo);

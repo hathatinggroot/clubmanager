@@ -59,9 +59,9 @@ public class RecordController {
 		log.info("csDTO : " + csDTO);
 	}
 	
-	@PostMapping(value = "/getMatchList", consumes="application/json", produces= {MediaType.APPLICATION_JSON_VALUE})
+	@GetMapping(value = "/match/list", produces= {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public List<MatchVO> getMatchList(@RequestBody Criteria cri) {
+	public List<MatchVO> getMatchList(Criteria cri) {
 		log.info("getMRList cri : " + cri);
 		
 		
@@ -70,9 +70,9 @@ public class RecordController {
 		return matchList;
 	}
 	
-	@PostMapping(value = "/getPaginator", consumes="application/json", produces= {MediaType.APPLICATION_JSON_VALUE})
+	@GetMapping(value = "/paginator/record", produces= {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public pageDTO getPaginator(@RequestBody Criteria cri) {
+	public pageDTO getPaginator(Criteria cri) {
 		log.info("getPaginator cri : " + cri);
 		
 		

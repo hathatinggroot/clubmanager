@@ -228,7 +228,7 @@
 			$
 					.ajax({
 						type : "get",
-						url : "/liveboard/get/" + matchNo,
+						url : "/liveboard/matchrecord/" + matchNo,
 						beforeSend : function(xhr) {
 							xhr.setRequestHeader(header, token);
 						},
@@ -360,7 +360,7 @@
 				console.log(prDTO);
 				$.ajax({
 					type : "put",
-					url : "/liveboard/writeScore/",
+					url : "/liveboard/personalrecord/",
 					data : JSON.stringify(prDTO),
 					contentType : "application/json",
 					beforeSend : function(xhr) {
@@ -393,7 +393,7 @@
 			console.log(mrObj);
 			$.ajax({
 				type : "put",
-				url : "/liveboard/modifyMR/",
+				url : "/liveboard/matchrecord/",
 				data : JSON.stringify(mrObj),
 				contentType : "application/json",
 				beforeSend : function(xhr) {

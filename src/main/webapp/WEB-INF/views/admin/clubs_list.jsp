@@ -70,13 +70,19 @@ var header = '${_csrf.headerName }';
 
 var cri = new Object();
 
-
+var chDateFormat = function(inputDate){
+	var date = new Date(inputDate);
+	dateStr = (date.getYear()+1900) + "-";
+	dateStr += (date.getMonth()+1)>=10? (date.getMonth()+1)+"-" :"0"+(date.getMonth()+1)+"-" ;
+	dateStr += date.getDate()>=10? date.getDate()+"  ":"0"+date.getDate()+"  ";
+	
+	return dateStr;
+};
 	var showClubList = function(cri){
 		$.ajax({
-			type:"post",
-			url:"/admin/getClubList",
-			data : JSON.stringify(cri),
-			contentType : "application/json",
+			type:"get",
+			url:"/admin/club/list",
+			data : cri,
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
@@ -92,7 +98,7 @@ var cri = new Object();
 						+	"<td>" + (i++) + "</td>"
 						+	"<td>" + clubVO.clubName + "</td>"
 						+	"<td>" + clubVO.ownerId + "</td>"
-						+	"<td>" + clubVO.clubDate + "</td>"
+						+	"<td>" + chDateFormat(clubVO.clubDate) + "</td>"
 					    +   "<td><button type='button' class='btn btn-default' onclick='delClub(\""+clubVO.clubCode+"\");' >삭제</button></td>"
 						+ "</tr>";
 				}
@@ -108,10 +114,9 @@ var cri = new Object();
 	
 	var getPaginator = function(cri){
 		$.ajax({
-			type : "post",
-			url : "/admin/getClubPaginator",
-			contentType : "application/json",
-			data : JSON.stringify(cri),
+			type : "get",
+			url : "/admin/paginator/club",
+			data : cri,
 			dataType : "json",
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
@@ -167,7 +172,7 @@ var cri = new Object();
 		if(confirm("정말 삭제하시겠습니까?")){
 		$.ajax({
 			type : "delete",
-			url :  "/admin/delClub/"+clubCode,
+			url :  "/admin/club/"+clubCode,
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},

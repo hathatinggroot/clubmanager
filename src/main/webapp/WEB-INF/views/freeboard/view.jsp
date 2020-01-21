@@ -94,21 +94,14 @@
 							<div>
 								<button type="button" class="btn btn-default pull-left"
 									onclick="history.back()">목록</button>
-
+								${principal.member.userId}
+								${boardVO.boardWriter }
 								<c:if test="${principal.member.userId == boardVO.boardWriter }">
 									<span class="pull-right">
 										<button type="button" class="btn btn-default pull-left"
 											onclick="location.href='/freeboard/modify?boardNo=${boardVO.boardNo }'">수정</button>
-										<button type="button" class="btn btn-default"
-											onclick="confirm('정말 삭제하시겠습니까?')?$('#deleteFrm').submit():''">삭제</button>
+										<button type="button" class="btn btn-default" id="deleteBtn">삭제</button>
 									</span>
-									<form id="deleteFrm" action="/freeboard/delete" method="post">
-										<input type="hidden" name="boardNo"
-											value="${boardVO.boardNo }"> <input type="hidden"
-											name="clubCode" value="${boardVO.clubCode }"> <input
-											type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }">
-									</form>
 								</c:if>
 
 							</div>
@@ -175,7 +168,26 @@ var chDateFormat = function(inputDate){
 	return dateStr;
 };
 
-
+$("#deleteBtn").on("click",function(e){
+	if(confirm('정말 삭제하시겠습니까?')){
+		$.ajax({
+			type:"delete",
+			url:"/freeboard/board/"+"${boardVO.boardNo}",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(result){
+				console.log(result);
+				if(result == 'success'){
+					alert("게시물이 삭제되었습니다");
+				}else{
+					alert("게시물 삭제에 실패했습니다");
+				}
+				location.replace("/freeboard/list?clubCode=${principal.member.clubCode }");
+			}
+		});
+	}
+})
 
 	$("#addReplyBtn").on("click",function(e){
 		var replyVO = new Object();
@@ -188,7 +200,7 @@ var chDateFormat = function(inputDate){
 		
 		$.ajax({
 			type:"post",
-			url:"/freeboard/writeReply",
+			url:"/freeboard/reply",
 			data: JSON.stringify(replyVO),
 			contentType : "application/json",
 			beforeSend : function(xhr) {
@@ -205,7 +217,7 @@ var showReplyList = function(){
 		var boardNo = '${boardVO.boardNo }';
 		$.ajax({
 			type:"get",
-			url:"/freeboard/replyList/"+boardNo,
+			url:"/freeboard/reply/list/"+boardNo,
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token);
 			},
@@ -246,7 +258,7 @@ var showReplyList = function(){
 			
 			$.ajax({
 				type:"delete",
-				url:"/freeboard/deleteReply",
+				url:"/freeboard/reply",
 				data: JSON.stringify(replyVO),
 				contentType : "application/json",
 				beforeSend : function(xhr) {
@@ -269,7 +281,7 @@ var showReplyList = function(){
 			
 			$.ajax({
 				type:"post",
-				url:"/freeboard/writeReply",
+				url:"/freeboard/reply",
 				data: JSON.stringify(replyVO),
 				contentType : "application/json",
 				beforeSend : function(xhr) {
