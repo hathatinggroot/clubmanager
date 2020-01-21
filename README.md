@@ -3,7 +3,7 @@
 ## 서비스 개요
 아마추어 축구 팀의 기록 및 일정 관리 서비스입니다.   
 [클럽매니져 사이트 바로가기](http://13.209.65.197:8080)   
-[개발 진행 일정](https://docs.google.com/spreadsheets/d/1Nw81ttVzslzoM_4Bp6AE-wgNUS3m4PZOmTIqJd6Ejx0/edit?usp=sharing)
+[개발 진행 일정](https://docs.google.com/spreadsheets/d/1Nw81ttVzslzoM_4Bp6AE-wgNUS3m4PZOmTIqJd6Ejx0/edit?usp=sharing)    
 테스트 계정[관리자 / 구단주 계정은 비공개]   
 id:  test002 ~ test017   
 pw : !Q2w3e   
