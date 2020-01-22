@@ -42,17 +42,6 @@
 							value="${_csrf.token }">
 					</form>
 
-					<!-- social login start -->
-					<div class="col-xs-4 col-sm-4 col-md-4 text-center">
-						<img class="social-logo" src=/resources/img/naverlogo.png>
-					</div>
-					<div class="col-xs-4 col-sm-4 col-md-4 text-center">
-						<img class="social-logo" src=/resources/img/kakaologo.png>
-					</div>
-					<div class="col-xs-4 col-sm-4 col-md-4 text-center">
-						<img class="social-logo" src=/resources/img/googlelogo.png>
-					</div>
-					<!-- social login end -->
 				</div>
 
 			</div>
@@ -88,8 +77,6 @@
 							<ul class="nav nav-tabs" role="tablist">
 								<li role="presentation" class="active"><a href="#general"
 									role="tab" data-toggle="tab">일반</a></li>
-								<li role="presentation"><a href="#social" role="tab"
-									data-toggle="tab">소셜계정으로 가입하기</a></li>
 							</ul>
 
 							<!-- Tab panes -->
@@ -114,19 +101,6 @@
 												required>
 										</div>
 									</form>
-								</div>
-								<div role="tabpanel" class="tab-pane fade" id="social">
-									<!-- social join start -->
-									<div class="col-xs-4 col-sm-4 col-md-4 text-center">
-										<img class="social-logo" src=/resources/img/naverlogo.png>
-									</div>
-									<div class="col-xs-4 col-sm-4 col-md-4 text-center">
-										<img class="social-logo" src=/resources/img/kakaologo.png>
-									</div>
-									<div class="col-xs-4 col-sm-4 col-md-4 text-center">
-										<img class="social-logo" src=/resources/img/googlelogo.png>
-									</div>
-									<!-- social join end -->
 								</div>
 							</div>
 						</div>
